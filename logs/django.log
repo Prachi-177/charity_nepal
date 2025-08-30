@@ -7544,3 +7544,5 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'toggle_sidebar' not found. '
 /Users/bibektimilsina/projects/charity_nepal/users/admin.py changed, reloading.
 /Users/bibektimilsina/projects/charity_nepal/cases/admin.py changed, reloading.
 Watching for file changes with StatReloader
+"GET /admin/?id=6d088f5f-484c-40d7-932b-5d6c3a9505f5&vscodeBrowserReqId=1756523033684 HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/%3Fid%3D6d088f5f-484c-40d7-932b-5d6c3a9505f5%26vscodeBrowserReqId%3D1756523033684 HTTP/1.1" 200 7483
