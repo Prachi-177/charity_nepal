@@ -1,0 +1,756 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %}CharityNepal - Fundraising Platform for Nepal{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-cn-green-50 via-white to-cn-green-50">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-40">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-cn-green-100 rounded-full filter blur-3xl transform -translate-x-1/2 -translate-y-1/2 animate-float"></div>
+            <div class="absolute top-1/2 right-0 w-64 h-64 bg-cn-green-200 rounded-full filter blur-3xl transform translate-x-1/2 -translate-y-1/2 animate-float" style="animation-delay: -2s;"></div>
+            <div class="absolute bottom-0 left-1/3 w-80 h-80 bg-cn-green-100 rounded-full filter blur-3xl animate-float" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="floating-shape floating-shape-1"></div>
+            <div class="floating-shape floating-shape-2"></div>
+            <div class="floating-shape floating-shape-3"></div>
+            <div class="floating-shape floating-shape-4"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 py-32 text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center bg-white/90 backdrop-blur-sm border border-cn-green-200 rounded-full px-6 py-2 mb-8 shadow-lg animate-slide-up">
+                <span class="text-2xl mr-2">🇳🇵</span>
+                <span class="text-cn-green-700 font-semibold text-sm uppercase tracking-wide">Made for Nepal</span>
+            </div>
+            
+            <!-- Main Heading -->
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-cn-dark mb-6 leading-tight animate-slide-up" style="animation-delay: 0.2s;">
+                Support Real Stories.<br>
+                <span class="text-gradient bg-gradient-to-r from-cn-green-600 to-cn-green-700 bg-clip-text text-transparent">Change Real Lives.</span>
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-lg sm:text-xl lg:text-2xl text-cn-muted mb-12 max-w-4xl mx-auto leading-relaxed font-medium animate-slide-up" style="animation-delay: 0.4s;">
+                CharityNepal helps anyone in Nepal raise funds for 
+                <span class="text-red-500 font-semibold">medical</span>, 
+                <span class="text-blue-500 font-semibold">education</span>, 
+                <span class="text-orange-500 font-semibold">emergency</span>, and 
+                <span class="text-green-500 font-semibold">animal</span> causes. 
+                Start a campaign in minutes or back a story that speaks to you.
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-slide-up" style="animation-delay: 0.6s;">
+                <a href="{% url 'cases:list' %}" class="group bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 border-2 border-transparent hover:border-cn-green-400">
+                    <span class="flex items-center justify-center">
+                        <i class="fas fa-search mr-3 group-hover:animate-pulse"></i>
+                        Explore Fundraisers
+                    </span>
+                </a>
+                <a href="{% url 'cases:create' %}" class="group bg-white text-cn-green-700 px-8 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 border-2 border-cn-green-200 hover:border-cn-green-400">
+                    <span class="flex items-center justify-center">
+                        <i class="fas fa-plus mr-3 group-hover:animate-spin"></i>
+                        Start a Campaign
+                    </span>
+                </a>
+            </div>
+            
+            <!-- Trust Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto animate-slide-up" style="animation-delay: 0.8s;">
+                <div class="glass-card p-6 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cn-green-400 to-cn-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-rupee-sign text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-black text-cn-dark mb-2">₹50,000+</div>
+                    <div class="text-cn-muted font-medium">Total Raised</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bullhorn text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-black text-cn-dark mb-2">100+</div>
+                    <div class="text-cn-muted font-medium">Active Campaigns</div>
+                </div>
+                <div class="glass-card p-6 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-heart text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-black text-cn-dark mb-2">500+</div>
+                    <div class="text-cn-muted font-medium">Generous Donors</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-24 bg-white relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-10 right-0 w-64 h-64 bg-cn-green-100 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-10 left-0 w-64 h-64 bg-cn-green-100 rounded-full filter blur-3xl"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="inline-block bg-cn-green-50 px-6 py-2 rounded-full mb-6">
+                    <span class="text-cn-green-700 font-semibold text-sm uppercase tracking-wide">Categories</span>
+                </div>
+                <h2 class="text-4xl lg:text-5xl font-black text-cn-dark mb-6">
+                    Choose Your <span class="text-gradient bg-gradient-to-r from-cn-green-600 to-cn-green-700 bg-clip-text text-transparent">Cause</span>
+                </h2>
+                <p class="text-xl text-cn-muted max-w-3xl mx-auto font-medium leading-relaxed">
+                    Find campaigns that matter to you and make a direct impact in Nepal's communities
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <a href="{% url 'cases:list' %}?category=medical" class="group">
+                    <div class="glass-card p-8 text-center transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-red-200">
+                        <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-heartbeat text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-red-600 transition-colors duration-200">Medical</h3>
+                        <p class="text-cn-muted font-medium leading-relaxed">Emergency treatments and healthcare support for those in need</p>
+                        <div class="mt-6 flex items-center justify-center text-red-600 font-semibold group-hover:translate-x-2 transition-transform duration-200">
+                            Explore <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{% url 'cases:list' %}?category=education" class="group">
+                    <div class="glass-card p-8 text-center transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-blue-200">
+                        <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-graduation-cap text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-blue-600 transition-colors duration-200">Education</h3>
+                        <p class="text-cn-muted font-medium leading-relaxed">Supporting students and educational infrastructure development</p>
+                        <div class="mt-6 flex items-center justify-center text-blue-600 font-semibold group-hover:translate-x-2 transition-transform duration-200">
+                            Explore <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{% url 'cases:list' %}?category=disaster" class="group">
+                    <div class="glass-card p-8 text-center transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-orange-200">
+                        <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-exclamation-triangle text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-orange-600 transition-colors duration-200">Emergency</h3>
+                        <p class="text-cn-muted font-medium leading-relaxed">Disaster relief and emergency response for communities</p>
+                        <div class="mt-6 flex items-center justify-center text-orange-600 font-semibold group-hover:translate-x-2 transition-transform duration-200">
+                            Explore <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{% url 'cases:list' %}?category=other" class="group">
+                    <div class="glass-card p-8 text-center transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-green-200">
+                        <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-paw text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-green-600 transition-colors duration-200">Animal</h3>
+                        <p class="text-cn-muted font-medium leading-relaxed">Animal welfare and conservation efforts across Nepal</p>
+                        <div class="mt-6 flex items-center justify-center text-green-600 font-semibold group-hover:translate-x-2 transition-transform duration-200">
+                            Explore <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Campaign -->
+    <section class="py-24 bg-gradient-to-br from-cn-green-50 via-white to-cn-green-50 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 opacity-40">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-cn-green-100 rounded-full filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-0 left-0 w-96 h-96 bg-cn-green-100 rounded-full filter blur-3xl animate-pulse" style="animation-delay: -2s;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Content Column -->
+                <div class="lg:order-1">
+                    <div class="inline-block bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full mb-8 shadow-lg">
+                        <span class="text-cn-green-700 font-semibold text-sm uppercase tracking-wide">Featured Campaign</span>
+                    </div>
+                    
+                    <h2 class="text-4xl lg:text-5xl font-black text-cn-dark mb-8 leading-tight">
+                        Every Rupee Brings Us
+                        <span class="text-gradient bg-gradient-to-r from-cn-green-600 to-cn-green-700 bg-clip-text text-transparent">Closer to Hope</span>
+                    </h2>
+                    
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-cn-green-100 mb-8">
+                        <h3 class="text-2xl font-bold text-cn-dark mb-4">Flood Relief for Displaced Families in Terai</h3>
+                        <p class="text-cn-muted text-lg leading-relaxed mb-6">
+                            Monsoon floods have displaced 50+ families in the Terai region. Help us provide immediate relief including shelter kits, food parcels, and clean water access for those who lost everything.
+                        </p>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm font-semibold mb-3">
+                                <span class="text-cn-green-600">₹125,000 raised</span>
+                                <span class="text-cn-muted">₹200,000 goal</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-cn-green-500 to-cn-green-600 h-3 rounded-full transition-all duration-500 ease-out" style="width: 62.5%"></div>
+                            </div>
+                            <div class="text-xs text-cn-muted mt-2 font-medium">62% funded • 15 days remaining</div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center text-orange-500">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    <span class="text-sm font-semibold">Emergency</span>
+                                </div>
+                                <div class="flex items-center text-cn-muted">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    <span class="text-sm">Terai Region</span>
+                                </div>
+                            </div>
+                            <div class="text-2xl font-black text-cn-green-600">62%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="{% url 'cases:list' %}" class="bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-center">
+                            <i class="fas fa-heart mr-2"></i>
+                            Donate Now
+                        </a>
+                        <a href="{% url 'cases:list' %}" class="bg-white text-cn-green-700 px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-cn-green-200 hover:border-cn-green-400 text-center">
+                            <i class="fas fa-list mr-2"></i>
+                            See All Campaigns
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Image Column -->
+                <div class="lg:order-2 relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1974&auto=format&fit=crop" 
+                             alt="Featured Campaign" 
+                             class="w-full h-96 lg:h-[500px] object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <div class="bg-white/20 backdrop-blur-sm rounded-lg p-3">
+                                <div class="text-sm font-semibold mb-1">Impact Update</div>
+                                <div class="text-xs opacity-90">50 families helped so far</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Stats -->
+                    <div class="absolute -top-6 -right-6 bg-white rounded-2xl p-4 shadow-xl border border-gray-100 animate-float">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-cn-green-600">78</div>
+                            <div class="text-xs text-cn-muted font-medium">Donors</div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl p-4 shadow-xl border border-gray-100 animate-float" style="animation-delay: -2s;">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-orange-500">15</div>
+                            <div class="text-xs text-cn-muted font-medium">Days Left</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Fundraisers Section -->
+    <section class="py-24 bg-white relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-20 left-1/4 w-32 h-32 bg-cn-green-100 rounded-full filter blur-2xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-1/4 w-32 h-32 bg-cn-green-100 rounded-full filter blur-2xl animate-pulse" style="animation-delay: -3s;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4">
+            <!-- Section Header -->
+            <div class="flex flex-col lg:flex-row justify-between items-center mb-16 gap-8">
+                <div>
+                    <div class="inline-block bg-cn-green-50 px-6 py-2 rounded-full mb-6">
+                        <span class="text-cn-green-700 font-semibold text-sm uppercase tracking-wide">Active Campaigns</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-black text-cn-dark">
+                        Current <span class="text-gradient bg-gradient-to-r from-cn-green-600 to-cn-green-700 bg-clip-text text-transparent">Fundraisers</span>
+                    </h2>
+                </div>
+                
+                <!-- Filter Pills -->
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'cases:list' %}" class="bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white px-6 py-3 rounded-full font-semibold text-sm shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                        View All
+                    </a>
+                    <a href="{% url 'cases:list' %}?category=medical" class="bg-white text-red-600 px-6 py-3 rounded-full font-semibold text-sm border-2 border-red-200 hover:border-red-400 hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                        Medical
+                    </a>
+                    <a href="{% url 'cases:list' %}?category=education" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold text-sm border-2 border-blue-200 hover:border-blue-400 hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                        Education
+                    </a>
+                    <a href="{% url 'cases:list' %}?category=disaster" class="bg-white text-orange-600 px-6 py-3 rounded-full font-semibold text-sm border-2 border-orange-200 hover:border-orange-400 hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                        Emergency
+                    </a>
+                </div>
+            </div>
+
+            <!-- Campaign Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Card 1 - Medical -->
+                <div class="group glass-card overflow-hidden hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 border-2 border-transparent hover:border-red-200">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1974&auto=format&fit=crop" 
+                             alt="Medical Campaign" 
+                             class="h-56 w-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Medical</span>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-red-600 transition-colors duration-200">
+                            Help Raj Fight Cancer
+                        </h3>
+                        <p class="text-cn-muted mb-6 leading-relaxed">
+                            Raj is a 35-year-old father battling leukemia. Help us raise funds for chemotherapy and give him a second chance at life.
+                        </p>
+                        
+                        <!-- Progress Section -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm font-semibold mb-3">
+                                <span class="text-red-600">₹45,000 raised</span>
+                                <span class="text-cn-muted">₹100,000 goal</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full transition-all duration-500 ease-out" style="width: 45%"></div>
+                            </div>
+                            <div class="text-xs text-cn-muted mt-2 font-medium">45% funded • 25 days remaining</div>
+                        </div>
+                        
+                        <!-- Action Section -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-cn-muted">
+                                <i class="fas fa-users mr-2"></i>
+                                <span class="text-sm font-medium">32 donors</span>
+                            </div>
+                            <a href="#" class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-2 rounded-full font-semibold text-sm hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                                Donate Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 - Education -->
+                <div class="group glass-card overflow-hidden hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 border-2 border-transparent hover:border-blue-200">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1974&auto=format&fit=crop" 
+                             alt="Education Campaign" 
+                             class="h-56 w-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Education</span>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-blue-600 transition-colors duration-200">
+                            School Supplies for Rural Students
+                        </h3>
+                        <p class="text-cn-muted mb-6 leading-relaxed">
+                            Providing books, stationery, and learning materials to underprivileged children in remote villages of Nepal.
+                        </p>
+                        
+                        <!-- Progress Section -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm font-semibold mb-3">
+                                <span class="text-blue-600">₹78,500 raised</span>
+                                <span class="text-cn-muted">₹150,000 goal</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500 ease-out" style="width: 52%"></div>
+                            </div>
+                            <div class="text-xs text-cn-muted mt-2 font-medium">52% funded • 18 days remaining</div>
+                        </div>
+                        
+                        <!-- Action Section -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-cn-muted">
+                                <i class="fas fa-users mr-2"></i>
+                                <span class="text-sm font-medium">67 donors</span>
+                            </div>
+                            <a href="#" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-full font-semibold text-sm hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                                Donate Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 - Emergency -->
+                <div class="group glass-card overflow-hidden hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 border-2 border-transparent hover:border-orange-200">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1523419409543-67e9eab58aae?q=80&w=1974&auto=format&fit=crop" 
+                             alt="Emergency Campaign" 
+                             class="h-56 w-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Emergency</span>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-orange-600 transition-colors duration-200">
+                            Flood Relief for Families
+                        </h3>
+                        <p class="text-cn-muted mb-6 leading-relaxed">
+                            Monsoon floods have displaced 50+ families. Help provide immediate shelter, food, and clean water supplies.
+                        </p>
+                        
+                        <!-- Progress Section -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm font-semibold mb-3">
+                                <span class="text-orange-600">₹125,000 raised</span>
+                                <span class="text-cn-muted">₹200,000 goal</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-orange-500 to-orange-600 h-2 rounded-full transition-all duration-500 ease-out" style="width: 62%"></div>
+                            </div>
+                            <div class="text-xs text-cn-muted mt-2 font-medium">62% funded • 15 days remaining</div>
+                        </div>
+                        
+                        <!-- Action Section -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-cn-muted">
+                                <i class="fas fa-users mr-2"></i>
+                                <span class="text-sm font-medium">89 donors</span>
+                            </div>
+                            <a href="#" class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-full font-semibold text-sm hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                                Donate Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All Button -->
+            <div class="text-center">
+                <a href="{% url 'cases:list' %}" class="inline-flex items-center bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <i class="fas fa-grid-3x3 mr-3"></i>
+                    View All Campaigns
+                    <i class="fas fa-arrow-right ml-3"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-gradient-to-br from-cn-green-50 via-white to-cn-green-50 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 opacity-40">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-cn-green-100 rounded-full filter blur-2xl animate-pulse"></div>
+            <div class="absolute bottom-10 right-10 w-32 h-32 bg-cn-green-100 rounded-full filter blur-2xl animate-pulse" style="animation-delay: -2s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-cn-green-100 rounded-full filter blur-3xl animate-pulse" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <div class="inline-block bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full mb-6 shadow-lg">
+                    <span class="text-cn-green-700 font-semibold text-sm uppercase tracking-wide">Testimonials</span>
+                </div>
+                <h2 class="text-4xl lg:text-5xl font-black text-cn-dark mb-6">
+                    What <span class="text-gradient bg-gradient-to-r from-cn-green-600 to-cn-green-700 bg-clip-text text-transparent">Donors Say</span>
+                </h2>
+                <p class="text-xl text-cn-muted max-w-3xl mx-auto font-medium leading-relaxed">
+                    Real stories from real people who've made a difference through our platform
+                </p>
+            </div>
+            
+            <!-- Testimonial Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Testimonial 1 -->
+                <div class="glass-card p-8 text-center transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 group">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-cn-green-100 to-cn-green-200 flex items-center justify-center group-hover:from-cn-green-400 group-hover:to-cn-green-500 transition-all duration-300">
+                        <span class="text-2xl font-bold text-cn-green-700 group-hover:text-white transition-colors duration-300">K</span>
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex justify-center mb-4">
+                            <div class="flex space-x-1">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                        <blockquote class="text-cn-muted text-lg leading-relaxed italic">
+                            "Setting up my campaign took minutes and we funded my mother's surgery in a week. The platform is incredibly user-friendly."
+                        </blockquote>
+                    </div>
+                    <div class="border-t border-cn-green-100 pt-6">
+                        <div class="font-bold text-cn-dark text-lg">Kiran Sharma</div>
+                        <div class="text-cn-muted font-medium">Biratnagar</div>
+                        <div class="text-sm text-cn-green-600 font-semibold mt-2">Medical Campaign • ₹75,000 raised</div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-card p-8 text-center transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 group">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center group-hover:from-blue-400 group-hover:to-blue-500 transition-all duration-300">
+                        <span class="text-2xl font-bold text-blue-700 group-hover:text-white transition-colors duration-300">N</span>
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex justify-center mb-4">
+                            <div class="flex space-x-1">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                        <blockquote class="text-cn-muted text-lg leading-relaxed italic">
+                            "I can see exactly how my donation helps. The progress bars and updates keep me engaged and motivated to contribute more."
+                        </blockquote>
+                    </div>
+                    <div class="border-t border-blue-100 pt-6">
+                        <div class="font-bold text-cn-dark text-lg">Nisha Poudel</div>
+                        <div class="text-cn-muted font-medium">Pokhara</div>
+                        <div class="text-sm text-blue-600 font-semibold mt-2">Regular Donor • 12 campaigns supported</div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-card p-8 text-center transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 group">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center group-hover:from-orange-400 group-hover:to-orange-500 transition-all duration-300">
+                        <span class="text-2xl font-bold text-orange-700 group-hover:text-white transition-colors duration-300">A</span>
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex justify-center mb-4">
+                            <div class="flex space-x-1">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                        <blockquote class="text-cn-muted text-lg leading-relaxed italic">
+                            "Clean, fast, and local to Nepal. The user experience is amazing and I love supporting causes that matter to our community."
+                        </blockquote>
+                    </div>
+                    <div class="border-t border-orange-100 pt-6">
+                        <div class="font-bold text-cn-dark text-lg">Aashish Thapa</div>
+                        <div class="text-cn-muted font-medium">Kathmandu</div>
+                        <div class="text-sm text-orange-600 font-semibold mt-2">Education Supporter • ₹25,000 donated</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trust Indicators -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                    <div class="text-3xl font-black text-cn-green-600 mb-2">4.9/5</div>
+                    <div class="text-sm text-cn-muted font-medium">Average Rating</div>
+                </div>
+                <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                    <div class="text-3xl font-black text-blue-600 mb-2">500+</div>
+                    <div class="text-sm text-cn-muted font-medium">Happy Donors</div>
+                </div>
+                <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                    <div class="text-3xl font-black text-orange-600 mb-2">98%</div>
+                    <div class="text-sm text-cn-muted font-medium">Success Rate</div>
+                </div>
+                <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                    <div class="text-3xl font-black text-purple-600 mb-2">24/7</div>
+                    <div class="text-sm text-cn-muted font-medium">Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Updates Section -->
+    <section class="py-24 bg-white relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-30">
+            <div class="absolute top-20 right-20 w-40 h-40 bg-cn-green-100 rounded-full filter blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 left-20 w-40 h-40 bg-cn-green-100 rounded-full filter blur-3xl animate-pulse" style="animation-delay: -3s;"></div>
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <div class="inline-block bg-cn-green-50 px-6 py-2 rounded-full mb-6">
+                    <span class="text-cn-green-700 font-semibold text-sm uppercase tracking-wide">Latest News</span>
+                </div>
+                <h2 class="text-4xl lg:text-5xl font-black text-cn-dark mb-6">
+                    Recent <span class="text-gradient bg-gradient-to-r from-cn-green-600 to-cn-green-700 bg-clip-text text-transparent">Updates</span>
+                </h2>
+                <p class="text-xl text-cn-muted max-w-3xl mx-auto font-medium leading-relaxed">
+                    Stay informed about the latest progress and milestones from our active campaigns
+                </p>
+            </div>
+            
+            <!-- Updates Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+                <!-- Update 1 - Success -->
+                <div class="group glass-card p-8 border-l-4 border-green-500 hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-check text-white text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">SUCCESS</span>
+                                <span class="text-cn-muted text-sm font-medium">2 hours ago</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-green-600 transition-colors duration-200">
+                                Flood Relief Campaign Update
+                            </h3>
+                            <p class="text-cn-muted leading-relaxed mb-4">
+                                Phase 1 complete — 50 hygiene kits successfully delivered to displaced families in Rautahat district. Emergency shelter materials are next on the priority list.
+                            </p>
+                            <div class="flex items-center space-x-4 text-sm">
+                                <div class="flex items-center text-green-600 font-semibold">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    Rautahat District
+                                </div>
+                                <div class="flex items-center text-cn-muted">
+                                    <i class="fas fa-users mr-2"></i>
+                                    50 families helped
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update 2 - Progress -->
+                <div class="group glass-card p-8 border-l-4 border-blue-500 hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-heartbeat text-white text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">IN PROGRESS</span>
+                                <span class="text-cn-muted text-sm font-medium">6 hours ago</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-blue-600 transition-colors duration-200">
+                                Raj's Cancer Treatment Update
+                            </h3>
+                            <p class="text-cn-muted leading-relaxed mb-4">
+                                Great news! Hospital admission is scheduled for next week thanks to the generous support from 32 donors. Chemotherapy sessions will begin immediately.
+                            </p>
+                            <div class="flex items-center space-x-4 text-sm">
+                                <div class="flex items-center text-blue-600 font-semibold">
+                                    <i class="fas fa-hospital mr-2"></i>
+                                    Bir Hospital, Kathmandu
+                                </div>
+                                <div class="flex items-center text-cn-muted">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    Starting next week
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update 3 - Milestone -->
+                <div class="group glass-card p-8 border-l-4 border-orange-500 hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-trophy text-white text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">MILESTONE</span>
+                                <span class="text-cn-muted text-sm font-medium">1 day ago</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-orange-600 transition-colors duration-200">
+                                Education Campaign Reaches 50% Goal
+                            </h3>
+                            <p class="text-cn-muted leading-relaxed mb-4">
+                                Rural school supplies campaign has crossed the halfway mark! ₹78,500 raised out of ₹150,000 goal. Books and materials will be distributed soon.
+                            </p>
+                            <div class="flex items-center space-x-4 text-sm">
+                                <div class="flex items-center text-orange-600 font-semibold">
+                                    <i class="fas fa-percentage mr-2"></i>
+                                    52% Complete
+                                </div>
+                                <div class="flex items-center text-cn-muted">
+                                    <i class="fas fa-users mr-2"></i>
+                                    67 supporters
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update 4 - New Campaign -->
+                <div class="group glass-card p-8 border-l-4 border-purple-500 hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-plus text-white text-lg"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">NEW CAMPAIGN</span>
+                                <span class="text-cn-muted text-sm font-medium">2 days ago</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-cn-dark mb-3 group-hover:text-purple-600 transition-colors duration-200">
+                                Animal Shelter Needs Support
+                            </h3>
+                            <p class="text-cn-muted leading-relaxed mb-4">
+                                New campaign launched to help Kathmandu Animal Shelter with food, medicine, and shelter improvements for 100+ rescued street animals.
+                            </p>
+                            <div class="flex items-center space-x-4 text-sm">
+                                <div class="flex items-center text-purple-600 font-semibold">
+                                    <i class="fas fa-paw mr-2"></i>
+                                    Animal Welfare
+                                </div>
+                                <div class="flex items-center text-cn-muted">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    Just launched
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter Signup -->
+            <div class="glass-card p-8 lg:p-12 text-center max-w-4xl mx-auto">
+                <div class="w-20 h-20 bg-gradient-to-br from-cn-green-400 to-cn-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <i class="fas fa-bell text-white text-2xl"></i>
+                </div>
+                <h3 class="text-2xl lg:text-3xl font-bold text-cn-dark mb-4">
+                    Stay Updated with Our Progress
+                </h3>
+                <p class="text-cn-muted text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+                    Get weekly updates about campaign progress, success stories, and new fundraisers that need your support.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                    <input type="email" 
+                           placeholder="Enter your email address" 
+                           class="flex-1 px-6 py-4 rounded-full border-2 border-cn-green-200 focus:border-cn-green-500 focus:outline-none text-center sm:text-left font-medium">
+                    <button class="bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                        Subscribe
+                    </button>
+                </div>
+                <div class="text-sm text-cn-muted mt-4">
+                    <i class="fas fa-shield-alt mr-2 text-cn-green-500"></i>
+                    We respect your privacy. Unsubscribe anytime.
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,430 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}CharityNepal Dashboard{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card.green {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .stat-card.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .stat-card.purple {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform-origin: 50% 50%;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2">📊 CharityNepal Dashboard</h1>
+            <p class="text-muted">Real-time analytics and insights for charity operations</p>
+        </div>
+    </div>
+
+    <!-- Key Statistics Row -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h3>{{ total_cases }}</h3>
+                <p>Total Cases</p>
+                <small>+{{ recent_cases }} this month</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card green">
+                <h3>NPR {{ total_raised|floatformat:0 }}</h3>
+                <p>Total Raised</p>
+                <small>+NPR {{ recent_raised|floatformat:0 }} this month</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card orange">
+                <h3>{{ total_donations }}</h3>
+                <p>Total Donations</p>
+                <small>+{{ recent_donations }} this month</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card purple">
+                <h3>{{ approval_rate }}%</h3>
+                <p>Approval Rate</p>
+                <small>{{ approved_cases }} of {{ total_cases }}</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row mb-4">
+        <!-- Monthly Trends -->
+        <div class="col-md-8">
+            <div class="dashboard-card">
+                <h4>📈 Monthly Trends</h4>
+                <div class="chart-container">
+                    <canvas id="monthlyTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Distribution -->
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h4>🏷️ Cases by Category</h4>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Row -->
+    <div class="row mb-4">
+        <!-- Success Rates -->
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h4>🎯 Success Rate by Category</h4>
+                <div class="chart-container">
+                    <canvas id="successRateChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h4>💳 Payment Method Distribution</h4>
+                <div class="chart-container">
+                    <canvas id="paymentChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Urgency and Top Performers -->
+    <div class="row mb-4">
+        <!-- Urgency Distribution -->
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h4>🚨 Cases by Urgency</h4>
+                <div class="chart-container">
+                    <canvas id="urgencyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Cases -->
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h4>🏆 Top Performing Cases</h4>
+                <div class="list-group list-group-flush" style="max-height: 350px; overflow-y: auto;">
+                    {% for case in top_cases %}
+                    <div class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">{{ case.title|truncatechars:40 }}</div>
+                            <small class="text-muted">{{ case.category|title }}</small>
+                        </div>
+                        <span class="badge bg-success rounded-pill">NPR {{ case.collected_amount|floatformat:0 }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No cases found</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Donors -->
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h4>🤝 Top Donors</h4>
+                <div class="list-group list-group-flush" style="max-height: 350px; overflow-y: auto;">
+                    {% for donor in top_donors %}
+                    <div class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">{{ donor.donor__first_name }} {{ donor.donor__last_name }}</div>
+                            <small class="text-muted">{{ donor.donation_count }} donations</small>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">NPR {{ donor.total_donated|floatformat:0 }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No donors found</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Updates -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="dashboard-card">
+                <h4>⚡ Real-time Activity (Last 30 Days)</h4>
+                <div class="chart-container">
+                    <canvas id="realTimeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Color schemes
+const colors = {
+    primary: '#667eea',
+    success: '#4facfe',
+    warning: '#fa709a',
+    info: '#a8edea',
+    secondary: '#764ba2'
+};
+
+// Monthly Trends Chart
+const monthlyData = {{ monthly_data|safe }};
+const monthlyCtx = document.getElementById('monthlyTrendsChart').getContext('2d');
+new Chart(monthlyCtx, {
+    type: 'line',
+    data: {
+        labels: monthlyData.map(d => d.month_name),
+        datasets: [{
+            label: 'New Cases',
+            data: monthlyData.map(d => d.cases),
+            borderColor: colors.primary,
+            backgroundColor: colors.primary + '20',
+            tension: 0.4,
+            yAxisID: 'y'
+        }, {
+            label: 'Donations Amount (NPR)',
+            data: monthlyData.map(d => d.donations_amount),
+            borderColor: colors.success,
+            backgroundColor: colors.success + '20',
+            tension: 0.4,
+            yAxisID: 'y1'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                grid: {
+                    drawOnChartArea: false,
+                },
+            }
+        }
+    }
+});
+
+// Category Distribution
+const categoryData = [
+    {% for cat in category_stats %}
+    {
+        label: '{{ cat.category|title }}',
+        value: {{ cat.count }},
+        raised: {{ cat.total_raised|default:0 }}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+];
+
+const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+new Chart(categoryCtx, {
+    type: 'doughnut',
+    data: {
+        labels: categoryData.map(d => d.label),
+        datasets: [{
+            data: categoryData.map(d => d.value),
+            backgroundColor: [
+                '#667eea', '#4facfe', '#fa709a', '#fee140', '#a8edea', '#fed6e3', '#ff6b6b'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Success Rate Chart
+const successData = [
+    {% for stat in success_stats %}
+    {
+        category: '{{ stat.category|title }}',
+        completion: {{ stat.avg_completion|default:0 }},
+        total: {{ stat.total }}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+];
+
+const successCtx = document.getElementById('successRateChart').getContext('2d');
+new Chart(successCtx, {
+    type: 'bar',
+    data: {
+        labels: successData.map(d => d.category),
+        datasets: [{
+            label: 'Average Completion %',
+            data: successData.map(d => d.completion),
+            backgroundColor: colors.success + '80',
+            borderColor: colors.success,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100
+            }
+        }
+    }
+});
+
+// Payment Methods Chart
+const paymentData = [
+    {% for payment in payment_stats %}
+    {
+        method: '{{ payment.payment_method|title }}',
+        count: {{ payment.count }},
+        total: {{ payment.total }}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+];
+
+const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+new Chart(paymentCtx, {
+    type: 'pie',
+    data: {
+        labels: paymentData.map(d => d.method),
+        datasets: [{
+            data: paymentData.map(d => d.total),
+            backgroundColor: ['#667eea', '#4facfe', '#fa709a', '#fee140']
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Urgency Distribution
+const urgencyData = [
+    {% for urgency in urgency_stats %}
+    {
+        level: '{{ urgency.urgency_flag|title }}',
+        count: {{ urgency.count }}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+];
+
+const urgencyCtx = document.getElementById('urgencyChart').getContext('2d');
+new Chart(urgencyCtx, {
+    type: 'doughnut',
+    data: {
+        labels: urgencyData.map(d => d.level),
+        datasets: [{
+            data: urgencyData.map(d => d.count),
+            backgroundColor: ['#4facfe', '#fee140', '#fa709a', '#ff6b6b']
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Real-time Activity Chart
+fetch('/admin/dashboard/api/')
+    .then(response => response.json())
+    .then(data => {
+        const realTimeCtx = document.getElementById('realTimeChart').getContext('2d');
+        new Chart(realTimeCtx, {
+            type: 'line',
+            data: {
+                labels: data.daily_data.map(d => new Date(d.date).toLocaleDateString()),
+                datasets: [{
+                    label: 'Daily Cases',
+                    data: data.daily_data.map(d => d.cases),
+                    borderColor: colors.primary,
+                    backgroundColor: colors.primary + '20',
+                    tension: 0.4
+                }, {
+                    label: 'Daily Donations',
+                    data: data.daily_data.map(d => d.donations),
+                    borderColor: colors.success,
+                    backgroundColor: colors.success + '20',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+
+// Auto-refresh every 5 minutes
+setInterval(() => {
+    location.reload();
+}, 300000);
+</script>
+
+{% endblock %}

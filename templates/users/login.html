@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gradient-text {
+        background: linear-gradient(135deg, #16a34a, #059669);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .floating-shape {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(5, 150, 105, 0.05));
+        border-radius: 50%;
+        position: absolute;
+        animation: float 8s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-30px) rotate(180deg); }
+    }
+    
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .input-focus {
+        transition: all 0.3s ease;
+    }
+    
+    .input-focus:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(34, 197, 94, 0.15);
+    }
+    
+    .btn-hover {
+        transition: all 0.3s ease;
+    }
+    
+    .btn-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(34, 197, 94, 0.3);
+    }
+    
+    .hero-pattern {
+        background-image: radial-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cn-green-50/30 relative overflow-hidden">
+    <!-- Background decorative elements -->
+    <div class="floating-shape w-64 h-64 -top-20 -left-20" style="animation-delay: -2s;"></div>
+    <div class="floating-shape w-48 h-48 top-32 -right-16" style="animation-delay: -4s;"></div>
+    <div class="floating-shape w-80 h-80 bottom-0 left-1/3" style="animation-delay: -6s;"></div>
+    
+    <!-- Hero Pattern Overlay -->
+    <div class="absolute inset-0 hero-pattern opacity-30"></div>
+    
+    <!-- Main Content -->
+    <div class="relative z-10 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Header Section -->
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cn-green-500 to-cn-green-700 rounded-3xl flex items-center justify-center shadow-2xl">
+                        <span class="text-white font-black text-xl tracking-wide">NP</span>
+                    </div>
+                </div>
+                <h2 class="text-4xl font-black text-cn-dark mb-2">
+                    Welcome to <span class="gradient-text">CharityNepal</span>
+                </h2>
+                <p class="text-cn-muted text-lg">Sign in to continue making a difference</p>
+            </div>
+            
+            <!-- Sign In Form -->
+            <div class="glass-effect rounded-3xl shadow-2xl p-8 space-y-6">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-bold text-cn-dark mb-2">
+                            <i class="fas fa-envelope mr-2 text-cn-green-600"></i>
+                            Email Address
+                        </label>
+                        <input id="email" name="email" type="email" value="{{ email|default:'' }}" required 
+                               class="input-focus appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-cn-dark focus:outline-none focus:ring-2 focus:ring-cn-green-500 focus:border-transparent" 
+                               placeholder="Enter your email">
+                    </div>
+                    
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-bold text-cn-dark mb-2">
+                            <i class="fas fa-lock mr-2 text-cn-green-600"></i>
+                            Password
+                        </label>
+                        <div class="relative">
+                            <input id="password" name="password" type="password" required 
+                                   class="input-focus appearance-none rounded-xl relative block w-full px-4 py-3 pr-12 border border-gray-300 placeholder-gray-500 text-cn-dark focus:outline-none focus:ring-2 focus:ring-cn-green-500 focus:border-transparent" 
+                                   placeholder="Enter your password">
+                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePassword('password')">
+                                <i class="fas fa-eye text-gray-400 hover:text-cn-green-600 transition-colors" id="password-toggle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" 
+                                   class="h-4 w-4 text-cn-green-600 focus:ring-cn-green-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-cn-muted">
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="text-sm">
+                            <a href="{% url 'users:password_reset' %}" class="font-semibold text-cn-green-600 hover:text-cn-green-700 transition-colors">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" 
+                                class="btn-hover group relative w-full flex justify-center py-4 px-6 border border-transparent text-lg font-bold rounded-xl text-white bg-gradient-to-r from-cn-green-600 to-cn-green-700 hover:from-cn-green-700 hover:to-cn-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cn-green-500">
+                            <i class="fas fa-sign-in-alt mr-3"></i>
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Divider -->
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 bg-white text-cn-muted font-semibold">Or continue with</span>
+                    </div>
+                </div>
+                
+                <!-- Social Login -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" 
+                            class="social-btn w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-600 transition-all duration-200">
+                        <i class="fab fa-google text-red-500 text-lg"></i>
+                        <span class="ml-2">Google</span>
+                    </button>
+                    <button type="button" 
+                            class="social-btn w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-600 transition-all duration-200">
+                        <i class="fab fa-facebook-f text-blue-600 text-lg"></i>
+                        <span class="ml-2">Facebook</span>
+                    </button>
+                </div>
+                
+                <!-- Sign Up Link -->
+                <div class="text-center">
+                    <p class="text-cn-muted">
+                        Don't have an account? 
+                        <a href="{% url 'users:register' %}" class="font-semibold text-cn-green-600 hover:text-cn-green-700 transition-colors">
+                            Create account
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Password toggle functionality
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        const toggle = document.getElementById(fieldId + '-toggle');
+        
+        if (field.type === 'password') {
+            field.type = 'text';
+            toggle.className = toggle.className.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            field.type = 'password';
+            toggle.className = toggle.className.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+</script>
+{% endblock %}

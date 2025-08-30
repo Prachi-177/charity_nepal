@@ -1,0 +1,90 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style>
+        .dashboard-widget {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .dashboard-widget h3 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .dashboard-widget p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        .dashboard-link {
+            display: inline-block;
+            background: #4facfe;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        .dashboard-link:hover {
+            background: #3d8bfe;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block content_title %}
+    {{ block.super }}
+    <div style="margin-top: 20px;">
+        <a href="{{ dashboard_url }}" class="dashboard-link">📊 View Analytics Dashboard</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% if dashboard_stats %}
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-2">
+            <div class="dashboard-widget">
+                <h3>{{ dashboard_stats.total_users }}</h3>
+                <p>Total Users</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="dashboard-widget" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <h3>{{ dashboard_stats.total_cases }}</h3>
+                <p>Total Cases</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="dashboard-widget" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <h3>{{ dashboard_stats.approved_cases }}</h3>
+                <p>Approved</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="dashboard-widget" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <h3>{{ dashboard_stats.pending_cases }}</h3>
+                <p>Pending</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="dashboard-widget" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333;">
+                <h3>NPR {{ dashboard_stats.total_raised|floatformat:0 }}</h3>
+                <p>Total Raised</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="dashboard-widget" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); color: #333;">
+                <h3>{{ dashboard_stats.recent_donations }}</h3>
+                <p>Donations</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {{ block.super }}
+{% endblock %}

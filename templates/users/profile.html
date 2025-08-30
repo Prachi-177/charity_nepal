@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - CharityNepal{% endblock %}
+
+{% block content %}
+<section class="py-16 bg-slate-50 min-h-screen">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="card bg-white shadow-xl">
+                <div class="card-body p-8">
+                    <div class="flex items-center mb-8">
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mr-6">
+                            <span class="text-2xl font-bold text-green-600">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</span>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold text-slate-800">{{ user.get_full_name|default:user.username }}</h1>
+                            <p class="text-slate-600">{{ user.email }}</p>
+                            <div class="badge badge-success text-white mt-2">{{ user.get_role_display }}</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Profile Information -->
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-xl font-semibold text-slate-800">Profile Information</h2>
+                                <a href="{% url 'users:profile_edit' %}" class="btn btn-sm btn-outline">Edit Profile</a>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-sm font-medium text-slate-600">Full Name</label>
+                                    <p class="text-slate-800 font-semibold">{{ user.get_full_name|default:"Not provided" }}</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="text-sm font-medium text-slate-600">Username</label>
+                                    <p class="text-slate-800 font-semibold">{{ user.username }}</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="text-sm font-medium text-slate-600">Email Address</label>
+                                    <p class="text-slate-800 font-semibold">{{ user.email }}</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="text-sm font-medium text-slate-600">Phone Number</label>
+                                    <p class="text-slate-800 font-semibold">{{ user.phone|default:"Not provided" }}</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="text-sm font-medium text-slate-600">Address</label>
+                                    <p class="text-slate-800 font-semibold">{{ user.address|default:"Not provided" }}</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="text-sm font-medium text-slate-600">Member Since</label>
+                                    <p class="text-slate-800 font-semibold">{{ user.date_joined|date:"F j, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="space-y-6">
+                            <h2 class="text-xl font-semibold text-slate-800">Quick Actions</h2>
+                            
+                            <div class="grid grid-cols-1 gap-4">
+                                <a href="{% url 'cases:create' %}" class="btn btn-success text-white justify-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Start a New Campaign
+                                </a>
+                                
+                                <a href="{% url 'cases:list' %}" class="btn btn-outline justify-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    Browse Campaigns
+                                </a>
+                                
+                                <a href="{% url 'donations:my_donations' %}" class="btn btn-outline justify-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    My Donations
+                                </a>
+                                
+                                <a href="{% url 'users:password_change' %}" class="btn btn-outline justify-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                    </svg>
+                                    Change Password
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Stats (if available) -->
+                    <div class="mt-8 pt-8 border-t border-slate-200">
+                        <h2 class="text-xl font-semibold text-slate-800 mb-6">Your Impact</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="stat">
+                                <div class="stat-title">Total Donations</div>
+                                <div class="stat-value text-green-600">0</div>
+                                <div class="stat-desc">Donations made</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-title">Amount Donated</div>
+                                <div class="stat-value text-green-600">Rs. 0</div>
+                                <div class="stat-desc">Total contribution</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-title">Campaigns Created</div>
+                                <div class="stat-value text-green-600">0</div>
+                                <div class="stat-desc">Active campaigns</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

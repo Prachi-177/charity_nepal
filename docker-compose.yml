@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  # Main Django Application
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=your-secret-key-here
+      - DATABASE_URL=sqlite:///db.sqlite3
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - EMAIL_HOST=smtp.gmail.com
+      - EMAIL_PORT=587
+      - EMAIL_USE_TLS=True
+    depends_on:
+      - redis
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  # Redis for caching and Celery broker
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # Celery Worker
+  worker:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=your-secret-key-here
+      - DATABASE_URL=sqlite:///db.sqlite3
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - web
+    command: celery -A charity_backend worker --loglevel=info
+
+  # Celery Beat Scheduler
+  beat:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=your-secret-key-here
+      - DATABASE_URL=sqlite:///db.sqlite3
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - web
+    command: celery -A charity_backend beat --loglevel=info
+
+  # Flower for monitoring Celery tasks
+  flower:
+    build: .
+    ports:
+      - "5555:5555"
+    environment:
+      - DEBUG=True
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - worker
+    command: celery -A charity_backend flower --port=5555
+
+volumes:
+  static_volume:
+  media_volume:
+  redis_data:

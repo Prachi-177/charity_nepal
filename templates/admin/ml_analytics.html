@@ -1,0 +1,422 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}ML Analytics Dashboard{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .ml-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .metric-card.success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .metric-card.warning {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .metric-card.info {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+        .algorithm-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .algo-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .performance-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .performance-high { background-color: #28a745; }
+        .performance-medium { background-color: #ffc107; }
+        .performance-low { background-color: #dc3545; }
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2">🤖 ML & Recommendation Analytics</h1>
+            <p class="text-muted">Performance monitoring and insights for machine learning algorithms</p>
+        </div>
+    </div>
+
+    <!-- Algorithm Performance Overview -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <h3>{{ algorithm_stats.total_recommendations }}</h3>
+                <p>Total Recommendations</p>
+                <small>All algorithms combined</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card success">
+                <h3>{{ recommendation_stats.conversion_rate|floatformat:1 }}%</h3>
+                <p>Conversion Rate</p>
+                <small>{{ recommendation_stats.successful_recommendations }} successful</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card warning">
+                <h3>{{ recommendation_stats.avg_recommendations_per_user|floatformat:1 }}</h3>
+                <p>Avg per User</p>
+                <small>{{ recommendation_stats.total_users_with_recommendations }} users</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card info">
+                <h3>{{ prediction_accuracy.precision|floatformat:1 }}%</h3>
+                <p>Model Precision</p>
+                <small>F1 Score: {{ prediction_accuracy.f1_score|floatformat:1 }}%</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Algorithm Comparison -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="ml-card">
+                <h4>🔍 Algorithm Performance Comparison</h4>
+                <div class="algorithm-comparison">
+                    {% for algo in algorithm_stats.algorithm_distribution %}
+                    <div class="algo-card">
+                        <h5>{{ algo.algorithm_used|title|default:"Unknown" }}</h5>
+                        <p><strong>{{ algo.count }}</strong> recommendations</p>
+                        <p>Avg Score: <strong>{{ algo.avg_score|floatformat:2 }}</strong></p>
+                        {% if algo.algorithm_used in algorithm_stats.ctr_by_algorithm %}
+                        <p>
+                            <span class="performance-indicator {% if algorithm_stats.ctr_by_algorithm|lookup:algo.algorithm_used.ctr > 5 %}performance-high{% elif algorithm_stats.ctr_by_algorithm|lookup:algo.algorithm_used.ctr > 2 %}performance-medium{% else %}performance-low{% endif %}"></span>
+                            CTR: {{ algorithm_stats.ctr_by_algorithm|lookup:algo.algorithm_used.ctr }}%
+                        </p>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">No algorithm data available</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row mb-4">
+        <!-- Daily Recommendations Trend -->
+        <div class="col-md-8">
+            <div class="ml-card">
+                <h4>📈 Daily Recommendations Trend</h4>
+                <div class="chart-container">
+                    <canvas id="dailyTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Behavior Analysis -->
+        <div class="col-md-4">
+            <div class="ml-card">
+                <h4>👤 User Behavior</h4>
+                <div class="chart-container">
+                    <canvas id="behaviorChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Performance and Timing -->
+    <div class="row mb-4">
+        <!-- Category Preferences -->
+        <div class="col-md-6">
+            <div class="ml-card">
+                <h4>🏷️ Category Preferences</h4>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hourly Activity -->
+        <div class="col-md-6">
+            <div class="ml-card">
+                <h4>⏰ Donation Activity by Hour</h4>
+                <div class="chart-container">
+                    <canvas id="hourlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Performers -->
+    <div class="row mb-4">
+        <!-- Top Donors -->
+        <div class="col-md-6">
+            <div class="ml-card">
+                <h4>🏆 Top Donors</h4>
+                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Donor</th>
+                                <th>Donations</th>
+                                <th>Total Amount</th>
+                                <th>Categories</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for donor in user_behavior_analysis.top_donors %}
+                            <tr>
+                                <td>Donor #{{ donor.donor }}</td>
+                                <td>{{ donor.total_donations }}</td>
+                                <td>NPR {{ donor.total_amount|floatformat:0 }}</td>
+                                <td>{{ donor.categories_donated }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-muted">No donor data available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Accuracy Metrics -->
+        <div class="col-md-6">
+            <div class="ml-card">
+                <h4>🎯 Model Performance Metrics</h4>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="text-center p-3">
+                            <h3 class="text-primary">{{ prediction_accuracy.precision|floatformat:1 }}%</h3>
+                            <p class="mb-0">Precision</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center p-3">
+                            <h3 class="text-success">{{ prediction_accuracy.recall|floatformat:1 }}%</h3>
+                            <p class="mb-0">Recall</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="text-center p-3">
+                            <h3 class="text-info">{{ prediction_accuracy.f1_score|floatformat:1 }}%</h3>
+                            <p class="mb-0">F1 Score</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center p-3">
+                            <h3 class="text-warning">{{ prediction_accuracy.total_predictions }}</h3>
+                            <p class="mb-0">Total Predictions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Updates -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="ml-card">
+                <h4>⚡ Real-time Algorithm Performance</h4>
+                <div class="chart-container">
+                    <canvas id="realTimePerformanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Color palette for charts
+const colors = {
+    primary: '#667eea',
+    success: '#4facfe', 
+    warning: '#fa709a',
+    info: '#a8edea',
+    secondary: '#764ba2'
+};
+
+// Daily Recommendations Trend
+const dailyData = {{ recommendation_stats.daily_recommendations|safe }};
+const dailyDates = Object.keys(dailyData || {}).sort();
+const dailyCounts = dailyDates.map(date => dailyData[date] || 0);
+
+const dailyCtx = document.getElementById('dailyTrendChart').getContext('2d');
+new Chart(dailyCtx, {
+    type: 'line',
+    data: {
+        labels: dailyDates.map(date => new Date(date).toLocaleDateString()),
+        datasets: [{
+            label: 'Daily Recommendations',
+            data: dailyCounts,
+            borderColor: colors.primary,
+            backgroundColor: colors.primary + '20',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// User Behavior Chart
+const behaviorCtx = document.getElementById('behaviorChart').getContext('2d');
+new Chart(behaviorCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['High Value', 'Regular', 'Occasional', 'New', 'Inactive'],
+        datasets: [{
+            data: [20, 35, 25, 15, 5], // Sample data - replace with real data
+            backgroundColor: [
+                colors.success,
+                colors.primary,
+                colors.warning,
+                colors.info,
+                '#e0e0e0'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Category Preferences
+const categoryData = {{ user_behavior_analysis.category_preferences|safe }};
+const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+new Chart(categoryCtx, {
+    type: 'bar',
+    data: {
+        labels: (categoryData || []).map(cat => cat.case__category || 'Unknown'),
+        datasets: [{
+            label: 'Donations',
+            data: (categoryData || []).map(cat => cat.donation_count || 0),
+            backgroundColor: colors.success + '80',
+            borderColor: colors.success,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Hourly Activity Chart
+const hourlyData = {{ user_behavior_analysis.hourly_distribution|safe }};
+const hours = Object.keys(hourlyData || {}).map(h => parseInt(h)).sort((a, b) => a - b);
+const hourlyValues = hours.map(hour => hourlyData[hour] || 0);
+
+const hourlyCtx = document.getElementById('hourlyChart').getContext('2d');
+new Chart(hourlyCtx, {
+    type: 'bar',
+    data: {
+        labels: hours.map(h => h + ':00'),
+        datasets: [{
+            label: 'Donations by Hour',
+            data: hourlyValues,
+            backgroundColor: colors.warning + '60',
+            borderColor: colors.warning,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Real-time Performance Chart
+fetch('/admin/ml-analytics/api/')
+    .then(response => response.json())
+    .then(data => {
+        const rtCtx = document.getElementById('realTimePerformanceChart').getContext('2d');
+        new Chart(rtCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Success Rate %',
+                    data: [65, 70, 68, 72, 69, 75, 73], // Sample data
+                    borderColor: colors.success,
+                    backgroundColor: colors.success + '20',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    })
+    .catch(err => console.log('Real-time data not available'));
+
+// Auto-refresh every 10 minutes
+setInterval(() => {
+    location.reload();
+}, 600000);
+</script>
+
+{% endblock %}
