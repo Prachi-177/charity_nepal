@@ -11212,3 +11212,863 @@ Traceback (most recent call last):
 django.db.utils.OperationalError: no such table: recommendation_history
 "GET /admin/recommendations/recommendationhistory/ HTTP/1.1" 500 197883
 "GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET /admin/recommendations/recommendationhistory/ HTTP/1.1" 200 18269
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/recommendations/userprofile/ HTTP/1.1" 200 18152
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/recommendations/userrecommendation/ HTTP/1.1" 200 18301
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/recommendations/recommendationhistory/?id=b2875c8a-65d7-4069-9b7b-9554a56f24bf&vscodeBrowserReqId=1756563843215 HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/recommendations/recommendationhistory/%3Fid%3Db2875c8a-65d7-4069-9b7b-9554a56f24bf%26vscodeBrowserReqId%3D1756563843215 HTTP/1.1" 200 4605
+/Users/bibektimilsina/projects/charity_nepal/cases/admin.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /admin/recommendations/userrecommendation/ HTTP/1.1" 200 18301
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+"GET /static/admin/js/core.js HTTP/1.1" 304 0
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+"GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+"GET /static/admin/js/actions.js HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+"GET /static/admin/js/filters.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /static/admin/img/search.svg HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+"GET /admin/recommendations/algorithmperformance/ HTTP/1.1" 200 17513
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/payments/refundrequest/ HTTP/1.1" 200 17874
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/payments/paymentintent/ HTTP/1.1" 200 18006
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/payments/paymentgateway/ HTTP/1.1" 200 17366
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/cases/charitycase/ HTTP/1.1" 200 38848
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/dashboard/ HTTP/1.1" 200 31755
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2841
+"GET /admin/dashboard/ HTTP/1.1" 200 31755
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2841
+"GET / HTTP/1.1" 200 55038
+"GET /profile/ HTTP/1.1" 200 25957
+"GET /profile/ HTTP/1.1" 200 31735
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /profile/ HTTP/1.1" 200 34797
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /profile/ HTTP/1.1" 200 34797
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 63878
+"GET / HTTP/1.1" 200 64171
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64171
+"GET / HTTP/1.1" 200 64171
+"GET /admin/dashboard/ HTTP/1.1" 200 43986
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2841
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /admin/dashboard/ HTTP/1.1" 200 43986
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2841
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+"GET /static/django-browser-reload/reload-worker.js HTTP/1.1" 200 2711
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2841
+"GET /admin/ HTTP/1.1" 200 18558
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 749, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 99, in as_crispy_field
+    raise CrispyError("|as_crispy_field got passed an invalid or inexistent field")
+crispy_forms.exceptions.CrispyError: |as_crispy_field got passed an invalid or inexistent field
+"GET /cases/create/ HTTP/1.1" 500 155220
+"GET /cases/ HTTP/1.1" 200 67160
+"GET /cases/ HTTP/1.1" 200 67160
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET /cases/ HTTP/1.1" 200 67160
+"GET /cases/7/ HTTP/1.1" 200 46386
+"GET /cases/ HTTP/1.1" 200 74558
+"GET /cases/?category=cancer HTTP/1.1" 200 44604
+"GET /cases/ HTTP/1.1" 200 74558
+"GET /cases/?search=eme&category=all HTTP/1.1" 200 59601
+"GET / HTTP/1.1" 200 64238
+"GET /cases/ HTTP/1.1" 200 74558
+"GET /cases/12/ HTTP/1.1" 200 49180
+"GET / HTTP/1.1" 200 64238
+"GET /cases/ HTTP/1.1" 200 90985
+"GET /cases/ HTTP/1.1" 200 91047
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/12/ HTTP/1.1" 200 52976
+"GET /cases/12/ HTTP/1.1" 200 61094
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/12/ HTTP/1.1" 200 71344
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/12/ HTTP/1.1" 200 71344
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93395
+"GET /cases/ HTTP/1.1" 200 93721
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93985
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93985
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET /cases/ HTTP/1.1" 200 93985
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93978
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93986
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 94156
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 94118
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93948
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93948
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET /cases/ HTTP/1.1" 200 93948
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Not Found: /cases/null
+"GET /cases/null HTTP/1.1" 404 10034
+"GET /cases/2/ HTTP/1.1" 200 66110
+"GET /cases/ HTTP/1.1" 200 93948
+"GET / HTTP/1.1" 200 64238
+"GET / HTTP/1.1" 200 64238
+"GET /cases/?id=b2875c8a-65d7-4069-9b7b-9554a56f24bf&vscodeBrowserReqId=1756565774394 HTTP/1.1" 200 87927
+"GET / HTTP/1.1" 200 64238
+"GET /cases/ HTTP/1.1" 200 93948
+"GET /cases/ HTTP/1.1" 200 93976
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 93994
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 94556
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 94558
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 94596
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/?id=b2875c8a-65d7-4069-9b7b-9554a56f24bf&vscodeBrowserReqId=1756565992425 HTTP/1.1" 200 88575
+"GET /cases/ HTTP/1.1" 200 94667
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 96065
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 96389
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 96855
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/?id=b2875c8a-65d7-4069-9b7b-9554a56f24bf&vscodeBrowserReqId=1756566158375 HTTP/1.1" 200 90834
+"GET / HTTP/1.1" 200 64238
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 749, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 99, in as_crispy_field
+    raise CrispyError("|as_crispy_field got passed an invalid or inexistent field")
+crispy_forms.exceptions.CrispyError: |as_crispy_field got passed an invalid or inexistent field
+"GET /cases/create/ HTTP/1.1" 500 155436
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 749, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 99, in as_crispy_field
+    raise CrispyError("|as_crispy_field got passed an invalid or inexistent field")
+crispy_forms.exceptions.CrispyError: |as_crispy_field got passed an invalid or inexistent field
+"GET /cases/create/ HTTP/1.1" 500 155586
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 49903
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 52384
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 52384
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 54928
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 53487
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 53814
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 53582
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 53792
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 54448
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 73111
+"GET /cases/create/ HTTP/1.1" 200 73111
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET / HTTP/1.1" 200 64238
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 96855
+"GET /cases/ HTTP/1.1" 200 96855
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183272
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183422
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183422
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183422
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183422
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183422
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183422
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+Internal Server Error: /cases/create/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 42, in select_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 577, in invalid_block_tag
+    raise self.error(
+    ...<3 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 312: 'endblock'. Did you forget to register or load this tag?
+"GET /cases/create/ HTTP/1.1" 500 183422
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/create/ HTTP/1.1" 200 77758
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET / HTTP/1.1" 200 64238
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64238
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /cases/ HTTP/1.1" 200 96855
+"GET / HTTP/1.1" 200 64238
+"GET /cases/create/ HTTP/1.1" 200 80869

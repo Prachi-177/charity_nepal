@@ -3,333 +3,776 @@
 {% block title %}{{ case.title }} - CharityNepal{% endblock %}
 
 {% block content %}
-<section class="py-8 bg-slate-50 min-h-screen">
-    <div class="container mx-auto px-4 max-w-6xl">
-        <!-- Breadcrumb -->
-        <div class="breadcrumbs text-sm mb-6">
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'cases:list' %}">Campaigns</a></li>
-                <li>{{ case.title|truncatechars:30 }}</li>
-            </ul>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Main Content -->
-            <div class="lg:col-span-2 space-y-8">
-                <!-- Hero Section -->
-                <div class="card bg-white shadow-xl">
-                    {% if case.featured_image %}
-                        <figure>
-                            <img src="{{ case.featured_image.url }}" alt="{{ case.title }}" class="w-full h-64 md:h-80 object-cover">
-                        </figure>
-                    {% else %}
-                        <figure class="h-64 md:h-80 bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
-                            <div class="text-center text-slate-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                                <p class="text-lg">{{ case.get_category_display }}</p>
-                            </div>
-                        </figure>
-                    {% endif %}
-
-                    <div class="card-body">
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <div class="badge badge-success text-white">{{ case.get_category_display }}</div>
-                            {% if case.urgency_flag == 'critical' %}
-                                <div class="badge badge-error text-white">{{ case.get_urgency_flag_display }}</div>
-                            {% elif case.urgency_flag == 'high' %}
-                                <div class="badge badge-warning text-white">{{ case.get_urgency_flag_display }}</div>
-                            {% elif case.urgency_flag == 'medium' %}
-                                <div class="badge badge-info text-white">{{ case.get_urgency_flag_display }}</div>
-                            {% endif %}
-                            {% if case.is_featured %}
-                                <div class="badge badge-primary text-white">Featured</div>
-                            {% endif %}
-                        </div>
-
-                        <h1 class="card-title text-2xl md:text-3xl text-slate-800 mb-4">{{ case.title }}</h1>
-                        
-                        <!-- Meta Information -->
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 text-sm text-slate-600">
-                            {% if case.location %}
-                                <div class="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    {{ case.location }}
-                                </div>
-                            {% endif %}
-                            
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                {{ case.created_at|date:"M d, Y" }}
-                            </div>
-                            
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                                {{ case.created_by.get_full_name|default:case.created_by.username }}
-                            </div>
-                        </div>
-
-                        <!-- Campaign Description -->
-                        <div class="prose max-w-none">
-                            <p class="text-lg text-slate-700 leading-relaxed">{{ case.description|linebreaks }}</p>
-                        </div>
-                    </div>
+    <!-- Hero Section with Case Image -->
+    <section class="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-cn-green-50/30 overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="floating-shape w-64 h-64 top-10 -left-20" style="animation-delay: -1s;"></div>
+        <div class="floating-shape w-48 h-48 bottom-20 -right-16" style="animation-delay: -3s;"></div>
+        
+        <div class="relative z-10 pt-24 pb-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Enhanced Breadcrumb -->
+                <div class="mb-8 animate-fade-in">
+                    <nav class="flex items-center space-x-2 text-sm">
+                        <a href="{% url 'home' %}" class="text-cn-muted hover:text-cn-green-600 transition-colors font-medium">
+                            <i class="fas fa-home mr-1"></i>
+                            Home
+                        </a>
+                        <i class="fas fa-chevron-right text-cn-muted text-xs"></i>
+                        <a href="{% url 'cases:list' %}" class="text-cn-muted hover:text-cn-green-600 transition-colors font-medium">Campaigns</a>
+                        <i class="fas fa-chevron-right text-cn-muted text-xs"></i>
+                        <span class="text-cn-green-600 font-semibold">{{ case.title|truncatechars:30 }}</span>
+                    </nav>
                 </div>
 
-                <!-- Additional Images -->
-                {% if case.images.exists %}
-                    <div class="card bg-white shadow-xl">
-                        <div class="card-body">
-                            <h2 class="card-title text-xl mb-4">Campaign Images</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {% for image in case.images.all %}
-                                    <div class="aspect-video rounded-lg overflow-hidden">
-                                        <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:'Campaign image' }}" 
-                                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
-                                             onclick="window.open(this.src, '_blank')">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <!-- Main Content -->
+                    <div class="lg:col-span-2 space-y-8">
+                        <!-- Enhanced Hero Section -->
+                        <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 overflow-hidden enhanced-card animate-slide-up">
+                            {% if case.featured_image %}
+                                <div class="relative h-80 md:h-96 overflow-hidden">
+                                    <img src="{{ case.featured_image.url }}" alt="{{ case.title }}" 
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                                    
+                                    <!-- Category Badge -->
+                                    <div class="absolute top-6 left-6">
+                                        {% if case.category == 'medical' %}
+                                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                                <i class="fas fa-heartbeat mr-2"></i>{{ case.get_category_display }}
+                                            </span>
+                                        {% elif case.category == 'education' %}
+                                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                                <i class="fas fa-graduation-cap mr-2"></i>{{ case.get_category_display }}
+                                            </span>
+                                        {% elif case.category == 'emergency' %}
+                                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                                <i class="fas fa-shield-alt mr-2"></i>{{ case.get_category_display }}
+                                            </span>
+                                        {% elif case.category == 'animal' %}
+                                            <span class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                                <i class="fas fa-paw mr-2"></i>{{ case.get_category_display }}
+                                            </span>
+                                        {% else %}
+                                            <span class="bg-gradient-to-r from-cn-green-500 to-cn-green-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                                <i class="fas fa-heart mr-2"></i>{{ case.get_category_display }}
+                                            </span>
+                                        {% endif %}
                                     </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
 
-                <!-- Updates Section -->
-                {% if case.updates.exists %}
-                    <div class="card bg-white shadow-xl">
-                        <div class="card-body">
-                            <h2 class="card-title text-xl mb-6">Campaign Updates</h2>
-                            <div class="space-y-6">
-                                {% for update in case.updates.all %}
-                                    <div class="border-l-4 border-green-500 pl-6 py-4">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <h3 class="font-semibold text-lg">{{ update.title }}</h3>
-                                            <span class="text-sm text-slate-500">{{ update.created_at|date:"M d, Y" }}</span>
+                                    <!-- Urgency Badge -->
+                                    {% if case.urgency_flag == 'critical' %}
+                                        <div class="absolute top-6 right-6">
+                                            <div class="bg-red-500 text-white px-4 py-2 rounded-full font-bold animate-pulse shadow-xl">
+                                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                                CRITICAL
+                                            </div>
                                         </div>
-                                        <p class="text-slate-700">{{ update.content|linebreaks }}</p>
+                                    {% elif case.urgency_flag == 'high' %}
+                                        <div class="absolute top-6 right-6">
+                                            <div class="bg-orange-500 text-white px-4 py-2 rounded-full font-bold shadow-xl">
+                                                <i class="fas fa-clock mr-2"></i>
+                                                HIGH PRIORITY
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="relative h-80 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                    <div class="text-center text-gray-400">
+                                        {% if case.category == 'medical' %}
+                                            <i class="fas fa-heartbeat text-8xl mb-6 text-red-300"></i>
+                                        {% elif case.category == 'education' %}
+                                            <i class="fas fa-graduation-cap text-8xl mb-6 text-blue-300"></i>
+                                        {% elif case.category == 'emergency' %}
+                                            <i class="fas fa-shield-alt text-8xl mb-6 text-orange-300"></i>
+                                        {% elif case.category == 'animal' %}
+                                            <i class="fas fa-paw text-8xl mb-6 text-green-300"></i>
+                                        {% else %}
+                                            <i class="fas fa-heart text-8xl mb-6 text-cn-green-300"></i>
+                                        {% endif %}
+                                        <p class="text-2xl font-semibold">{{ case.get_category_display }}</p>
                                     </div>
-                                {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="p-8">
+                                <h1 class="text-3xl md:text-4xl font-black text-cn-dark mb-6 leading-tight">
+                                    {{ case.title }}
+                                </h1>
+                                
+                                <!-- Enhanced Meta Information -->
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                    {% if case.location %}
+                                        <div class="flex items-center p-4 bg-blue-50 rounded-2xl">
+                                            <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
+                                                <i class="fas fa-map-marker-alt text-white"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm text-blue-600 font-semibold">Location</div>
+                                                <div class="text-cn-dark font-medium">{{ case.location }}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <div class="flex items-center p-4 bg-green-50 rounded-2xl">
+                                        <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center mr-4">
+                                            <i class="fas fa-calendar text-white"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm text-green-600 font-semibold">Created</div>
+                                            <div class="text-cn-dark font-medium">{{ case.created_at|date:"M d, Y" }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center p-4 bg-purple-50 rounded-2xl">
+                                        <div class="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center mr-4">
+                                            <i class="fas fa-user text-white"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm text-purple-600 font-semibold">Organizer</div>
+                                            <div class="text-cn-dark font-medium">{{ case.created_by.get_full_name|default:case.created_by.username|truncatechars:15 }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Campaign Description -->
+                                <div class="prose max-w-none">
+                                    <div class="text-lg text-cn-muted leading-relaxed bg-gray-50 rounded-2xl p-6">
+                                        {{ case.description|linebreaks }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endif %}
-            </div>
 
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- Donation Progress Card -->
-                <div class="card bg-white shadow-xl sticky top-8" id="donate">
-                    <div class="card-body">
-                        <h2 class="card-title text-xl text-center mb-6">Support This Campaign</h2>
-                        
-                        <!-- Progress Stats -->
-                        <div class="text-center mb-6">
-                            <div class="text-3xl font-bold text-green-600 mb-2">
-                                Rs. {{ case.collected_amount|floatformat:0 }}
-                            </div>
-                            <div class="text-sm text-slate-500 mb-4">
-                                raised of Rs. {{ case.target_amount|floatformat:0 }} goal
-                            </div>
-                            
-                            <!-- Progress Bar -->
-                            <div class="w-full bg-slate-200 rounded-full h-3 mb-4">
-                                <div class="bg-green-500 h-3 rounded-full transition-all duration-300" 
-                                     style="width: {{ case.completion_percentage|floatformat:0 }}% ; max-width: 100%;"></div>
-                            </div>
-                            
-                            <div class="flex justify-between text-sm text-slate-600">
-                                <span>{{ case.completion_percentage }}% complete</span>
-                                <span>{{ case.donations.count }} donation{{ case.donations.count|pluralize }}</span>
-                            </div>
-                        </div>
-
-                        <!-- Quick Donation Amounts -->
-                        <div class="grid grid-cols-2 gap-2 mb-4">
-                            <button class="btn btn-outline donation-btn" data-amount="500">Rs. 500</button>
-                            <button class="btn btn-outline donation-btn" data-amount="1000">Rs. 1,000</button>
-                            <button class="btn btn-outline donation-btn" data-amount="2000">Rs. 2,000</button>
-                            <button class="btn btn-outline donation-btn" data-amount="5000">Rs. 5,000</button>
-                        </div>
-
-                        <!-- Custom Amount -->
-                        <div class="form-control mb-4">
-                            <label class="label">
-                                <span class="label-text">Custom Amount (Rs.)</span>
-                            </label>
-                            <input type="number" id="custom-amount" placeholder="Enter amount" 
-                                   class="input input-bordered w-full" min="50">
-                        </div>
-
-                        <!-- Donate Button -->
-                        {% if user.is_authenticated %}
-                            <button class="btn btn-success btn-lg w-full text-white" onclick="handleDonation()">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                                Donate Now
-                            </button>
-                        {% else %}
-                            <div class="text-center">
-                                <p class="text-sm text-slate-600 mb-3">Please login to make a donation</p>
-                                <a href="{% url 'users:login' %}?next={{ request.path }}%23donate" class="btn btn-success btn-lg w-full text-white">
-                                    Login to Donate
-                                </a>
+                        <!-- Enhanced Additional Images -->
+                        {% if case.images.exists %}
+                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                                <h2 class="text-2xl font-black text-cn-dark mb-6 flex items-center">
+                                    <i class="fas fa-images mr-3 text-cn-green-600"></i>
+                                    Campaign Gallery
+                                </h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {% for image in case.images.all %}
+                                        <div class="group relative aspect-video rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                                            <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:'Campaign image' }}" 
+                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer"
+                                                 onclick="openImageModal(this.src)">
+                                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                                <i class="fas fa-expand text-white text-2xl"></i>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
                         {% endif %}
 
-                        <!-- Share Section -->
-                        <div class="divider">Share Campaign</div>
-                        <div class="flex justify-center space-x-2">
-                            <button class="btn btn-circle btn-outline btn-sm" onclick="shareOnFacebook()" title="Share on Facebook">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                </svg>
-                            </button>
-                            <button class="btn btn-circle btn-outline btn-sm" onclick="shareOnTwitter()" title="Share on Twitter">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                                </svg>
-                            </button>
-                            <button class="btn btn-circle btn-outline btn-sm" onclick="copyLink()" title="Copy Link">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                                </svg>
-                            </button>
-                        </div>
+                        <!-- Enhanced Updates Section -->
+                        {% if case.updates.exists %}
+                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                                <h2 class="text-2xl font-black text-cn-dark mb-8 flex items-center">
+                                    <i class="fas fa-bullhorn mr-3 text-cn-green-600"></i>
+                                    Campaign Updates
+                                </h2>
+                                <div class="space-y-8">
+                                    {% for update in case.updates.all %}
+                                        <div class="relative pl-8 border-l-4 border-cn-green-500 bg-cn-green-50 rounded-r-2xl p-6 group hover:bg-cn-green-100 transition-colors duration-200">
+                                            <div class="absolute -left-3 top-6 w-6 h-6 bg-cn-green-500 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-circle text-white text-xs"></i>
+                                            </div>
+                                            <div class="flex justify-between items-start mb-4">
+                                                <h3 class="text-xl font-bold text-cn-dark group-hover:text-cn-green-700 transition-colors">{{ update.title }}</h3>
+                                                <span class="text-sm text-cn-muted bg-white px-3 py-1 rounded-full">{{ update.created_at|date:"M d, Y" }}</span>
+                                            </div>
+                                            <div class="text-cn-dark leading-relaxed">{{ update.content|linebreaks }}</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
-                </div>
 
-                <!-- Campaign Owner -->
-                <div class="card bg-white shadow-xl">
-                    <div class="card-body">
-                        <h3 class="card-title text-lg mb-4">Campaign Organizer</h3>
-                        <div class="flex items-center space-x-4">
-                            <div class="avatar">
-                                <div class="w-12 rounded-full">
+                    <!-- Enhanced Sidebar -->
+                    <div class="space-y-8">
+                        <!-- Premium Donation Progress Card -->
+                        <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 sticky top-8 enhanced-card animate-slide-up" id="donate" style="animation-delay: 0.2s;">
+                            <div class="p-8">
+                                <div class="text-center mb-8">
+                                    <div class="inline-flex items-center bg-cn-green-100 text-cn-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                                        <i class="fas fa-heart mr-2"></i>
+                                        Support This Cause
+                                    </div>
+                                    <h2 class="text-2xl font-black text-cn-dark mb-6">Make a Difference Today</h2>
+                                </div>
+                                
+                                <!-- Enhanced Progress Stats -->
+                                <div class="text-center mb-8">
+                                    <div class="relative">
+                                        <div class="text-4xl font-black text-cn-green-600 mb-2">
+                                            Rs {{ case.collected_amount|floatformat:0 }}
+                                        </div>
+                                        <div class="text-lg text-cn-muted mb-6">
+                                            raised of <span class="font-bold text-cn-dark">Rs {{ case.target_amount|floatformat:0 }}</span> goal
+                                        </div>
+                                        
+                                        <!-- Enhanced Progress Bar -->
+                                        <div class="relative w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden shadow-inner">
+                                            {% if case.category == 'medical' %}
+                                                <div class="bg-gradient-to-r from-red-400 to-red-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
+                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
+                                            {% elif case.category == 'education' %}
+                                                <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
+                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
+                                            {% elif case.category == 'emergency' %}
+                                                <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
+                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
+                                            {% elif case.category == 'animal' %}
+                                                <div class="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
+                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
+                                            {% else %}
+                                                <div class="bg-gradient-to-r from-cn-green-400 to-cn-green-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
+                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-cn-green-600 font-bold">{{ case.completion_percentage }}% complete</span>
+                                            <span class="text-cn-muted font-medium">{{ case.donations.count }} donation{{ case.donations.count|pluralize }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enhanced Quick Donation Amounts -->
+                                <div class="grid grid-cols-2 gap-3 mb-6">
+                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="500">Rs 500</button>
+                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="1000">Rs 1,000</button>
+                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="2000">Rs 2,000</button>
+                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="5000">Rs 5,000</button>
+                                </div>
+
+                                <!-- Enhanced Custom Amount -->
+                                <div class="mb-6">
+                                    <label class="block text-sm font-semibold text-cn-dark mb-2">
+                                        Custom Amount (Rs)
+                                    </label>
+                                    <div class="relative">
+                                        <input type="number" id="custom-amount" placeholder="Enter amount" 
+                                               class="w-full pl-12 pr-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl focus:border-cn-green-500 focus:ring-0 transition-all duration-200 font-semibold text-lg" min="50">
+                                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-cn-muted font-semibold">Rs</span>
+                                    </div>
+                                </div>
+
+                                <!-- Enhanced Donate Button -->
+                                {% if user.is_authenticated %}
+                                    <button class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl mb-6" onclick="handleDonation()">
+                                        <i class="fas fa-heart mr-2"></i>
+                                        Donate Now
+                                    </button>
+                                {% else %}
+                                    <div class="text-center mb-6">
+                                        <p class="text-sm text-cn-muted mb-4 bg-yellow-50 p-3 rounded-xl">
+                                            <i class="fas fa-info-circle mr-2 text-yellow-500"></i>
+                                            Please login to make a donation
+                                        </p>
+                                        <a href="{% url 'users:login' %}?next={{ request.path }}%23donate" class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block">
+                                            <i class="fas fa-sign-in-alt mr-2"></i>
+                                            Login to Donate
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Enhanced Share Section -->
+                                <div class="border-t border-gray-200 pt-6">
+                                    <h3 class="text-center text-sm font-bold text-cn-dark mb-4">Share This Campaign</h3>
+                                    <div class="flex justify-center space-x-3">
+                                        <button class="w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="shareOnFacebook()" title="Share on Facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </button>
+                                        <button class="w-12 h-12 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="shareOnTwitter()" title="Share on Twitter">
+                                            <i class="fab fa-twitter"></i>
+                                        </button>
+                                        <button class="w-12 h-12 bg-gray-500 hover:bg-gray-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="copyLink()" title="Copy Link">
+                                            <i class="fas fa-link"></i>
+                                        </button>
+                                        <button class="w-12 h-12 bg-green-500 hover:bg-green-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="shareOnWhatsApp()" title="Share on WhatsApp">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced Campaign Organizer -->
+                        <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                            <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
+                                <i class="fas fa-user-heart mr-3 text-cn-green-600"></i>
+                                Campaign Organizer
+                            </h3>
+                            <div class="flex items-center space-x-4 p-4 bg-cn-green-50 rounded-2xl">
+                                <div class="relative">
                                     {% if case.created_by.profile_image %}
-                                        <img src="{{ case.created_by.profile_image.url }}" alt="{{ case.created_by.get_full_name }}">
+                                        <img src="{{ case.created_by.profile_image.url }}" alt="{{ case.created_by.get_full_name }}" 
+                                             class="w-16 h-16 rounded-full object-cover ring-4 ring-white shadow-lg">
                                     {% else %}
-                                        <div class="bg-green-100 flex items-center justify-center h-12 w-12 rounded-full">
-                                            <span class="text-green-800 font-semibold text-lg">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-cn-green-500 to-cn-green-700 flex items-center justify-center rounded-full ring-4 ring-white shadow-lg">
+                                            <span class="text-white font-black text-xl">
                                                 {{ case.created_by.first_name|first|default:case.created_by.username|first|upper }}
                                             </span>
                                         </div>
                                     {% endif %}
+                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check text-white text-xs"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-cn-dark text-lg">{{ case.created_by.get_full_name|default:case.created_by.username }}</div>
+                                    <div class="text-sm text-cn-muted">Organizer • Joined {{ case.created_by.date_joined|date:"M Y" }}</div>
+                                    <div class="flex items-center mt-1">
+                                        <i class="fas fa-shield-alt text-green-500 text-xs mr-1"></i>
+                                        <span class="text-xs text-green-600 font-medium">Verified Organizer</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <div class="font-semibold">{{ case.created_by.get_full_name|default:case.created_by.username }}</div>
-                                <div class="text-sm text-slate-500">Joined {{ case.created_by.date_joined|date:"M Y" }}</div>
-                            </div>
                         </div>
+
+                        <!-- Enhanced Recent Donations -->
+                        {% if case.donations.exists %}
+                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                                <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
+                                    <i class="fas fa-hands-helping mr-3 text-cn-green-600"></i>
+                                    Recent Supporters
+                                </h3>
+                                <div class="space-y-4">
+                                    {% for donation in case.donations.all|slice:":5" %}
+                                        <div class="flex justify-between items-center p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-10 h-10 bg-gradient-to-br from-cn-green-400 to-cn-green-600 rounded-full flex items-center justify-center">
+                                                    {% if donation.is_anonymous %}
+                                                        <i class="fas fa-user-secret text-white text-sm"></i>
+                                                    {% else %}
+                                                        <span class="text-white font-bold text-sm">
+                                                            {{ donation.donor.first_name|first|default:donation.donor.username|first|upper }}
+                                                        </span>
+                                                    {% endif %}
+                                                </div>
+                                                <div>
+                                                    <div class="font-semibold text-cn-dark">
+                                                        {% if donation.is_anonymous %}
+                                                            Anonymous Supporter
+                                                        {% else %}
+                                                            {{ donation.donor.get_full_name|default:donation.donor.username }}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="text-xs text-cn-muted">{{ donation.created_at|timesince }} ago</div>
+                                                </div>
+                                            </div>
+                                            <div class="text-cn-green-600 font-bold text-lg">Rs {{ donation.amount|floatformat:0 }}</div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if case.donations.count > 5 %}
+                                    <div class="text-center mt-6">
+                                        <button class="bg-cn-green-100 hover:bg-cn-green-200 text-cn-green-700 px-6 py-3 rounded-2xl font-semibold transition-colors duration-200">
+                                            View All {{ case.donations.count }} Donations
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Enhanced Admin Actions -->
+                        {% if user == case.created_by or user.is_staff %}
+                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                                <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
+                                    <i class="fas fa-cog mr-3 text-cn-green-600"></i>
+                                    Manage Campaign
+                                </h3>
+                                <div class="space-y-3">
+                                    <a href="{% url 'cases:update' case.pk %}" class="block w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-2xl font-semibold text-center transition-all duration-200 transform hover:scale-105">
+                                        <i class="fas fa-edit mr-2"></i>
+                                        Edit Campaign
+                                    </a>
+                                    <a href="{% url 'cases:delete' case.pk %}" class="block w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-2xl font-semibold text-center transition-all duration-200 transform hover:scale-105">
+                                        <i class="fas fa-trash mr-2"></i>
+                                        Delete Campaign
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-
-                <!-- Recent Donations -->
-                {% if case.donations.exists %}
-                    <div class="card bg-white shadow-xl">
-                        <div class="card-body">
-                            <h3 class="card-title text-lg mb-4">Recent Donations</h3>
-                            <div class="space-y-3">
-                                {% for donation in case.donations.all|slice:":5" %}
-                                    <div class="flex justify-between items-center py-2 border-b border-slate-100 last:border-b-0">
-                                        <div>
-                                            <div class="font-medium">
-                                                {% if donation.is_anonymous %}
-                                                    Anonymous
-                                                {% else %}
-                                                    {{ donation.donor.get_full_name|default:donation.donor.username }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="text-xs text-slate-500">{{ donation.created_at|timesince }} ago</div>
-                                        </div>
-                                        <div class="text-green-600 font-semibold">Rs. {{ donation.amount|floatformat:0 }}</div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                            {% if case.donations.count > 5 %}
-                                <div class="text-center mt-4">
-                                    <button class="btn btn-sm btn-outline">View All Donations</button>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-
-                <!-- Admin Actions -->
-                {% if user == case.created_by or user.is_staff %}
-                    <div class="card bg-white shadow-xl">
-                        <div class="card-body">
-                            <h3 class="card-title text-lg mb-4">Manage Campaign</h3>
-                            <div class="space-y-2">
-                                <a href="{% url 'cases:update' case.pk %}" class="btn btn-outline btn-sm w-full">
-                                    Edit Campaign
-                                </a>
-                                <a href="{% url 'cases:delete' case.pk %}" class="btn btn-error btn-outline btn-sm w-full">
-                                    Delete Campaign
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
 
 {% block extra_js %}
+<!-- Enhanced JavaScript with Animations -->
 <script>
-    // Donation amount selection
-    document.querySelectorAll('.donation-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const amount = this.dataset.amount;
-            document.getElementById('custom-amount').value = amount;
+// Enhanced Image Modal with Animation
+function openImageModal(imageSrc, imageAlt) {
+    let modal = document.getElementById('imageModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'imageModal';
+        modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-all duration-300';
+        modal.innerHTML = `
+            <div class="max-w-5xl max-h-full p-6 transform scale-95 transition-transform duration-300" id="modalContent">
+                <div class="relative bg-white rounded-3xl overflow-hidden shadow-2xl">
+                    <img id="modalImage" src="" alt="" class="max-w-full max-h-[80vh] object-contain w-full">
+                    <button onclick="closeImageModal()" class="absolute top-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-200 transform hover:scale-110">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+                        <p id="modalImageCaption" class="text-white font-semibold text-lg"></p>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    const modalImage = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalImageCaption');
+    const modalContent = document.getElementById('modalContent');
+    
+    modalImage.src = imageSrc;
+    modalImage.alt = imageAlt;
+    modalCaption.textContent = imageAlt;
+    
+    // Show modal with animation
+    modal.classList.remove('pointer-events-none');
+    requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modalContent.classList.remove('scale-95');
+    });
+    
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    const modalContent = document.getElementById('modalContent');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        modalContent.classList.add('scale-95');
+        setTimeout(() => {
+            modal.classList.add('pointer-events-none');
+        }, 300);
+        document.body.style.overflow = '';
+    }
+}
+
+// Enhanced modal interaction
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('imageModal');
+    if (modal && (e.target === modal || e.target.closest('#modalContent'))) {
+        if (e.target === modal) closeImageModal();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeImageModal();
+});
+
+// Enhanced Donation Functionality with Animations
+document.addEventListener('DOMContentLoaded', function() {
+    const donationButtons = document.querySelectorAll('.donation-btn');
+    const customAmountInput = document.getElementById('custom-amount');
+
+    // Enhanced button interactions
+    donationButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const amount = this.getAttribute('data-amount');
+            customAmountInput.value = amount;
             
-            // Update button states
-            document.querySelectorAll('.donation-btn').forEach(b => b.classList.remove('btn-success', 'text-white'));
-            this.classList.add('btn-success', 'text-white');
+            // Enhanced active state management
+            donationButtons.forEach(btn => {
+                btn.classList.remove('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
+                btn.classList.add('border-gray-200', 'bg-white', 'text-cn-dark');
+            });
+            
+            // Add enhanced active state
+            this.classList.remove('border-gray-200', 'bg-white', 'text-cn-dark');
+            this.classList.add('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
+            
+            // Add pulse animation
+            this.style.animation = 'pulse-once 0.3s ease-out';
+            setTimeout(() => this.style.animation = '', 300);
+        });
+
+        // Enhanced hover effects
+        button.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('border-cn-green-500')) {
+                this.style.transform = 'scale(1.02)';
+            }
+        });
+
+        button.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('border-cn-green-500')) {
+                this.style.transform = 'scale(1)';
+            }
         });
     });
 
-    // Handle donation
-    function handleDonation() {
-        const amount = document.getElementById('custom-amount').value;
-        if (!amount || amount < 50) {
-            alert('Please enter a minimum donation amount of Rs. 50');
-            return;
-        }
-        
-        // Redirect to donation page with amount
-        window.location.href = `/donations/create/?case={{ case.pk }}&amount=${amount}`;
-    }
-
-    // Social sharing functions
-    function shareOnFacebook() {
-        const url = encodeURIComponent(window.location.href);
-        const text = encodeURIComponent('{{ case.title }} - Help support this cause!');
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-    }
-
-    function shareOnTwitter() {
-        const url = encodeURIComponent(window.location.href);
-        const text = encodeURIComponent('{{ case.title }} - Help support this cause! #CharityNepal');
-        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
-    }
-
-    function copyLink() {
-        navigator.clipboard.writeText(window.location.href).then(() => {
-            alert('Link copied to clipboard!');
+    // Enhanced custom amount input
+    customAmountInput.addEventListener('input', function() {
+        donationButtons.forEach(btn => {
+            btn.classList.remove('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
+            btn.classList.add('border-gray-200', 'bg-white', 'text-cn-dark');
+            btn.style.transform = 'scale(1)';
         });
+    });
+
+    // Add floating animation to cards
+    const cards = document.querySelectorAll('.enhanced-card');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+
+// Enhanced donation handling
+function handleDonation() {
+    const customAmount = document.getElementById('custom-amount').value;
+    const amount = parseFloat(customAmount) || 0;
+    
+    if (!amount || amount < 50) {
+        showNotification('Please enter a valid amount (minimum Rs. 50)', 'error');
+        return;
     }
+    
+    // Enhanced notification and redirect
+    showNotification(`Processing donation of Rs. ${amount.toLocaleString()}...`, 'success');
+    
+    // Redirect to donation page with enhanced animation
+    setTimeout(() => {
+        window.location.href = `/donations/create/?case={{ case.pk }}&amount=${amount}`;
+    }, 1500);
+}
+
+// Enhanced notification system
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-2xl shadow-2xl transform translate-x-full transition-all duration-300 backdrop-blur-lg border ${
+        type === 'success' ? 'bg-green-500/90 text-white border-green-400' :
+        type === 'error' ? 'bg-red-500/90 text-white border-red-400' :
+        'bg-blue-500/90 text-white border-blue-400'
+    }`;
+    
+    notification.innerHTML = `
+        <div class="flex items-center space-x-3">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            <span class="font-semibold">${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-2 hover:text-white/70">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Show notification
+    requestAnimationFrame(() => {
+        notification.classList.remove('translate-x-full');
+    });
+    
+    // Auto remove
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+}
+
+// Enhanced Social Share Functions with notifications
+function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('{{ case.title }} - Help support this cause!');
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    showNotification('Sharing on Facebook...', 'info');
+}
+
+function shareOnTwitter() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('{{ case.title }} - Help support this cause! #CharityNepal');
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+    showNotification('Sharing on Twitter...', 'info');
+}
+
+function shareOnWhatsApp() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(`{{ case.title }} - Help support this cause! ${url}`);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+    showNotification('Sharing on WhatsApp...', 'info');
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        const button = event.target.closest('button');
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.classList.add('bg-green-500', 'scale-110');
+        showNotification('Link copied to clipboard!', 'success');
+        
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('bg-green-500', 'scale-110');
+        }, 2000);
+    }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = window.location.href;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showNotification('Link copied to clipboard!', 'success');
+    });
+}
+
+// Enhanced scroll animations
+function setupScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in-up');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.enhanced-card').forEach(card => {
+        observer.observe(card);
+    });
+}
+
+// Initialize scroll animations
+document.addEventListener('DOMContentLoaded', setupScrollAnimations);
 </script>
+
+<!-- Enhanced CSS Animations -->
+<style>
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse-once {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(-5px) rotate(-1deg); }
+}
+
+@keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.floating-element {
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-element:nth-child(2) {
+    animation-delay: -2s;
+}
+
+.floating-element:nth-child(3) {
+    animation-delay: -4s;
+}
+
+.enhanced-card {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.enhanced-card.animate-slide-up {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Enhanced progress bar animation */
+.progress-bar {
+    transition: width 2s ease-out;
+}
+
+/* Enhanced hover effects for interactive elements */
+.donation-btn {
+    transition: all 0.2s ease;
+}
+
+.donation-btn:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced glassmorphism effects */
+.backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Enhanced shadow effects */
+.shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #10b981, #059669);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #059669, #047857);
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 768px) {
+    .floating-element {
+        display: none;
+    }
+    
+    .enhanced-card {
+        margin: 1rem 0;
+    }
+}
+</style>
 {% endblock %}

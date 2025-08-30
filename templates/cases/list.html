@@ -3,201 +3,392 @@
 {% block title %}{{ title }} - CharityNepal{% endblock %}
 
 {% block content %}
-<section class="py-12 bg-slate-50 min-h-screen">
-    <div class="container mx-auto px-4">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-slate-800 mb-4">{{ title }}</h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                Discover meaningful campaigns that need your support. Every donation makes a difference in someone's life.
-            </p>
-        </div>
-
-        <!-- Filters -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
-            <form method="get" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <!-- Search -->
-                    <div class="md:col-span-2">
-                        <input type="text" name="search" value="{{ search_query }}" 
-                               placeholder="Search campaigns..." 
-                               class="input input-bordered w-full">
-                    </div>
-                    
-                    <!-- Category Filter -->
-                    <div>
-                        <select name="category" class="select select-bordered w-full">
-                            <option value="all" {% if current_category == 'all' %}selected{% endif %}>All Categories</option>
-                            {% for category_key, category_label in categories %}
-                                <option value="{{ category_key }}" {% if current_category == category_key %}selected{% endif %}>
-                                    {{ category_label }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    
-                    <!-- Search Button -->
-                    <div>
-                        <button type="submit" class="btn btn-success text-white w-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            Search
-                        </button>
-                    </div>
+    <!-- Hero Section -->
+    <section class="relative py-20 bg-gradient-to-br from-cn-green-50 via-white to-slate-50 overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="floating-shape w-64 h-64 top-10 -left-20" style="animation-delay: -1s;"></div>
+        <div class="floating-shape w-48 h-48 top-32 -right-16" style="animation-delay: -3s;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12 animate-fade-in">
+                <div class="inline-flex items-center bg-cn-green-100 text-cn-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                    <i class="fas fa-heart mr-2"></i>
+                    {{ cases.count|default:0 }} Active Campaigns
                 </div>
-            </form>
-        </div>
+                <h1 class="text-4xl md:text-5xl font-black text-cn-dark mb-6 leading-tight">
+                    {{ title }}
+                </h1>
+                <p class="text-xl text-cn-muted max-w-3xl mx-auto leading-relaxed">
+                    Discover meaningful campaigns that need your support. Every donation makes a difference in someone's life across Nepal.
+                </p>
+            </div>
 
-        <!-- Quick Filter Buttons -->
-        <div class="flex flex-wrap gap-2 mb-8 justify-center">
-            <a href="{% url 'cases:list' %}" class="btn {% if current_category == 'all' %}btn-success text-white{% else %}btn-outline{% endif %} btn-sm">
-                All Cases
-            </a>
-            {% for category_key, category_label in categories %}
-                <a href="{% url 'cases:list' %}?category={{ category_key }}" 
-                   class="btn {% if current_category == category_key %}btn-success text-white{% else %}btn-outline{% endif %} btn-sm">
-                    {{ category_label }}
-                </a>
-            {% endfor %}
-        </div>
-
-        <!-- Cases Grid -->
-        {% if cases %}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {% for case in cases %}
-                    <div class="card bg-white shadow-xl card-hover">
-                        {% if case.featured_image %}
-                            <figure>
-                                <img src="{{ case.featured_image.url }}" alt="{{ case.title }}" class="h-48 w-full object-cover">
-                            </figure>
-                        {% else %}
-                            <figure class="h-48 bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
-                                <div class="text-center text-slate-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                    <p class="text-sm">{{ case.get_category_display }}</p>
-                                </div>
-                            </figure>
-                        {% endif %}
+            <!-- Enhanced Filters -->
+            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 mb-12 enhanced-card relative" style="z-index: 1;">
+                <form method="get" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 relative">
+                        <!-- Search -->
+                        <div class="md:col-span-5">
+                            <div class="relative">
+                                <input type="text" name="search" value="{{ search_query }}" 
+                                       placeholder="Search campaigns, causes, locations..." 
+                                       class="w-full pl-12 pr-4 py-4 bg-white/50 border-2 border-gray-200 rounded-2xl focus:border-cn-green-500 focus:ring-0 transition-all duration-200 font-medium">
+                                <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-cn-muted"></i>
+                            </div>
+                        </div>
                         
-                        <div class="card-body">
-                            <h3 class="card-title text-lg line-clamp-2">{{ case.title }}</h3>
-                            <p class="text-slate-600 text-sm line-clamp-3 mb-4">{{ case.description|truncatewords:20 }}</p>
-                            
-                            <!-- Progress -->
-                            <div class="space-y-2 mb-4">
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-slate-500">Rs. {{ case.collected_amount|floatformat:0 }} raised</span>
-                                    <span class="text-slate-500">Rs. {{ case.target_amount|floatformat:0 }} goal</span>
-                                </div>
+                        <!-- Enhanced Category Filter -->
+                        <div class="md:col-span-4 relative z-50">
+                            <div class="category-dropdown-wrapper relative">
+                                <button type="button" id="category-dropdown-btn" class="w-full px-4 py-4 bg-white/50 border-2 border-gray-200 rounded-2xl focus:border-cn-green-500 transition-all duration-200 font-medium text-left flex items-center justify-between group hover:bg-white hover:border-cn-green-300 relative z-10">
+                                    <span class="flex items-center">
+                                        <span id="selected-category-icon" class="mr-3">
+                                            {% if current_category == 'medical' %}
+                                                <div class="w-6 h-6 bg-gradient-to-br from-red-400 to-red-600 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-heartbeat text-white text-sm"></i>
+                                                </div>
+                                            {% elif current_category == 'education' %}
+                                                <div class="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-graduation-cap text-white text-sm"></i>
+                                                </div>
+                                            {% elif current_category == 'emergency' %}
+                                                <div class="w-6 h-6 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-shield-alt text-white text-sm"></i>
+                                                </div>
+                                            {% elif current_category == 'animal' %}
+                                                <div class="w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-paw text-white text-sm"></i>
+                                                </div>
+                                            {% else %}
+                                                <div class="w-6 h-6 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-th-large text-white text-sm"></i>
+                                                </div>
+                                            {% endif %}
+                                        </span>
+                                        <span id="selected-category-text" class="text-cn-dark group-hover:text-cn-green-600 transition-colors">
+                                            {% if current_category == 'all' %}All Categories
+                                            {% elif current_category == 'medical' %}Medical
+                                            {% elif current_category == 'education' %}Education
+                                            {% elif current_category == 'emergency' %}Emergency
+                                            {% elif current_category == 'animal' %}Animal
+                                            {% else %}All Categories{% endif %}
+                                        </span>
+                                    </span>
+                                    <i class="fas fa-chevron-down text-cn-muted group-hover:text-cn-green-600 transition-all duration-200 transform" id="category-chevron"></i>
+                                </button>
                                 
-                                <div class="w-full bg-slate-200 rounded-full h-2">
-                                    <div class="progress-bar-custom h-2 rounded-full transition-all duration-300" 
-                                         style="width: {{ case.completion_percentage }}%"></div>
-                                </div>
+                                <!-- Hidden select for form submission -->
+                                <select name="category" id="category-select" class="hidden">
+                                    <option value="all" {% if current_category == 'all' %}selected{% endif %}>All Categories</option>
+                                    {% for category_key, category_label in categories %}
+                                        <option value="{{ category_key }}" {% if current_category == category_key %}selected{% endif %}>
+                                            {{ category_label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
                                 
-                                <div class="text-xs text-slate-500">
-                                    {{ case.completion_percentage }}% of goal reached
+                                <!-- Enhanced Custom Dropdown Menu -->
+                                <div id="category-dropdown-menu" class="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl opacity-0 invisible transform translate-y-2 transition-all duration-300 ease-out" style="z-index: 9999;">
+                                    <div class="max-h-80 overflow-y-auto py-2" style="scrollbar-width: thin; scrollbar-color: #10b981 #f1f5f9;" onwheel="event.stopPropagation();" onscroll="event.stopPropagation();">
+                                        <div class="category-option px-4 py-3 hover:bg-cn-green-50 cursor-pointer transition-all duration-200 flex items-center group border-b border-gray-100 last:border-b-0" data-value="all">
+                                            <div class="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-sm">
+                                                <i class="fas fa-th-large text-white text-sm"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-semibold text-gray-800 group-hover:text-cn-green-700 transition-colors">All Categories</div>
+                                                <div class="text-sm text-gray-600 group-hover:text-cn-green-600 transition-colors">Browse all campaigns</div>
+                                            </div>
+                                        </div>
+                                        
+                                        {% for category_key, category_label in categories %}
+                                            <div class="category-option px-4 py-3 hover:bg-cn-green-50 cursor-pointer transition-all duration-200 flex items-center group border-b border-gray-100 last:border-b-0" data-value="{{ category_key }}">
+                                                {% if category_key == 'medical' %}
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-sm">
+                                                        <i class="fas fa-heartbeat text-white text-sm"></i>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <div class="font-semibold text-gray-800 group-hover:text-cn-green-700 transition-colors">{{ category_label }}</div>
+                                                        <div class="text-sm text-gray-600 group-hover:text-cn-green-600 transition-colors">Healthcare & treatments</div>
+                                                    </div>
+                                                {% elif category_key == 'education' %}
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-sm">
+                                                        <i class="fas fa-graduation-cap text-white text-sm"></i>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <div class="font-semibold text-gray-800 group-hover:text-cn-green-700 transition-colors">{{ category_label }}</div>
+                                                        <div class="text-sm text-gray-600 group-hover:text-cn-green-600 transition-colors">Learning & development</div>
+                                                    </div>
+                                                {% elif category_key == 'emergency' %}
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-sm">
+                                                        <i class="fas fa-shield-alt text-white text-sm"></i>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <div class="font-semibold text-gray-800 group-hover:text-cn-green-700 transition-colors">{{ category_label }}</div>
+                                                        <div class="text-sm text-gray-600 group-hover:text-cn-green-600 transition-colors">Urgent relief & aid</div>
+                                                    </div>
+                                                {% elif category_key == 'animal' %}
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-green-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-sm">
+                                                        <i class="fas fa-paw text-white text-sm"></i>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <div class="font-semibold text-gray-800 group-hover:text-cn-green-700 transition-colors">{{ category_label }}</div>
+                                                        <div class="text-sm text-gray-600 group-hover:text-cn-green-600 transition-colors">Animal welfare & rescue</div>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-cn-green-500 to-cn-green-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-sm">
+                                                        <i class="fas fa-heart text-white text-sm"></i>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <div class="font-semibold text-gray-800 group-hover:text-cn-green-700 transition-colors">{{ category_label }}</div>
+                                                        <div class="text-sm text-gray-600 group-hover:text-cn-green-600 transition-colors">Community support</div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <!-- Meta Info -->
-                            <div class="flex items-center text-xs text-slate-500 mb-4">
-                                {% if case.location %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    {{ case.location }}
-                                {% endif %}
-                                
-                                {% if case.location and case.created_at %}
-                                    <span class="mx-2">•</span>
-                                {% endif %}
-                                
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                {{ case.created_at|timesince }} ago
-                            </div>
-                            
-                            <!-- Actions -->
-                            <div class="card-actions justify-between items-center">
-                                <div class="flex gap-2">
-                                    <div class="badge badge-success text-white">{{ case.get_category_display }}</div>
+                        </div>
+                        
+                        <!-- Search Button -->
+                        <div class="md:col-span-3">
+                            <button type="submit" class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <i class="fas fa-search mr-2"></i>
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Quick Filter Buttons -->
+            <div class="flex flex-wrap gap-3 mb-12 justify-center">
+                <a href="{% url 'cases:list' %}" class="group relative overflow-hidden {% if current_category == 'all' %}bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white shadow-lg{% else %}bg-white/80 text-cn-dark hover:bg-white{% endif %} px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 border border-gray-200 hover:border-cn-green-300">
+                    <span class="relative z-10">All Cases</span>
+                    {% if current_category != 'all' %}
+                        <div class="absolute inset-0 bg-gradient-to-r from-cn-green-600 to-cn-green-700 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    {% endif %}
+                </a>
+                {% for category_key, category_label in categories %}
+                    <a href="{% url 'cases:list' %}?category={{ category_key }}" 
+                       class="group relative overflow-hidden {% if current_category == category_key %}bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white shadow-lg{% else %}bg-white/80 text-cn-dark hover:bg-white{% endif %} px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 border border-gray-200 hover:border-cn-green-300">
+                        <span class="relative z-10">{{ category_label }}</span>
+                        {% if current_category != category_key %}
+                            <div class="absolute inset-0 bg-gradient-to-r from-cn-green-600 to-cn-green-700 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Cases Grid Section -->
+    <section class="py-16 bg-gradient-to-br from-white via-slate-50 to-cn-green-50/30 relative overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="floating-shape w-48 h-48 bottom-20 -left-10" style="animation-delay: -2s;"></div>
+        <div class="floating-shape w-32 h-32 top-40 -right-8" style="animation-delay: -4s;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            {% if cases %}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for case in cases %}
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group enhanced-card transform hover:scale-105">
+                            {% if case.featured_image %}
+                                <div class="relative h-56 overflow-hidden">
+                                    <img src="{{ case.featured_image.url }}" alt="{{ case.title }}" 
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                    <div class="absolute top-4 left-4">
+                                        {% if case.category == 'medical' %}
+                                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% elif case.category == 'education' %}
+                                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% elif case.category == 'emergency' %}
+                                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% elif case.category == 'animal' %}
+                                            <span class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% else %}
+                                            <span class="bg-gradient-to-r from-cn-green-500 to-cn-green-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% endif %}
+                                    </div>
                                     {% if case.urgency_flag == 'critical' %}
-                                        <div class="badge badge-error text-white">{{ case.get_urgency_flag_display }}</div>
+                                        <div class="absolute top-4 right-4">
+                                            <div class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse shadow-lg">
+                                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                                URGENT
+                                            </div>
+                                        </div>
                                     {% elif case.urgency_flag == 'high' %}
-                                        <div class="badge badge-warning text-white">{{ case.get_urgency_flag_display }}</div>
+                                        <div class="absolute top-4 right-4">
+                                            <div class="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                                <i class="fas fa-clock mr-1"></i>
+                                                HIGH
+                                            </div>
+                                        </div>
                                     {% endif %}
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                            {% else %}
+                                <div class="relative h-56 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                    <div class="text-center text-gray-400">
+                                        {% if case.category == 'medical' %}
+                                            <i class="fas fa-heartbeat text-6xl mb-4 text-red-300"></i>
+                                        {% elif case.category == 'education' %}
+                                            <i class="fas fa-graduation-cap text-6xl mb-4 text-blue-300"></i>
+                                        {% elif case.category == 'emergency' %}
+                                            <i class="fas fa-shield-alt text-6xl mb-4 text-orange-300"></i>
+                                        {% elif case.category == 'animal' %}
+                                            <i class="fas fa-paw text-6xl mb-4 text-green-300"></i>
+                                        {% else %}
+                                            <i class="fas fa-heart text-6xl mb-4 text-cn-green-300"></i>
+                                        {% endif %}
+                                        <p class="text-lg font-semibold">{{ case.get_category_display }}</p>
+                                    </div>
+                                    <div class="absolute top-4 left-4">
+                                        {% if case.category == 'medical' %}
+                                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% elif case.category == 'education' %}
+                                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% elif case.category == 'emergency' %}
+                                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% elif case.category == 'animal' %}
+                                            <span class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% else %}
+                                            <span class="bg-gradient-to-r from-cn-green-500 to-cn-green-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">{{ case.get_category_display }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-black text-cn-dark mb-3 group-hover:text-cn-green-600 transition-colors leading-tight">
+                                    {{ case.title|truncatechars:60 }}
+                                </h3>
+                                <p class="text-cn-muted mb-4 leading-relaxed line-clamp-3">
+                                    {{ case.description|truncatewords:20 }}
+                                </p>
+                                
+                                <!-- Enhanced Progress Bar -->
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span class="font-bold text-cn-green-600">Rs {{ case.collected_amount|floatformat:0 }} raised</span>
+                                        <span class="text-cn-muted">Rs {{ case.target_amount|floatformat:0 }} goal</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                        {% if case.category == 'medical' %}
+                                            <div class="bg-gradient-to-r from-red-400 to-red-600 h-3 rounded-full transition-all duration-700 shadow-inner" style="width: {{ case.completion_percentage }}%"></div>
+                                        {% elif case.category == 'education' %}
+                                            <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-3 rounded-full transition-all duration-700 shadow-inner" style="width: {{ case.completion_percentage }}%"></div>
+                                        {% elif case.category == 'emergency' %}
+                                            <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-3 rounded-full transition-all duration-700 shadow-inner" style="width: {{ case.completion_percentage }}%"></div>
+                                        {% elif case.category == 'animal' %}
+                                            <div class="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-700 shadow-inner" style="width: {{ case.completion_percentage }}%"></div>
+                                        {% else %}
+                                            <div class="bg-gradient-to-r from-cn-green-400 to-cn-green-600 h-3 rounded-full transition-all duration-700 shadow-inner" style="width: {{ case.completion_percentage }}%"></div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="text-xs text-cn-muted mt-2 flex items-center justify-between">
+                                        <span>{{ case.completion_percentage }}% funded</span>
+                                        {% if case.location %}
+                                            <div class="flex items-center">
+                                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                                {{ case.location|truncatechars:20 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 
-                                <div class="flex gap-2">
-                                    <a href="{% url 'cases:detail' case.pk %}" class="btn btn-sm btn-outline">
+                                <!-- Meta Info -->
+                                <div class="flex items-center text-xs text-cn-muted mb-6">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    {{ case.created_at|timesince }} ago
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-user mr-1"></i>
+                                    by {{ case.created_by.get_full_name|default:case.created_by.username }}
+                                </div>
+                                
+                                <!-- Enhanced Actions -->
+                                <div class="flex gap-3">
+                                    <a href="{% url 'cases:detail' case.pk %}" class="flex-1 bg-white border-2 border-gray-200 text-cn-dark py-3 px-4 rounded-2xl text-sm font-bold hover:border-cn-green-300 hover:bg-cn-green-50 transition-all duration-200 text-center">
                                         View Details
                                     </a>
-                                    <a href="{% url 'cases:detail' case.pk %}#donate" class="btn btn-sm btn-success text-white">
+                                    <a href="{% url 'cases:detail' case.pk %}#donate" class="flex-1 bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-3 px-4 rounded-2xl text-sm font-bold hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-center">
+                                        <i class="fas fa-heart mr-1"></i>
                                         Donate
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
+                    {% endfor %}
+                </div>
+                                </div>
 
-            <!-- Pagination -->
-            {% if is_paginated %}
-                <div class="flex justify-center mt-12">
-                    <div class="join">
-                        {% if page_obj.has_previous %}
-                            <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.previous_page_number }}" class="join-item btn">«</a>
+                <!-- Enhanced Pagination -->
+                {% if is_paginated %}
+                    <div class="flex justify-center mt-16">
+                        <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-2 enhanced-card">
+                            <div class="flex items-center space-x-2">
+                                {% if page_obj.has_previous %}
+                                    <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.previous_page_number }}" 
+                                       class="w-10 h-10 bg-white hover:bg-cn-green-50 rounded-xl flex items-center justify-center transition-all duration-200 text-cn-dark hover:text-cn-green-600 shadow-sm hover:shadow-md">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                {% endif %}
+                                
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <div class="w-10 h-10 bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white rounded-xl flex items-center justify-center font-bold shadow-lg">{{ num }}</div>
+                                    {% else %}
+                                        <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ num }}" 
+                                           class="w-10 h-10 bg-white hover:bg-cn-green-50 rounded-xl flex items-center justify-center transition-all duration-200 text-cn-dark hover:text-cn-green-600 shadow-sm hover:shadow-md font-semibold">{{ num }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if page_obj.has_next %}
+                                    <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.next_page_number }}" 
+                                       class="w-10 h-10 bg-white hover:bg-cn-green-50 rounded-xl flex items-center justify-center transition-all duration-200 text-cn-dark hover:text-cn-green-600 shadow-sm hover:shadow-md">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <!-- Enhanced No Cases Found -->
+                <div class="text-center py-20">
+                    <div class="relative inline-block mb-8">
+                        <div class="w-32 h-32 bg-gradient-to-br from-cn-green-100 to-cn-green-200 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                            <i class="fas fa-search text-4xl text-cn-green-600"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-times text-red-500 text-sm"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-black text-cn-dark mb-4">No campaigns found</h3>
+                    <p class="text-lg text-cn-muted mb-8 max-w-md mx-auto leading-relaxed">
+                        {% if search_query %}
+                            We couldn't find any campaigns matching "{{ search_query }}". Try adjusting your search terms or explore all campaigns.
+                        {% else %}
+                            No campaigns are currently available in this category. Be the first to create one and make a difference!
                         {% endif %}
-                        
-                        {% for num in page_obj.paginator.page_range %}
-                            {% if page_obj.number == num %}
-                                <span class="join-item btn btn-active">{{ num }}</span>
-                            {% else %}
-                                <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ num }}" class="join-item btn">{{ num }}</a>
-                            {% endif %}
-                        {% endfor %}
-                        
-                        {% if page_obj.has_next %}
-                            <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.next_page_number }}" class="join-item btn">»</a>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        {% if search_query %}
+                            <a href="{% url 'cases:list' %}" class="bg-white border-2 border-gray-200 text-cn-dark px-8 py-3 rounded-full font-semibold hover:border-cn-green-300 hover:bg-cn-green-50 transition-all duration-200 transform hover:scale-105">
+                                <i class="fas fa-list mr-2"></i>
+                                View All Campaigns
+                            </a>
                         {% endif %}
+                        <a href="{% url 'cases:create' %}" class="bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white px-8 py-3 rounded-full font-semibold hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-plus mr-2"></i>
+                            Start Your Campaign
+                        </a>
                     </div>
                 </div>
             {% endif %}
-
-        {% else %}
-            <!-- No Cases Found -->
-            <div class="text-center py-16">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-slate-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.441-1.043-5.966-2.709M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <h3 class="text-xl font-semibold text-slate-600 mb-2">No campaigns found</h3>
-                <p class="text-slate-500 mb-6">
-                    {% if search_query %}
-                        No campaigns match your search "{{ search_query }}". Try different keywords.
-                    {% else %}
-                        No campaigns available at the moment. Be the first to create one!
-                    {% endif %}
-                </p>
-                {% if not search_query %}
-                    <a href="{% url 'cases:create' %}" class="btn btn-success text-white">
-                        Start Your Campaign
-                    </a>
-                {% else %}
-                    <a href="{% url 'cases:list' %}" class="btn btn-outline">
-                        View All Campaigns
-                    </a>
-                {% endif %}
-            </div>
-        {% endif %}
-    </div>
-</section>
+        </div>
+    </section>
 {% endblock %}
 
 {% block extra_css %}
@@ -205,6 +396,7 @@
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
@@ -212,12 +404,329 @@
     .line-clamp-3 {
         display: -webkit-box;
         -webkit-line-clamp: 3;
+        line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
-    .progress-bar-custom {
-        background: linear-gradient(90deg, #22c55e 0%, #2563eb 100%);
+    /* Enhanced card hover effects */
+    .enhanced-card {
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Floating elements */
+    .floating-shape {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(22, 163, 74, 0.1), rgba(21, 128, 61, 0.2));
+        animation: float 8s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    /* Custom focus styles */
+    input:focus, select:focus, button:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+    }
+    
+    /* Page transition */
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Custom dropdown animations */
+    .category-dropdown-wrapper .opacity-0 {
+        pointer-events: none;
+    }
+    
+    .category-dropdown-wrapper .opacity-100 {
+        pointer-events: auto;
+    }
+    
+    /* Category option hover effects */
+    .category-option:hover {
+        transform: translateX(4px);
+    }
+    
+    /* Enhanced Dropdown Scrollbar Styling */
+    #category-dropdown-menu {
+        background: #ffffff !important;
+        border: 2px solid #d1d5db !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+        z-index: 99999 !important;
+        position: absolute !important;
+        overscroll-behavior: contain;
+    }
+    
+    /* Ensure proper scroll containment */
+    #category-dropdown-menu .max-h-80 {
+        overscroll-behavior: contain;
+        overscroll-behavior-y: contain;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    
+    /* Ensure parent container has proper stacking context */
+    .category-dropdown-wrapper {
+        position: relative;
+        z-index: 999;
+        overflow: visible;
+    }
+    
+    /* Ensure button is above other elements */
+    #category-dropdown-btn {
+        position: relative;
+        z-index: 1000;
+    }
+    
+    /* Enhanced scrollbar for dropdown */
+    #category-dropdown-menu .max-h-80::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    #category-dropdown-menu .max-h-80::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 4px;
+    }
+    
+    #category-dropdown-menu .max-h-80::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #10b981, #059669);
+        border-radius: 4px;
+        border: 1px solid #f1f5f9;
+    }
+    
+    #category-dropdown-menu .max-h-80::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, #059669, #047857);
+    }
+    
+    /* Better text contrast in dropdown */
+    .category-option .font-semibold {
+        color: #1f2937 !important;
+        font-weight: 600;
+    }
+    
+    .category-option:hover .font-semibold {
+        color: #065f46 !important;
+    }
+    
+    .category-option .text-sm {
+        color: #6b7280 !important;
+    }
+    
+    .category-option:hover .text-sm {
+        color: #047857 !important;
+    }
+    
+    /* Enhanced dropdown animations */
+    .category-dropdown-wrapper .opacity-0 {
+        pointer-events: none;
+    }
+    
+    .category-dropdown-wrapper .opacity-100 {
+        pointer-events: auto;
+    }
+    
+    /* Ensure dropdown content is clickable */
+    .category-option {
+        position: relative;
+        z-index: 99999;
+        background: white;
+    }
+    
+    /* Dropdown backdrop */
+    .dropdown-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9998;
+        background: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .dropdown-backdrop.active {
+        opacity: 1;
+        visibility: visible;
     }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Category Dropdown Functionality
+    const categoryBtn = document.getElementById('category-dropdown-btn');
+    const categoryMenu = document.getElementById('category-dropdown-menu');
+    const categorySelect = document.getElementById('category-select');
+    const categoryChevron = document.getElementById('category-chevron');
+    const categoryOptions = document.querySelectorAll('.category-option');
+    const selectedIcon = document.getElementById('selected-category-icon');
+    const selectedText = document.getElementById('selected-category-text');
+    
+    // Create backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'dropdown-backdrop';
+    document.body.appendChild(backdrop);
+    
+    // Category data mapping
+    const categoryData = {
+        'all': {
+            icon: '<div class="w-6 h-6 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center"><i class="fas fa-th-large text-white text-sm"></i></div>',
+            text: 'All Categories'
+        },
+        'medical': {
+            icon: '<div class="w-6 h-6 bg-gradient-to-br from-red-400 to-red-600 rounded-lg flex items-center justify-center"><i class="fas fa-heartbeat text-white text-sm"></i></div>',
+            text: 'Medical'
+        },
+        'education': {
+            icon: '<div class="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center"><i class="fas fa-graduation-cap text-white text-sm"></i></div>',
+            text: 'Education'
+        },
+        'emergency': {
+            icon: '<div class="w-6 h-6 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center"><i class="fas fa-shield-alt text-white text-sm"></i></div>',
+            text: 'Emergency'
+        },
+        'animal': {
+            icon: '<div class="w-6 h-6 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center"><i class="fas fa-paw text-white text-sm"></i></div>',
+            text: 'Animal'
+        }
+    };
+    
+    if (categoryBtn && categoryMenu) {
+        // Get the scrollable container
+        const scrollContainer = categoryMenu.querySelector('.max-h-80');
+        
+        // Prevent scroll events from bubbling to the page
+        if (scrollContainer) {
+            scrollContainer.addEventListener('wheel', function(e) {
+                e.stopPropagation();
+                
+                // Check if we're at the boundaries
+                const isAtTop = scrollContainer.scrollTop === 0;
+                const isAtBottom = scrollContainer.scrollTop >= (scrollContainer.scrollHeight - scrollContainer.clientHeight);
+                
+                // If scrolling up and at top, or scrolling down and at bottom, prevent default
+                if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
+                    // Allow this scroll to bubble to prevent jarring experience
+                } else {
+                    // This scroll should be handled by the dropdown only
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            scrollContainer.addEventListener('scroll', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Prevent touch scroll from bubbling on mobile
+            scrollContainer.addEventListener('touchmove', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        // Also prevent wheel events on the dropdown menu itself
+        categoryMenu.addEventListener('wheel', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Prevent any mouse events from bubbling
+        categoryMenu.addEventListener('mousedown', function(e) {
+            e.stopPropagation();
+        });
+        
+        categoryMenu.addEventListener('mouseup', function(e) {
+            e.stopPropagation();
+        });
+        
+        // Toggle dropdown
+        categoryBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleCategoryDropdown();
+        });
+        
+        // Enhanced scroll position reset when opening
+        function resetDropdownScroll() {
+            const scrollContainer = categoryMenu.querySelector('.max-h-80');
+            if (scrollContainer) {
+                scrollContainer.scrollTop = 0;
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        backdrop.addEventListener('click', function() {
+            hideCategoryDropdown();
+        });
+        
+        // Close dropdown on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideCategoryDropdown();
+            }
+        });
+        
+        // Handle category selection
+        categoryOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const data = categoryData[value];
+                
+                // Update hidden select
+                categorySelect.value = value;
+                
+                // Update display
+                if (data) {
+                    selectedIcon.innerHTML = data.icon;
+                    selectedText.textContent = data.text;
+                }
+                
+                // Close dropdown
+                hideCategoryDropdown();
+            });
+        });
+    }
+    
+    function toggleCategoryDropdown() {
+        const isVisible = !categoryMenu.classList.contains('opacity-0');
+        
+        if (isVisible) {
+            hideCategoryDropdown();
+        } else {
+            showCategoryDropdown();
+        }
+    }
+    
+    function showCategoryDropdown() {
+        // Reset scroll position to top for better UX
+        resetDropdownScroll();
+        
+        categoryMenu.classList.remove('opacity-0', 'invisible', 'translate-y-2');
+        categoryMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
+        categoryChevron.classList.add('rotate-180');
+        backdrop.classList.add('active');
+    }
+    
+    function hideCategoryDropdown() {
+        categoryMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        categoryMenu.classList.add('opacity-0', 'invisible', 'translate-y-2');
+        categoryChevron.classList.remove('rotate-180');
+        backdrop.classList.remove('active');
+    }
+});
+</script>
 {% endblock %}

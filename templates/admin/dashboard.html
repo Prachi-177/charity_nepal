@@ -7,36 +7,114 @@
     {{ block.super }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        .dashboard-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
-            margin-bottom: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid #f0f0f0;
+        /* CharityNepal Color Palette */
+        :root {
+            --cn-green-50: #f0fdf4;
+            --cn-green-100: #dcfce7;
+            --cn-green-200: #bbf7d0;
+            --cn-green-300: #86efac;
+            --cn-green-400: #4ade80;
+            --cn-green-500: #22c55e;
+            --cn-green-600: #16a34a;
+            --cn-green-700: #15803d;
+            --cn-green-800: #166534;
+            --cn-green-900: #14532d;
+            --cn-dark: #1e293b;
+            --cn-muted: #64748b;
         }
-        .dashboard-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        
+        body {
+            font-family: 'Inter', sans-serif !important;
+            background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%) !important;
+            min-height: 100vh;
         }
+        
+        /* Floating Background Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.9; }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating-shape {
+            position: fixed;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(5, 150, 105, 0.03));
+            border-radius: 50%;
+            animation: float 12s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        /* Background decorative elements */
+        .floating-shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -150px;
+            animation-delay: -2s;
+        }
+        
+        .floating-shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 20%;
+            right: -100px;
+            animation-delay: -4s;
+        }
+        
+        .floating-shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: -125px;
+            left: 30%;
+            animation-delay: -6s;
+        }
+        
+        /* Container Styles */
+        .container-fluid {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header Styles */
+        h1, .h2 {
+            font-weight: 800 !important;
+            color: var(--cn-dark) !important;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Enhanced Stat Cards */
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            padding: 32px;
             text-align: left;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
+            box-shadow: 0 10px 40px rgba(34, 197, 94, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            margin-bottom: 24px;
+            animation: slideUp 0.6s ease-out;
         }
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-        }
+        
         .stat-card::before {
             content: '';
             position: absolute;
@@ -44,169 +122,387 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
-            pointer-events: none;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(34, 197, 94, 0.25);
+        }
+        
+        .stat-card.primary {
+            border-left: 4px solid var(--cn-green-600);
+        }
+        
+        .stat-card.success {
+            border-left: 4px solid #22c55e;
+        }
+        
+        .stat-card.warning {
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .stat-card.info {
+            border-left: 4px solid #3b82f6;
+        }
+        
         .stat-card h3 {
-            font-size: 2.2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: var(--cn-dark);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
+        
         .stat-card p {
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            opacity: 0.9;
-        }
-        .stat-card small {
-            font-size: 0.85rem;
-            opacity: 0.8;
-        }
-        .stat-card.green {
-            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
-            box-shadow: 0 8px 20px rgba(86, 171, 47, 0.3);
-        }
-        .stat-card.green:hover {
-            box-shadow: 0 15px 35px rgba(86, 171, 47, 0.4);
-        }
-        .stat-card.orange {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
-        }
-        .stat-card.orange:hover {
-            box-shadow: 0 15px 35px rgba(240, 147, 251, 0.4);
-        }
-        .stat-card.purple {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: #333;
-            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
-        }
-        .stat-card.purple:hover {
-            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
-        }
-        
-        /* Enhanced dashboard card styles */
-        .dashboard-card h4, .dashboard-card h5 {
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
+            color: var(--cn-dark);
         }
-        .dashboard-card .text-muted {
+        
+        .stat-card small {
             font-size: 0.9rem;
-        }
-        .dashboard-card .text-secondary {
-            font-size: 0.8rem;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .stat-card {
-                margin-bottom: 1rem;
-                padding: 20px;
-            }
-            .stat-card h3 {
-                font-size: 1.8rem;
-            }
-            .dashboard-card {
-                padding: 15px;
-                margin-bottom: 1rem;
-            }
+            color: var(--cn-muted);
+            font-weight: 500;
         }
         
-        /* Grid spacing improvements */
-        .row {
-            margin-left: -10px;
-            margin-right: -10px;
+        .stat-card .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--cn-green-500), var(--cn-green-600));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
         }
-        .row > [class*="col-"] {
-            padding-left: 10px;
-            padding-right: 10px;
+        
+        .stat-card .stat-icon i {
+            color: white;
+            font-size: 1.5rem;
         }
+        
+        /* Enhanced Dashboard Cards */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            margin-bottom: 32px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-card h4, .dashboard-card h5 {
+            font-weight: 700;
+            color: var(--cn-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .dashboard-card h4::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--cn-green-500), var(--cn-green-600));
+            border-radius: 2px;
+            margin-right: 12px;
+        }
+        
+        /* Performance Cards */
+        .performance-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .performance-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cn-green-500), var(--cn-green-400));
+        }
+        
+        .performance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(34, 197, 94, 0.15);
+        }
+        
+        .performance-card h4, .performance-card h5 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--cn-green-600);
+        }
+        
+        .performance-card p {
+            font-weight: 600;
+            color: var(--cn-dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .performance-card small {
+            color: var(--cn-muted);
+            font-weight: 500;
+        }
+        
+        /* Button Styles */
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+            border: none;
+            text-transform: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-500));
+            color: white;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+            background: linear-gradient(135deg, var(--cn-green-700), var(--cn-green-600));
+        }
+        
+        .btn-outline-secondary {
+            border: 2px solid #e2e8f0;
+            color: var(--cn-muted);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .btn-outline-secondary:hover {
+            background: var(--cn-green-600);
+            border-color: var(--cn-green-600);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Chart Container */
         .chart-container {
             position: relative;
             height: 400px;
             width: 100%;
+            background: rgba(248, 250, 252, 0.5);
+            border-radius: 16px;
+            padding: 16px;
         }
-        .progress-ring {
-            transform: rotate(-90deg);
+        
+        /* List Styles */
+        .list-group-item {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px !important;
+            margin-bottom: 8px;
+            padding: 16px;
+            transition: all 0.3s ease;
         }
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.35s;
-            transform-origin: 50% 50%;
+        
+        .list-group-item:hover {
+            background: rgba(34, 197, 94, 0.05);
+            transform: translateX(4px);
+        }
+        
+        .badge {
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 8px 16px;
+        }
+        
+        .badge.bg-success {
+            background: linear-gradient(135deg, var(--cn-green-500), var(--cn-green-600)) !important;
+        }
+        
+        .badge.bg-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+        }
+        
+        /* Animation delays for staggered entrance */
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .dashboard-card:nth-child(1) { animation-delay: 0.2s; }
+        .dashboard-card:nth-child(2) { animation-delay: 0.4s; }
+        .dashboard-card:nth-child(3) { animation-delay: 0.6s; }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stat-card, .dashboard-card, .performance-card {
+                padding: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .stat-card h3 {
+                font-size: 2rem;
+            }
+            
+            .floating-shape {
+                display: none;
+            }
+            
+            .container-fluid {
+                padding: 16px;
+            }
+        }
+        
+        /* Header Enhancement */
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dashboard-header h1 {
+            display: flex;
+            align-items: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-header h1::before {
+            content: '🏔️';
+            margin-right: 16px;
+            font-size: 2rem;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(248, 250, 252, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--cn-green-500), var(--cn-green-600));
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
         }
     </style>
 {% endblock %}
 
 {% block content %}
+<!-- Background decorative elements -->
+<div class="floating-shape"></div>
+<div class="floating-shape"></div>
+<div class="floating-shape"></div>
+
 <div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="h2">📊 CharityNepal Dashboard</h1>
-            <p class="text-muted">Real-time analytics and insights for charity operations</p>
-            <div class="mt-3">
-                <a href="/admin/ml-analytics/" class="btn btn-primary">🤖 ML Analytics Dashboard</a>
-                <a href="/admin/" class="btn btn-outline-secondary">← Back to Admin</a>
-            </div>
+    <!-- Enhanced Header -->
+    <div class="dashboard-header">
+        <h1>CharityNepal <span class="gradient-text">Dashboard</span></h1>
+        <p class="text-muted mb-4" style="font-size: 1.1rem; font-weight: 500;">Real-time analytics and insights for charity operations across Nepal</p>
+        <div class="d-flex flex-wrap gap-3">
+            <a href="/admin/ml-analytics/" class="btn btn-primary">
+                <i class="fas fa-robot me-2"></i>
+                ML Analytics Dashboard
+            </a>
+            <a href="/admin/" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Back to Admin
+            </a>
         </div>
     </div>
 
     <!-- Key Statistics Grid -->
-    <div class="row mb-4">
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="stat-card">
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card primary">
                 <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h3 class="mb-0">{{ total_cases }}</h3>
-                        <p class="mb-0">Total Cases</p>
-                        <small class="opacity-75">📋 All submissions</small>
+                    <div class="stat-icon me-4">
+                        <i class="fas fa-clipboard-list"></i>
                     </div>
-                    <div class="ms-3">
-                        <i class="fas fa-clipboard-list fa-2x opacity-50"></i>
+                    <div class="flex-grow-1">
+                        <h3 class="mb-1">{{ total_cases }}</h3>
+                        <p class="mb-1">Total Cases</p>
+                        <small>📋 All submissions</small>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="stat-card green">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card success">
                 <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h3 class="mb-0">{{ approved_cases }}</h3>
-                        <p class="mb-0">Approved Cases</p>
-                        <small class="opacity-75">✅ Ready for donations</small>
+                    <div class="stat-icon me-4" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+                        <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="ms-3">
-                        <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                    <div class="flex-grow-1">
+                        <h3 class="mb-1">{{ approved_cases }}</h3>
+                        <p class="mb-1">Approved Cases</p>
+                        <small>✅ Ready for donations</small>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="stat-card orange">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card warning">
                 <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h3 class="mb-0">{{ total_donations }}</h3>
-                        <p class="mb-0">Total Donations</p>
-                        <small class="opacity-75">💝 Completed donations</small>
+                    <div class="stat-icon me-4" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <i class="fas fa-heart"></i>
                     </div>
-                    <div class="ms-3">
-                        <i class="fas fa-heart fa-2x opacity-50"></i>
+                    <div class="flex-grow-1">
+                        <h3 class="mb-1">{{ total_donations }}</h3>
+                        <p class="mb-1">Total Donations</p>
+                        <small>💝 Completed donations</small>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="stat-card purple">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card info">
                 <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h3 class="mb-0">NPR {{ total_raised|floatformat:0 }}</h3>
-                        <p class="mb-0">Total Raised</p>
-                        <small class="opacity-75">💰 All time donations</small>
+                    <div class="stat-icon me-4" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                        <i class="fas fa-coins"></i>
                     </div>
-                    <div class="ms-3">
-                        <i class="fas fa-coins fa-2x opacity-50"></i>
+                    <div class="flex-grow-1">
+                        <h3 class="mb-1">NPR {{ total_raised|floatformat:0 }}</h3>
+                        <p class="mb-1">Total Raised</p>
+                        <small>💰 All time donations</small>
                     </div>
                 </div>
             </div>
@@ -214,85 +510,85 @@
     </div>
 
     <!-- Recent Activity Grid -->
-    <div class="row mb-4">
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center">
-                <h4 class="text-primary">{{ total_users }}</h4>
-                <p class="text-muted mb-0">Total Users</p>
-                <small class="text-secondary">� Registered users</small>
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h4>{{ total_users }}</h4>
+                <p class="mb-1">Total Users</p>
+                <small>👥 Registered users</small>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center">
-                <h4 class="text-success">{{ recent_cases }}</h4>
-                <p class="text-muted mb-0">New Cases</p>
-                <small class="text-secondary">📅 Last 30 days</small>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h4 style="color: #22c55e;">{{ recent_cases }}</h4>
+                <p class="mb-1">New Cases</p>
+                <small>📅 Last 30 days</small>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center">
-                <h4 class="text-warning">{{ recent_donations }}</h4>
-                <p class="text-muted mb-0">New Donations</p>
-                <small class="text-secondary">🎯 Last 30 days</small>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h4 style="color: #f59e0b;">{{ recent_donations }}</h4>
+                <p class="mb-1">New Donations</p>
+                <small>🎯 Last 30 days</small>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center">
-                <h4 class="text-info">NPR {{ recent_raised|floatformat:0 }}</h4>
-                <p class="text-muted mb-0">Recently Raised</p>
-                <small class="text-secondary">💸 Last 30 days</small>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h4 style="color: #3b82f6;">NPR {{ recent_raised|floatformat:0 }}</h4>
+                <p class="mb-1">Recently Raised</p>
+                <small>💸 Last 30 days</small>
             </div>
         </div>
     </div>
 
     <!-- Performance Metrics Grid -->
-    <div class="row mb-4">
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center border-start border-primary border-4">
-                <h5 class="text-primary">{{ approval_rate }}%</h5>
-                <p class="text-muted mb-0">Approval Rate</p>
-                <small class="text-secondary">✨ Case approval ratio</small>
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h5 style="color: var(--cn-green-600);">{{ approval_rate }}%</h5>
+                <p class="mb-1">Approval Rate</p>
+                <small>✨ Case approval ratio</small>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center border-start border-success border-4">
-                <h5 class="text-success">{{ top_donors|length }}</h5>
-                <p class="text-muted mb-0">Top Donors</p>
-                <small class="text-secondary">🌟 Regular contributors</small>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h5 style="color: #22c55e;">{{ top_donors|length }}</h5>
+                <p class="mb-1">Top Donors</p>
+                <small>🌟 Regular contributors</small>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center border-start border-warning border-4">
-                <h5 class="text-warning">{{ category_stats|length }}</h5>
-                <p class="text-muted mb-0">Active Categories</p>
-                <small class="text-secondary">🏷️ Case categories</small>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h5 style="color: #f59e0b;">{{ category_stats|length }}</h5>
+                <p class="mb-1">Active Categories</p>
+                <small>🏷️ Case categories</small>
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="dashboard-card text-center border-start border-info border-4">
-                <h5 class="text-info">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="performance-card">
+                <h5 style="color: #3b82f6;">
                     {% if avg_donation_by_category %}
                         NPR {{ avg_donation_by_category.0.avg_amount|floatformat:0 }}
                     {% else %}
                         NPR 0
                     {% endif %}
                 </h5>
-                <p class="text-muted mb-0">Avg Donation</p>
-                <small class="text-secondary">📊 Per donation average</small>
+                <p class="mb-1">Avg Donation</p>
+                <small>📊 Per donation average</small>
             </div>
         </div>
     </div>
 
     <!-- Charts Row -->
-    <div class="row mb-4">
+    <div class="row mb-5">
         <!-- Monthly Trends -->
-        <div class="col-md-8">
+        <div class="col-md-8 mb-4">
             <div class="dashboard-card">
                 <h4>📈 Monthly Trends</h4>
                 <div class="chart-container">
@@ -302,7 +598,7 @@
         </div>
 
         <!-- Category Distribution -->
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <div class="dashboard-card">
                 <h4>🏷️ Cases by Category</h4>
                 <div class="chart-container">
@@ -313,9 +609,9 @@
     </div>
 
     <!-- Analytics Row -->
-    <div class="row mb-4">
+    <div class="row mb-5">
         <!-- Success Rates -->
-        <div class="col-md-6">
+        <div class="col-md-6 mb-4">
             <div class="dashboard-card">
                 <h4>🎯 Success Rate by Category</h4>
                 <div class="chart-container">
@@ -325,7 +621,7 @@
         </div>
 
         <!-- Payment Methods -->
-        <div class="col-md-6">
+        <div class="col-md-6 mb-4">
             <div class="dashboard-card">
                 <h4>💳 Payment Method Distribution</h4>
                 <div class="chart-container">
@@ -336,9 +632,9 @@
     </div>
 
     <!-- Urgency and Top Performers -->
-    <div class="row mb-4">
+    <div class="row mb-5">
         <!-- Urgency Distribution -->
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <div class="dashboard-card">
                 <h4>🚨 Cases by Urgency</h4>
                 <div class="chart-container">
@@ -348,40 +644,46 @@
         </div>
 
         <!-- Top Cases -->
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <div class="dashboard-card">
                 <h4>🏆 Top Performing Cases</h4>
                 <div class="list-group list-group-flush" style="max-height: 350px; overflow-y: auto;">
                     {% for case in top_cases %}
                     <div class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div class="fw-bold">{{ case.title|truncatechars:40 }}</div>
+                            <div class="fw-bold text-dark">{{ case.title|truncatechars:40 }}</div>
                             <small class="text-muted">{{ case.category|title }}</small>
                         </div>
-                        <span class="badge bg-success rounded-pill">NPR {{ case.collected_amount|floatformat:0 }}</span>
+                        <span class="badge bg-success">NPR {{ case.collected_amount|floatformat:0 }}</span>
                     </div>
                     {% empty %}
-                    <p class="text-muted">No cases found</p>
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox text-muted fa-3x mb-3"></i>
+                        <p class="text-muted">No cases found</p>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
 
         <!-- Top Donors -->
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <div class="dashboard-card">
                 <h4>🤝 Top Donors</h4>
                 <div class="list-group list-group-flush" style="max-height: 350px; overflow-y: auto;">
                     {% for donor in top_donors %}
                     <div class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div class="fw-bold">{{ donor.donor__first_name }} {{ donor.donor__last_name }}</div>
+                            <div class="fw-bold text-dark">{{ donor.donor__first_name }} {{ donor.donor__last_name }}</div>
                             <small class="text-muted">{{ donor.donation_count }} donations</small>
                         </div>
-                        <span class="badge bg-primary rounded-pill">NPR {{ donor.total_donated|floatformat:0 }}</span>
+                        <span class="badge bg-primary">NPR {{ donor.total_donated|floatformat:0 }}</span>
                     </div>
                     {% empty %}
-                    <p class="text-muted">No donors found</p>
+                    <div class="text-center py-4">
+                        <i class="fas fa-users text-muted fa-3x mb-3"></i>
+                        <p class="text-muted">No donors found</p>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -389,7 +691,7 @@
     </div>
 
     <!-- Real-time Updates -->
-    <div class="row mb-4">
+    <div class="row mb-5">
         <div class="col-md-12">
             <div class="dashboard-card">
                 <h4>⚡ Real-time Activity (Last 30 Days)</h4>
@@ -402,13 +704,43 @@
 </div>
 
 <script>
-// Color schemes
+// CharityNepal Color Palette for Charts
 const colors = {
-    primary: '#667eea',
-    success: '#4facfe',
-    warning: '#fa709a',
-    info: '#a8edea',
-    secondary: '#764ba2'
+    primary: '#16a34a',
+    success: '#22c55e',
+    warning: '#f59e0b',
+    info: '#3b82f6',
+    secondary: '#64748b',
+    light: '#e2e8f0'
+};
+
+// Enhanced chart options
+const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            labels: {
+                usePointStyle: true,
+                padding: 20,
+                font: {
+                    family: 'Inter',
+                    size: 12,
+                    weight: '500'
+                }
+            }
+        }
+    },
+    elements: {
+        point: {
+            radius: 6,
+            hoverRadius: 8
+        },
+        line: {
+            borderWidth: 3,
+            tension: 0.4
+        }
+    }
 };
 
 // Monthly Trends Chart
@@ -423,6 +755,7 @@ new Chart(monthlyCtx, {
             data: monthlyData.map(d => d.cases),
             borderColor: colors.primary,
             backgroundColor: colors.primary + '20',
+            fill: true,
             tension: 0.4,
             yAxisID: 'y'
         }, {
@@ -430,18 +763,21 @@ new Chart(monthlyCtx, {
             data: monthlyData.map(d => d.donations_amount),
             borderColor: colors.success,
             backgroundColor: colors.success + '20',
+            fill: true,
             tension: 0.4,
             yAxisID: 'y1'
         }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...chartDefaults,
         scales: {
             y: {
                 type: 'linear',
                 display: true,
                 position: 'left',
+                grid: {
+                    color: '#f1f5f9'
+                }
             },
             y1: {
                 type: 'linear',
@@ -449,6 +785,7 @@ new Chart(monthlyCtx, {
                 position: 'right',
                 grid: {
                     drawOnChartArea: false,
+                    color: '#f1f5f9'
                 },
             }
         }
@@ -474,16 +811,29 @@ new Chart(categoryCtx, {
         datasets: [{
             data: categoryData.map(d => d.value),
             backgroundColor: [
-                '#667eea', '#4facfe', '#fa709a', '#fee140', '#a8edea', '#fed6e3', '#ff6b6b'
-            ]
+                colors.primary,
+                colors.success,
+                colors.warning,
+                colors.info,
+                '#a855f7',
+                '#ec4899',
+                '#ef4444'
+            ],
+            borderWidth: 3,
+            borderColor: '#ffffff'
         }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...chartDefaults,
+        cutout: '60%',
         plugins: {
+            ...chartDefaults.plugins,
             legend: {
-                position: 'bottom'
+                position: 'bottom',
+                labels: {
+                    ...chartDefaults.plugins.legend.labels,
+                    padding: 15
+                }
             }
         }
     }
@@ -510,16 +860,24 @@ new Chart(successCtx, {
             data: successData.map(d => d.completion),
             backgroundColor: colors.success + '80',
             borderColor: colors.success,
-            borderWidth: 1
+            borderWidth: 2,
+            borderRadius: 8
         }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...chartDefaults,
         scales: {
             y: {
                 beginAtZero: true,
-                max: 100
+                max: 100,
+                grid: {
+                    color: '#f1f5f9'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
             }
         }
     }
@@ -543,15 +901,21 @@ new Chart(paymentCtx, {
         labels: paymentData.map(d => d.method),
         datasets: [{
             data: paymentData.map(d => d.total),
-            backgroundColor: ['#667eea', '#4facfe', '#fa709a', '#fee140']
+            backgroundColor: [colors.primary, colors.success, colors.warning, colors.info],
+            borderWidth: 3,
+            borderColor: '#ffffff'
         }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...chartDefaults,
         plugins: {
+            ...chartDefaults.plugins,
             legend: {
-                position: 'bottom'
+                position: 'bottom',
+                labels: {
+                    ...chartDefaults.plugins.legend.labels,
+                    padding: 15
+                }
             }
         }
     }
@@ -574,15 +938,22 @@ new Chart(urgencyCtx, {
         labels: urgencyData.map(d => d.level),
         datasets: [{
             data: urgencyData.map(d => d.count),
-            backgroundColor: ['#4facfe', '#fee140', '#fa709a', '#ff6b6b']
+            backgroundColor: [colors.success, colors.warning, colors.info, '#ef4444'],
+            borderWidth: 3,
+            borderColor: '#ffffff'
         }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...chartDefaults,
+        cutout: '60%',
         plugins: {
+            ...chartDefaults.plugins,
             legend: {
-                position: 'bottom'
+                position: 'bottom',
+                labels: {
+                    ...chartDefaults.plugins.legend.labels,
+                    padding: 15
+                }
             }
         }
     }
@@ -602,26 +973,81 @@ fetch('/admin/dashboard/api/')
                     data: data.daily_data.map(d => d.cases),
                     borderColor: colors.primary,
                     backgroundColor: colors.primary + '20',
+                    fill: true,
                     tension: 0.4
                 }, {
                     label: 'Daily Donations',
                     data: data.daily_data.map(d => d.donations),
                     borderColor: colors.success,
                     backgroundColor: colors.success + '20',
+                    fill: true,
                     tension: 0.4
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                ...chartDefaults,
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        grid: {
+                            color: '#f1f5f9'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: '#f1f5f9'
+                        }
                     }
                 }
             }
         });
+    })
+    .catch(error => {
+        console.log('Real-time data not available:', error);
+        // Create a placeholder chart
+        const realTimeCtx = document.getElementById('realTimeChart').getContext('2d');
+        new Chart(realTimeCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Daily Cases',
+                    data: [12, 19, 3, 5, 2, 3, 9],
+                    borderColor: colors.primary,
+                    backgroundColor: colors.primary + '20',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Daily Donations',
+                    data: [5, 8, 12, 7, 15, 4, 11],
+                    borderColor: colors.success,
+                    backgroundColor: colors.success + '20',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: chartDefaults
+        });
     });
+
+// Add animation on scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.style.animation = 'slideUp 0.6s ease-out';
+        }
+    });
+}, observerOptions);
+
+// Observe all dashboard cards
+document.querySelectorAll('.dashboard-card, .stat-card, .performance-card').forEach((card) => {
+    observer.observe(card);
+});
 
 // Auto-refresh every 5 minutes
 setInterval(() => {
