@@ -7546,3 +7546,5 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'toggle_sidebar' not found. '
 Watching for file changes with StatReloader
 "GET /admin/?id=6d088f5f-484c-40d7-932b-5d6c3a9505f5&vscodeBrowserReqId=1756523033684 HTTP/1.1" 302 0
 "GET /admin/login/?next=/admin/%3Fid%3D6d088f5f-484c-40d7-932b-5d6c3a9505f5%26vscodeBrowserReqId%3D1756523033684 HTTP/1.1" 200 7483
+"GET /admin/dashboard/?id=6026ab45-07d6-4f3d-86f9-492e8a7f6bcf&vscodeBrowserReqId=1756523061074 HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/dashboard/%3Fid%3D6026ab45-07d6-4f3d-86f9-492e8a7f6bcf%26vscodeBrowserReqId%3D1756523061074 HTTP/1.1" 200 7493
