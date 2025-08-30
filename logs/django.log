@@ -7541,3 +7541,6 @@ Traceback (most recent call last):
     raise NoReverseMatch(msg)
 django.urls.exceptions.NoReverseMatch: Reverse for 'toggle_sidebar' not found. 'toggle_sidebar' is not a valid view function or pattern name.
 "GET /admin/ HTTP/1.1" 500 656359
+/Users/bibektimilsina/projects/charity_nepal/users/admin.py changed, reloading.
+/Users/bibektimilsina/projects/charity_nepal/cases/admin.py changed, reloading.
+Watching for file changes with StatReloader

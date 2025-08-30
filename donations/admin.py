@@ -6,6 +6,7 @@ from unfold.admin import ModelAdmin
 from unfold.decorators import display
 
 from charity_backend.admin import admin_site
+
 from .models import Donation
 
 
@@ -182,9 +183,7 @@ class DonationAdmin(ModelAdmin):
             color = "text-gray-800"
 
         return format_html(
-            '<div class="flex flex-col">'
-            '<span class="{}">NPR {}</span>'
-            "</div>",
+            '<div class="flex flex-col">' '<span class="{}">NPR {}</span>' "</div>",
             color,
             f"{obj.amount:,.0f}",
         )

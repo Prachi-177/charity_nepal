@@ -15,8 +15,8 @@ from recommendations.ml_analytics import (
     user_segmentation_analysis,
 )
 
-from .dashboard_views import DashboardView, case_analytics, dashboard_api
 from .admin import admin_site
+from .dashboard_views import DashboardView, case_analytics, dashboard_api
 
 # Admin site customization
 admin.site.site_header = "Charity Management System"
