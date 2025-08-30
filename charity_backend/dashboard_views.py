@@ -2,11 +2,12 @@ import json
 from datetime import datetime, timedelta
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Avg, Count, Q, Sum
+from django.db.models import Avg, Case, Count, F, FloatField, Q, Sum, When
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 
 from cases.models import CharityCase
@@ -29,6 +30,7 @@ class DashboardView(TemplateView):
         last_7_days = today - timedelta(days=7)
 
         # Basic Statistics
+        total_users = User.objects.count()
         total_cases = CharityCase.objects.count()
         approved_cases = CharityCase.objects.filter(
             verification_status="approved"
@@ -67,8 +69,19 @@ class DashboardView(TemplateView):
             CharityCase.objects.values("category")
             .annotate(
                 total=Count("id"),
-                completed=Count("id", filter=Q(completion_percentage__gte=100)),
-                avg_completion=Avg("completion_percentage"),
+                completed=Count(
+                    "id", filter=Q(collected_amount__gte=F("target_amount"))
+                ),
+                avg_completion=Avg(
+                    Case(
+                        When(
+                            target_amount__gt=0,
+                            then=F("collected_amount") * 100.0 / F("target_amount"),
+                        ),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
             )
             .order_by("-avg_completion")
         )
@@ -137,6 +150,7 @@ class DashboardView(TemplateView):
 
         context.update(
             {
+                "total_users": total_users,
                 "total_cases": total_cases,
                 "approved_cases": approved_cases,
                 "total_donations": total_donations,
@@ -279,3 +293,12 @@ def case_analytics(request, case_id):
 
     except CharityCase.DoesNotExist:
         return JsonResponse({"error": "Case not found"}, status=404)
+
+
+@require_POST
+@staff_member_required
+def toggle_sidebar(request):
+    """Simple toggle sidebar view to satisfy Django Unfold requirements"""
+    # This is just a dummy view to prevent the NoReverseMatch error
+    # In a real implementation, this might store sidebar state in session
+    return JsonResponse({"status": "success", "message": "Sidebar toggled"})

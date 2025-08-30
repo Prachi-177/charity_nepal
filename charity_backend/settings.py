@@ -40,7 +40,6 @@ ALLOWED_HOSTS = config(
 # Application definition
 
 DJANGO_APPS = [
-    "unfold",  # Django Unfold admin theme
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -249,36 +248,5 @@ LOGGING = {
             "level": "DEBUG",
             "propagate": True,
         },
-    },
-}
-
-
-# Django Unfold Admin Theme Configuration
-UNFOLD = {
-    "SITE_TITLE": "CharityNepal Admin",
-    "SITE_HEADER": "CharityNepal Administration",
-    "SITE_URL": "/",
-    "SITE_SYMBOL": "🇳🇵",  # Nepal flag emoji as symbol
-    "SHOW_HISTORY": True,
-    "SHOW_VIEW_ON_SITE": True,
-    "ENVIRONMENT": "CharityNepal.org",
-    "COLORS": {
-        "primary": {
-            "50": "rgb(240, 253, 244)",
-            "100": "rgb(220, 252, 231)",
-            "200": "rgb(187, 247, 208)",
-            "300": "rgb(134, 239, 172)",
-            "400": "rgb(74, 222, 128)",
-            "500": "rgb(34, 197, 94)",  # Primary green color
-            "600": "rgb(22, 163, 74)",
-            "700": "rgb(21, 128, 61)",
-            "800": "rgb(22, 101, 52)",
-            "900": "rgb(20, 83, 45)",
-            "950": "rgb(5, 46, 22)",
-        }
-    },
-    "SIDEBAR": {
-        "show_search": True,
-        "show_all_applications": True,
     },
 }

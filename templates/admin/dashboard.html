@@ -6,30 +6,121 @@
 {% block extrahead %}
     {{ block.super }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .dashboard-card {
             background: white;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
             margin-bottom: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #f0f0f0;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
         .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: left;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+        }
+        .stat-card h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-card p {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            opacity: 0.9;
+        }
+        .stat-card small {
+            font-size: 0.85rem;
+            opacity: 0.8;
         }
         .stat-card.green {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            box-shadow: 0 8px 20px rgba(86, 171, 47, 0.3);
+        }
+        .stat-card.green:hover {
+            box-shadow: 0 15px 35px rgba(86, 171, 47, 0.4);
         }
         .stat-card.orange {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+        }
+        .stat-card.orange:hover {
+            box-shadow: 0 15px 35px rgba(240, 147, 251, 0.4);
         }
         .stat-card.purple {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: #333;
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+        .stat-card.purple:hover {
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
+        }
+        
+        /* Enhanced dashboard card styles */
+        .dashboard-card h4, .dashboard-card h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .dashboard-card .text-muted {
+            font-size: 0.9rem;
+        }
+        .dashboard-card .text-secondary {
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .stat-card {
+                margin-bottom: 1rem;
+                padding: 20px;
+            }
+            .stat-card h3 {
+                font-size: 1.8rem;
+            }
+            .dashboard-card {
+                padding: 15px;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        /* Grid spacing improvements */
+        .row {
+            margin-left: -10px;
+            margin-right: -10px;
+        }
+        .row > [class*="col-"] {
+            padding-left: 10px;
+            padding-right: 10px;
         }
         .chart-container {
             position: relative;
@@ -59,34 +150,141 @@
         </div>
     </div>
 
-    <!-- Key Statistics Row -->
+    <!-- Key Statistics Grid -->
     <div class="row mb-4">
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-6 mb-3">
             <div class="stat-card">
-                <h3>{{ total_cases }}</h3>
-                <p>Total Cases</p>
-                <small>+{{ recent_cases }} this month</small>
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">{{ total_cases }}</h3>
+                        <p class="mb-0">Total Cases</p>
+                        <small class="opacity-75">📋 All submissions</small>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-clipboard-list fa-2x opacity-50"></i>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
+        
+        <div class="col-lg-3 col-md-6 mb-3">
             <div class="stat-card green">
-                <h3>NPR {{ total_raised|floatformat:0 }}</h3>
-                <p>Total Raised</p>
-                <small>+NPR {{ recent_raised|floatformat:0 }} this month</small>
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">{{ approved_cases }}</h3>
+                        <p class="mb-0">Approved Cases</p>
+                        <small class="opacity-75">✅ Ready for donations</small>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
+        
+        <div class="col-lg-3 col-md-6 mb-3">
             <div class="stat-card orange">
-                <h3>{{ total_donations }}</h3>
-                <p>Total Donations</p>
-                <small>+{{ recent_donations }} this month</small>
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">{{ total_donations }}</h3>
+                        <p class="mb-0">Total Donations</p>
+                        <small class="opacity-75">💝 Completed donations</small>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-heart fa-2x opacity-50"></i>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
+        
+        <div class="col-lg-3 col-md-6 mb-3">
             <div class="stat-card purple">
-                <h3>{{ approval_rate }}%</h3>
-                <p>Approval Rate</p>
-                <small>{{ approved_cases }} of {{ total_cases }}</small>
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">NPR {{ total_raised|floatformat:0 }}</h3>
+                        <p class="mb-0">Total Raised</p>
+                        <small class="opacity-75">💰 All time donations</small>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-coins fa-2x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Grid -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center">
+                <h4 class="text-primary">{{ total_users }}</h4>
+                <p class="text-muted mb-0">Total Users</p>
+                <small class="text-secondary">� Registered users</small>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center">
+                <h4 class="text-success">{{ recent_cases }}</h4>
+                <p class="text-muted mb-0">New Cases</p>
+                <small class="text-secondary">📅 Last 30 days</small>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center">
+                <h4 class="text-warning">{{ recent_donations }}</h4>
+                <p class="text-muted mb-0">New Donations</p>
+                <small class="text-secondary">🎯 Last 30 days</small>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center">
+                <h4 class="text-info">NPR {{ recent_raised|floatformat:0 }}</h4>
+                <p class="text-muted mb-0">Recently Raised</p>
+                <small class="text-secondary">💸 Last 30 days</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics Grid -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center border-start border-primary border-4">
+                <h5 class="text-primary">{{ approval_rate }}%</h5>
+                <p class="text-muted mb-0">Approval Rate</p>
+                <small class="text-secondary">✨ Case approval ratio</small>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center border-start border-success border-4">
+                <h5 class="text-success">{{ top_donors|length }}</h5>
+                <p class="text-muted mb-0">Top Donors</p>
+                <small class="text-secondary">🌟 Regular contributors</small>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center border-start border-warning border-4">
+                <h5 class="text-warning">{{ category_stats|length }}</h5>
+                <p class="text-muted mb-0">Active Categories</p>
+                <small class="text-secondary">🏷️ Case categories</small>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="dashboard-card text-center border-start border-info border-4">
+                <h5 class="text-info">
+                    {% if avg_donation_by_category %}
+                        NPR {{ avg_donation_by_category.0.avg_amount|floatformat:0 }}
+                    {% else %}
+                        NPR 0
+                    {% endif %}
+                </h5>
+                <p class="text-muted mb-0">Avg Donation</p>
+                <small class="text-secondary">📊 Per donation average</small>
             </div>
         </div>
     </div>

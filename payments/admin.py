@@ -1,501 +1,466 @@
 from django.contrib import admin
+from django.db.models import Count, Sum
 from django.utils.html import format_html
-from django.utils.safestring import mark_safe
-from unfold.admin import ModelAdmin
-from unfold.decorators import display
 
 from charity_backend.admin import admin_site
 
 from .models import PaymentGateway, PaymentIntent, PaymentWebhook, RefundRequest
 
 
-class PaymentGatewayAdmin(ModelAdmin):
+@admin.register(PaymentGateway, site=admin_site)
+class PaymentGatewayAdmin(admin.ModelAdmin):
     """Admin configuration for PaymentGateway model"""
 
-    # Unfold specific settings
-    compressed_fields = True
-    warn_unsaved_form = True
-
-    list_display = ("name_badge", "status_badge", "api_url", "created_at")
-    list_filter = ("name", "is_active", "created_at")
-    search_fields = ("name", "merchant_code", "api_url")
-    ordering = ("name",)
-    readonly_fields = ("created_at", "updated_at")
-
-    fieldsets = (
-        ("Gateway Information", {"fields": ("name", "is_active"), "classes": ("tab",)}),
-        (
-            "Configuration",
-            {
-                "fields": ("merchant_code", "secret_key", "public_key", "api_url"),
-                "classes": ("tab",),
-            },
-        ),
-        ("URLs", {"fields": ("success_url", "failure_url"), "classes": ("tab",)}),
-        ("Timestamps", {"fields": ("created_at", "updated_at"), "classes": ("tab",)}),
-    )
-
-    @display(description="Gateway", ordering="name")
-    def name_badge(self, obj):
-        """Display gateway name with icon"""
-        gateway_icons = {
-            "esewa": "💳",
-            "khalti": "📱",
-            "imepay": "🏦",
-        }
-
-        icon = gateway_icons.get(obj.name, "💰")
-
-        return format_html(
-            '<div class="flex items-center space-x-2">'
-            '<span class="text-lg">{}</span>'
-            '<span class="font-semibold">{}</span>'
-            "</div>",
-            icon,
-            obj.get_name_display(),
-        )
-
-    @display(description="Status", boolean=True, ordering="is_active")
-    def status_badge(self, obj):
-        """Display active status"""
-        if obj.is_active:
-            return format_html(
-                '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">'
-                "✅ Active"
-                "</span>"
-            )
-        return format_html(
-            '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">'
-            "❌ Inactive"
-            "</span>"
-        )
-
-
-class PaymentIntentAdmin(ModelAdmin):
-    """Admin configuration for PaymentIntent model"""
-
-    # Unfold specific settings
-    compressed_fields = True
-    list_select_related = True
-    warn_unsaved_form = True
-
     list_display = (
-        "intent_id",
-        "donation_info",
-        "gateway_name",
-        "amount_display",
+        "name_badge",
         "status_badge",
-        "expiry_status",
+        "merchant_code",
+        "api_url",
         "created_at",
     )
-    list_filter = (
-        "status",
-        "gateway__name",
-        ("created_at", admin.DateFieldListFilter),
-        ("expires_at", admin.DateFieldListFilter),
-    )
-    search_fields = ("id", "gateway_payment_id", "donation__payment_reference")
-    ordering = ("-created_at",)
-    readonly_fields = (
-        "id",
-        "created_at",
-        "processed_at",
-        "is_expired",
-        "is_successful",
-    )
+    list_filter = ("is_active", "name", "created_at")
+    search_fields = ("name", "merchant_code")
+    ordering = ("name",)
 
     fieldsets = (
-        (
-            "Payment Intent",
-            {
-                "fields": ("id", "donation", "gateway", "amount", "currency", "status"),
-                "classes": ("tab",),
-            },
-        ),
         (
             "Gateway Information",
-            {"fields": ("gateway_payment_id", "gateway_response"), "classes": ("tab",)},
+            {
+                "fields": ("name", "is_active"),
+            },
         ),
-        ("QR Code", {"fields": ("qr_code_data", "qr_code_image"), "classes": ("tab",)}),
-        ("URLs", {"fields": ("return_url", "cancel_url"), "classes": ("tab",)}),
+        (
+            "API Configuration",
+            {
+                "fields": ("merchant_code", "secret_key", "public_key", "api_url"),
+            },
+        ),
+        (
+            "URLs",
+            {
+                "fields": ("success_url", "failure_url"),
+                "classes": ("collapse",),
+            },
+        ),
         (
             "Timestamps",
             {
-                "fields": (
-                    "created_at",
-                    "expires_at",
-                    "processed_at",
-                    "is_expired",
-                    "is_successful",
-                ),
-                "classes": ("tab",),
+                "fields": ("created_at", "updated_at"),
+                "classes": ("collapse",),
+            },
+        ),
+    )
+
+    readonly_fields = ("created_at", "updated_at")
+
+    def name_badge(self, obj):
+        """Display gateway name with badge"""
+        colors = {
+            "esewa": "#60c951",
+            "khalti": "#5c2d91",
+            "imepay": "#007bff",
+        }
+        color = colors.get(obj.name, "#6c757d")
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">{}</span>',
+            color,
+            obj.get_name_display().upper(),
+        )
+
+    name_badge.short_description = "Gateway"
+
+    def status_badge(self, obj):
+        """Display active status with badge"""
+        if obj.is_active:
+            return format_html(
+                '<span style="background-color: #28a745; color: white; padding: 3px 8px; '
+                'border-radius: 12px; font-size: 11px; font-weight: bold;">✅ ACTIVE</span>'
+            )
+        else:
+            return format_html(
+                '<span style="background-color: #dc3545; color: white; padding: 3px 8px; '
+                'border-radius: 12px; font-size: 11px; font-weight: bold;">❌ INACTIVE</span>'
+            )
+
+    status_badge.short_description = "Status"
+
+
+@admin.register(PaymentIntent, site=admin_site)
+class PaymentIntentAdmin(admin.ModelAdmin):
+    """Admin configuration for PaymentIntent model"""
+
+    list_display = (
+        "intent_info",
+        "donation_link",
+        "gateway_badge",
+        "amount_display",
+        "status_badge",
+        "expires_at",
+        "created_at",
+    )
+    list_filter = ("status", "gateway", "created_at", "expires_at")
+    search_fields = ("id", "gateway_payment_id", "donation__id")
+    ordering = ("-created_at",)
+    list_per_page = 25
+
+    fieldsets = (
+        (
+            "Intent Information",
+            {
+                "fields": ("id", "donation", "gateway", "amount", "currency"),
+            },
+        ),
+        (
+            "Gateway Details",
+            {
+                "fields": ("gateway_payment_id", "gateway_response"),
+            },
+        ),
+        (
+            "QR Code",
+            {
+                "fields": ("qr_code_data", "qr_code_image"),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "URLs",
+            {
+                "fields": ("return_url", "cancel_url"),
+            },
+        ),
+        (
+            "Status & Timing",
+            {
+                "fields": ("status", "created_at", "expires_at", "processed_at"),
             },
         ),
         (
             "Metadata",
-            {"fields": ("client_ip", "user_agent"), "classes": ("tab", "collapse")},
+            {
+                "fields": ("client_ip", "user_agent"),
+                "classes": ("collapse",),
+            },
         ),
     )
 
-    @display(description="Intent ID", ordering="id")
-    def intent_id(self, obj):
-        """Display payment intent ID"""
-        return format_html(
-            '<span class="font-mono text-sm">{}</span>', str(obj.id)[:8] + "..."
-        )
+    readonly_fields = ("id", "created_at", "processed_at")
 
-    @display(description="Donation", ordering="donation__id")
-    def donation_info(self, obj):
-        """Display donation information"""
+    def intent_info(self, obj):
+        """Display intent ID and payment ID"""
         return format_html(
-            '<div class="flex flex-col">'
-            '<a href="/admin/donations/donation/{}/change/" class="text-blue-600 hover:text-blue-800 font-medium">#{}</a>'
-            '<span class="text-sm text-gray-500">{}</span>'
+            "<div>"
+            "<strong>{}</strong><br>"
+            '<small style="color: #6c757d;">Gateway: {}</small>'
             "</div>",
-            obj.donation.id,
-            obj.donation.id,
-            (
-                obj.donation.case.title[:30] + "..."
-                if len(obj.donation.case.title) > 30
-                else obj.donation.case.title
-            ),
+            str(obj.id)[:8] + "...",
+            obj.gateway_payment_id or "N/A",
         )
 
-    @display(description="Gateway", ordering="gateway__name")
-    def gateway_name(self, obj):
-        """Display gateway name"""
-        gateway_icons = {
-            "esewa": "💳",
-            "khalti": "📱",
-            "imepay": "🏦",
+    intent_info.short_description = "Intent"
+
+    def donation_link(self, obj):
+        """Display donation as link"""
+        return format_html(
+            '<a href="/admin/donations/donation/{}/change/" style="color: #007bff;">#{}</a>',
+            obj.donation.id,
+            obj.donation.id,
+        )
+
+    donation_link.short_description = "Donation"
+
+    def gateway_badge(self, obj):
+        """Display gateway with badge"""
+        colors = {
+            "esewa": "#60c951",
+            "khalti": "#5c2d91",
+            "imepay": "#007bff",
         }
-
-        icon = gateway_icons.get(obj.gateway.name, "💰")
-
+        color = colors.get(obj.gateway.name, "#6c757d")
         return format_html(
-            '<div class="flex items-center space-x-1">'
-            "<span>{}</span>"
-            '<span class="text-sm font-medium">{}</span>'
-            "</div>",
-            icon,
-            obj.gateway.get_name_display(),
+            '<span style="background-color: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">{}</span>',
+            color,
+            obj.gateway.get_name_display().upper(),
         )
 
-    @display(description="Amount", ordering="amount")
+    gateway_badge.short_description = "Gateway"
+
     def amount_display(self, obj):
         """Display amount with currency"""
-        return format_html('<span class="font-semibold">NPR {:,.0f}</span>', obj.amount)
-
-    @display(description="Status", ordering="status")
-    def status_badge(self, obj):
-        """Display status with colored badge"""
-        status_config = {
-            "created": {"color": "bg-blue-100 text-blue-800", "icon": "🆕"},
-            "processing": {"color": "bg-yellow-100 text-yellow-800", "icon": "⏳"},
-            "succeeded": {"color": "bg-green-100 text-green-800", "icon": "✅"},
-            "failed": {"color": "bg-red-100 text-red-800", "icon": "❌"},
-            "cancelled": {"color": "bg-gray-100 text-gray-800", "icon": "🚫"},
-        }
-
-        config = status_config.get(obj.status, status_config["created"])
-
         return format_html(
-            '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {}">'
-            '<span class="mr-1">{}</span>{}'
-            "</span>",
-            config["color"],
-            config["icon"],
-            obj.get_status_display(),
+            '<span style="font-weight: bold; color: #007bff;">{} {}</span>',
+            obj.currency,
+            f"{obj.amount:,.0f}",
         )
 
-    @display(description="Expiry", ordering="expires_at")
-    def expiry_status(self, obj):
-        """Display expiry status"""
-        from django.utils import timezone
+    amount_display.short_description = "Amount"
 
-        if obj.is_expired:
-            return format_html(
-                '<span class="text-red-600 font-semibold">Expired</span>'
-            )
+    def status_badge(self, obj):
+        """Display status with colored badge"""
+        colors = {
+            "created": "#6c757d",
+            "processing": "#ffc107",
+            "succeeded": "#28a745",
+            "failed": "#dc3545",
+            "cancelled": "#6c757d",
+        }
+        color = colors.get(obj.status, "#6c757d")
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">{}</span>',
+            color,
+            obj.get_status_display().upper(),
+        )
 
-        remaining = obj.expires_at - timezone.now()
-        hours = remaining.total_seconds() / 3600
-
-        if hours < 1:
-            return format_html(
-                '<span class="text-orange-600">{}min</span>',
-                int(remaining.total_seconds() / 60),
-            )
-        elif hours < 24:
-            return format_html('<span class="text-yellow-600">{:.1f}h</span>', hours)
-        else:
-            return format_html(
-                '<span class="text-green-600">{} days</span>', remaining.days
-            )
+    status_badge.short_description = "Status"
 
 
-class PaymentWebhookAdmin(ModelAdmin):
+@admin.register(PaymentWebhook, site=admin_site)
+class PaymentWebhookAdmin(admin.ModelAdmin):
     """Admin configuration for PaymentWebhook model"""
 
-    # Unfold specific settings
-    compressed_fields = True
-    list_select_related = True
-    warn_unsaved_form = True
-
     list_display = (
-        "webhook_id",
-        "gateway_name",
-        "event_badge",
-        "processing_status",
+        "webhook_info",
+        "gateway_badge",
+        "event_type_badge",
+        "processed_badge",
         "received_at",
     )
-    list_filter = ("event_type", "gateway__name", "processed", "received_at")
-    search_fields = ("webhook_id", "event_type", "payment_intent__id")
+    list_filter = ("processed", "event_type", "gateway", "received_at")
+    search_fields = ("webhook_id", "payment_intent__id")
     ordering = ("-received_at",)
-    readonly_fields = ("received_at", "processed_at")
+    list_per_page = 25
 
     fieldsets = (
         (
             "Webhook Information",
             {
-                "fields": ("gateway", "event_type", "webhook_id", "payment_intent"),
-                "classes": ("tab",),
+                "fields": ("webhook_id", "gateway", "event_type", "payment_intent"),
             },
         ),
         (
             "Processing",
-            {"fields": ("processed", "processing_error"), "classes": ("tab",)},
+            {
+                "fields": ("processed", "processing_error", "processed_at"),
+            },
         ),
-        ("Data", {"fields": ("raw_data",), "classes": ("tab",)}),
+        (
+            "Data",
+            {
+                "fields": ("raw_data",),
+                "classes": ("collapse",),
+            },
+        ),
         (
             "Timestamps",
-            {"fields": ("received_at", "processed_at"), "classes": ("tab",)},
+            {
+                "fields": ("received_at",),
+            },
         ),
     )
 
-    @display(description="Gateway", ordering="gateway__name")
-    def gateway_name(self, obj):
-        """Display gateway name"""
-        gateway_icons = {
-            "esewa": "💳",
-            "khalti": "📱",
-            "imepay": "🏦",
-        }
+    readonly_fields = ("received_at", "processed_at")
 
-        icon = gateway_icons.get(obj.gateway.name, "💰")
-
+    def webhook_info(self, obj):
+        """Display webhook ID"""
         return format_html(
-            '<div class="flex items-center space-x-1">'
-            "<span>{}</span>"
-            '<span class="text-sm font-medium">{}</span>'
+            "<div>"
+            "<strong>{}</strong><br>"
+            '<small style="color: #6c757d;">ID: {}</small>'
             "</div>",
-            icon,
-            obj.gateway.get_name_display(),
+            obj.webhook_id[:15] + "..." if len(obj.webhook_id) > 15 else obj.webhook_id,
+            obj.id,
         )
 
-    @display(description="Event", ordering="event_type")
-    def event_badge(self, obj):
-        """Display event type with badge"""
-        event_config = {
-            "payment.completed": {"color": "bg-green-100 text-green-800", "icon": "✅"},
-            "payment.failed": {"color": "bg-red-100 text-red-800", "icon": "❌"},
-            "payment.cancelled": {"color": "bg-gray-100 text-gray-800", "icon": "🚫"},
-            "refund.completed": {"color": "bg-purple-100 text-purple-800", "icon": "↩️"},
+    webhook_info.short_description = "Webhook"
+
+    def gateway_badge(self, obj):
+        """Display gateway with badge"""
+        colors = {
+            "esewa": "#60c951",
+            "khalti": "#5c2d91",
+            "imepay": "#007bff",
         }
-
-        config = event_config.get(
-            obj.event_type, {"color": "bg-blue-100 text-blue-800", "icon": "📡"}
-        )
-
+        color = colors.get(obj.gateway.name, "#6c757d")
         return format_html(
-            '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {}">'
-            '<span class="mr-1">{}</span>{}'
-            "</span>",
-            config["color"],
-            config["icon"],
-            obj.get_event_type_display(),
+            '<span style="background-color: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">{}</span>',
+            color,
+            obj.gateway.get_name_display().upper(),
         )
 
-    @display(description="Processing", boolean=True, ordering="processed")
-    def processing_status(self, obj):
-        """Display processing status"""
+    gateway_badge.short_description = "Gateway"
+
+    def event_type_badge(self, obj):
+        """Display event type with badge"""
+        colors = {
+            "payment.completed": "#28a745",
+            "payment.failed": "#dc3545",
+            "payment.cancelled": "#6c757d",
+            "refund.completed": "#ffc107",
+        }
+        color = colors.get(obj.event_type, "#007bff")
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">{}</span>',
+            color,
+            obj.get_event_type_display().upper(),
+        )
+
+    event_type_badge.short_description = "Event Type"
+
+    def processed_badge(self, obj):
+        """Display processed status"""
         if obj.processed:
             return format_html(
-                '<span class="inline-flex items-center text-green-600">'
-                "✅ Processed"
-                "</span>"
+                '<span style="background-color: #28a745; color: white; padding: 3px 8px; '
+                'border-radius: 12px; font-size: 11px; font-weight: bold;">✅ YES</span>'
             )
-        return format_html(
-            '<span class="inline-flex items-center text-yellow-600">'
-            "⏳ Pending"
-            "</span>"
-        )
+        else:
+            return format_html(
+                '<span style="background-color: #ffc107; color: white; padding: 3px 8px; '
+                'border-radius: 12px; font-size: 11px; font-weight: bold;">⏳ NO</span>'
+            )
+
+    processed_badge.short_description = "Processed"
 
 
-class RefundRequestAdmin(ModelAdmin):
+@admin.register(RefundRequest, site=admin_site)
+class RefundRequestAdmin(admin.ModelAdmin):
     """Admin configuration for RefundRequest model"""
 
-    # Unfold specific settings
-    compressed_fields = True
-    list_select_related = True
-    warn_unsaved_form = True
-
     list_display = (
-        "refund_id",
-        "donation_info",
+        "refund_info",
+        "donation_link",
         "amount_display",
         "reason_badge",
         "status_badge",
-        "requester_info",
         "requested_at",
     )
-    list_filter = (
-        "status",
-        "reason",
-        ("requested_at", admin.DateFieldListFilter),
-        "requested_by",
-        "approved_by",
-    )
-    search_fields = ("donation__payment_reference", "description", "gateway_refund_id")
+    list_filter = ("status", "reason", "requested_at")
+    search_fields = ("donation__id", "requested_by__email", "gateway_refund_id")
     ordering = ("-requested_at",)
-    readonly_fields = ("requested_at", "processed_at")
+    list_per_page = 25
+
+    actions = ["approve_refunds", "reject_refunds"]
 
     fieldsets = (
         (
             "Refund Information",
             {
-                "fields": ("donation", "amount", "reason", "description", "status"),
-                "classes": ("tab",),
+                "fields": ("donation", "amount", "reason", "description"),
             },
         ),
         (
             "Processing",
             {
-                "fields": (
-                    "requested_by",
-                    "approved_by",
-                    "gateway_refund_id",
-                    "gateway_response",
-                ),
-                "classes": ("tab",),
+                "fields": ("status", "requested_by", "approved_by"),
+            },
+        ),
+        (
+            "Gateway Response",
+            {
+                "fields": ("gateway_refund_id", "gateway_response"),
+                "classes": ("collapse",),
             },
         ),
         (
             "Timestamps",
-            {"fields": ("requested_at", "processed_at"), "classes": ("tab",)},
+            {
+                "fields": ("requested_at", "processed_at"),
+            },
         ),
     )
 
-    actions = ["approve_refunds", "reject_refunds", "mark_completed"]
+    readonly_fields = ("requested_at", "processed_at")
 
-    @display(description="Refund ID", ordering="id")
-    def refund_id(self, obj):
-        """Display refund ID"""
-        return format_html('<span class="font-mono text-sm">#{}</span>', obj.id)
-
-    @display(description="Donation", ordering="donation__id")
-    def donation_info(self, obj):
-        """Display donation information"""
+    def refund_info(self, obj):
+        """Display refund info"""
         return format_html(
-            '<div class="flex flex-col">'
-            '<a href="/admin/donations/donation/{}/change/" class="text-blue-600 hover:text-blue-800 font-medium">Donation #{}</a>'
-            '<span class="text-sm text-gray-500">{}</span>'
+            "<div>"
+            "<strong>Refund #{}</strong><br>"
+            '<small style="color: #6c757d;">Gateway: {}</small>'
             "</div>",
-            obj.donation.id,
-            obj.donation.id,
-            obj.donation.payment_reference,
+            obj.id,
+            obj.gateway_refund_id or "Pending",
         )
 
-    @display(description="Amount", ordering="amount")
+    refund_info.short_description = "Refund"
+
+    def donation_link(self, obj):
+        """Display donation as link"""
+        return format_html(
+            '<a href="/admin/donations/donation/{}/change/" style="color: #007bff;">#{}</a>',
+            obj.donation.id,
+            obj.donation.id,
+        )
+
+    donation_link.short_description = "Donation"
+
     def amount_display(self, obj):
         """Display refund amount"""
         return format_html(
-            '<span class="font-semibold text-red-600">NPR {:,.0f}</span>', obj.amount
+            '<span style="font-weight: bold; color: #dc3545;">NPR {}</span>',
+            f"{obj.amount:,.0f}",
         )
 
-    @display(description="Reason", ordering="reason")
+    amount_display.short_description = "Amount"
+
     def reason_badge(self, obj):
-        """Display refund reason"""
-        reason_colors = {
-            "duplicate_payment": "bg-yellow-100 text-yellow-800",
-            "case_cancelled": "bg-red-100 text-red-800",
-            "technical_error": "bg-orange-100 text-orange-800",
-            "user_request": "bg-blue-100 text-blue-800",
-            "other": "bg-gray-100 text-gray-800",
+        """Display reason with badge"""
+        colors = {
+            "duplicate_payment": "#ffc107",
+            "case_cancelled": "#dc3545",
+            "technical_error": "#17a2b8",
+            "user_request": "#6c757d",
+            "other": "#6c757d",
         }
-
-        color = reason_colors.get(obj.reason, "bg-gray-100 text-gray-800")
-
+        color = colors.get(obj.reason, "#6c757d")
         return format_html(
-            '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {}">'
-            "{}"
-            "</span>",
+            '<span style="background-color: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">{}</span>',
             color,
-            obj.get_reason_display(),
+            obj.get_reason_display().upper(),
         )
 
-    @display(description="Status", ordering="status")
+    reason_badge.short_description = "Reason"
+
     def status_badge(self, obj):
-        """Display status with colored badge"""
-        status_config = {
-            "requested": {"color": "bg-yellow-100 text-yellow-800", "icon": "📋"},
-            "approved": {"color": "bg-green-100 text-green-800", "icon": "✅"},
-            "rejected": {"color": "bg-red-100 text-red-800", "icon": "❌"},
-            "processing": {"color": "bg-blue-100 text-blue-800", "icon": "⏳"},
-            "completed": {"color": "bg-purple-100 text-purple-800", "icon": "✨"},
-            "failed": {"color": "bg-red-100 text-red-800", "icon": "💥"},
+        """Display status with badge"""
+        colors = {
+            "requested": "#ffc107",
+            "approved": "#28a745",
+            "rejected": "#dc3545",
+            "processing": "#17a2b8",
+            "completed": "#28a745",
+            "failed": "#dc3545",
         }
-
-        config = status_config.get(obj.status, status_config["requested"])
-
+        color = colors.get(obj.status, "#6c757d")
         return format_html(
-            '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {}">'
-            '<span class="mr-1">{}</span>{}'
-            "</span>",
-            config["color"],
-            config["icon"],
-            obj.get_status_display(),
+            '<span style="background-color: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: bold;">{}</span>',
+            color,
+            obj.get_status_display().upper(),
         )
 
-    @display(description="Requested By", ordering="requested_by__first_name")
-    def requester_info(self, obj):
-        """Display requester information"""
-        name = (
-            f"{obj.requested_by.first_name} {obj.requested_by.last_name}".strip()
-            or obj.requested_by.username
-        )
-        return format_html(
-            '<div class="flex items-center space-x-2">'
-            '<div class="w-6 h-6 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-xs font-semibold">'
-            "{}"
-            "</div>"
-            '<span class="text-sm font-medium">{}</span>'
-            "</div>",
-            name[0].upper(),
-            name,
-        )
+    status_badge.short_description = "Status"
 
-    # Admin actions
-    @admin.action(description="✅ Approve selected refunds")
     def approve_refunds(self, request, queryset):
-        updated = queryset.update(status="approved", approved_by=request.user)
+        """Approve selected refund requests"""
+        updated = queryset.filter(status="requested").update(
+            status="approved", approved_by=request.user
+        )
         self.message_user(request, f"✅ {updated} refund requests approved.")
 
-    @admin.action(description="❌ Reject selected refunds")
+    approve_refunds.short_description = "✅ Approve refunds"
+
     def reject_refunds(self, request, queryset):
-        updated = queryset.update(status="rejected", approved_by=request.user)
+        """Reject selected refund requests"""
+        updated = queryset.filter(status="requested").update(
+            status="rejected", approved_by=request.user
+        )
         self.message_user(request, f"❌ {updated} refund requests rejected.")
 
-    @admin.action(description="✨ Mark as completed")
-    def mark_completed(self, request, queryset):
-        from django.utils import timezone
-
-        updated = queryset.update(status="completed", processed_at=timezone.now())
-        self.message_user(request, f"✨ {updated} refunds marked as completed.")
-
-
-# Register with custom admin site
-admin_site.register(PaymentGateway, PaymentGatewayAdmin)
-admin_site.register(PaymentIntent, PaymentIntentAdmin)
-admin_site.register(PaymentWebhook, PaymentWebhookAdmin)
-admin_site.register(RefundRequest, RefundRequestAdmin)
+    reject_refunds.short_description = "❌ Reject refunds"

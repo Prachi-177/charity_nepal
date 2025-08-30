@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.db.models import Count, Sum
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.views.decorators.http import require_POST
 
 from cases.models import CharityCase
 from donations.models import Donation
@@ -85,6 +87,40 @@ class CharityNepalAdminSite(admin.AdminSite):
         )
 
         return super().index(request, extra_context)
+
+    def get_urls(self):
+        """Add custom URLs to the admin site"""
+        urls = super().get_urls()
+        custom_urls = [
+            path("toggle-sidebar/", self.toggle_sidebar_view, name="toggle_sidebar"),
+            path("search/", self.search_view, name="search"),
+        ]
+        return custom_urls + urls
+
+    @require_POST
+    def toggle_sidebar_view(self, request):
+        """Toggle sidebar view for Django Unfold compatibility"""
+        return JsonResponse({"status": "success", "message": "Sidebar toggled"})
+
+    def search_view(self, request):
+        """Search view for Django Unfold compatibility"""
+        query = request.GET.get("q", "")
+        # Simple search implementation - you can enhance this
+        results = []
+        if query:
+            # Search across models - simplified example
+            from django.apps import apps
+
+            for model in apps.get_models():
+                if hasattr(model, "_meta") and model._meta.app_label in [
+                    "users",
+                    "cases",
+                    "donations",
+                ]:
+                    # Add basic search logic here if needed
+                    pass
+
+        return JsonResponse({"results": results, "query": query, "status": "success"})
 
 
 def dashboard_callback(request, context):
