@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import display
 
+from charity_backend.admin import admin_site
 from .models import CaseUpdate, CharityCase
 
 
@@ -17,7 +18,6 @@ class CaseUpdateInline(TabularInline):
     readonly_fields = ("created_at",)
 
 
-@admin.register(CharityCase)
 class CharityCaseAdmin(ModelAdmin):
     """Admin configuration for CharityCase model with Unfold theme"""
 
@@ -361,7 +361,6 @@ class CharityCaseAdmin(ModelAdmin):
         self.message_user(request, f"🚨 {updated} cases marked as critical.")
 
 
-@admin.register(CaseUpdate)
 class CaseUpdateAdmin(ModelAdmin):
     """Admin configuration for CaseUpdate model with Unfold theme"""
 
@@ -433,3 +432,8 @@ class CaseUpdateAdmin(ModelAdmin):
             full_name[0].upper(),
             full_name,
         )
+
+
+# Register with custom admin site
+admin_site.register(CharityCase, CharityCaseAdmin)
+admin_site.register(CaseUpdate, CaseUpdateAdmin)

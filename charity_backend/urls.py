@@ -16,6 +16,7 @@ from recommendations.ml_analytics import (
 )
 
 from .dashboard_views import DashboardView, case_analytics, dashboard_api
+from .admin import admin_site
 
 # Admin site customization
 admin.site.site_header = "Charity Management System"
@@ -42,7 +43,7 @@ urlpatterns = [
         user_segmentation_analysis,
         name="admin_user_segmentation",
     ),
-    path("admin/", admin.site.urls),
+    path("admin/", admin_site.urls),
     path("", include("users.urls")),
     path("", include("cases.urls")),
     path("donations/", include("donations.urls")),

@@ -3,6 +3,7 @@ from django.utils.html import format_html
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 
+from charity_backend.admin import admin_site
 from .models import (
     AlgorithmPerformance,
     CaseFeatures, 

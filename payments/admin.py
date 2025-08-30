@@ -4,10 +4,10 @@ from django.utils.safestring import mark_safe
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 
+from charity_backend.admin import admin_site
 from .models import PaymentGateway, PaymentIntent, PaymentWebhook, RefundRequest
 
 
-@admin.register(PaymentGateway)
 class PaymentGatewayAdmin(ModelAdmin):
     """Admin configuration for PaymentGateway model"""
 
@@ -70,7 +70,6 @@ class PaymentGatewayAdmin(ModelAdmin):
         )
 
 
-@admin.register(PaymentIntent)
 class PaymentIntentAdmin(ModelAdmin):
     """Admin configuration for PaymentIntent model"""
 
@@ -234,7 +233,6 @@ class PaymentIntentAdmin(ModelAdmin):
             )
 
 
-@admin.register(PaymentWebhook)
 class PaymentWebhookAdmin(ModelAdmin):
     """Admin configuration for PaymentWebhook model"""
 
@@ -333,7 +331,6 @@ class PaymentWebhookAdmin(ModelAdmin):
         )
 
 
-@admin.register(RefundRequest)
 class RefundRequestAdmin(ModelAdmin):
     """Admin configuration for RefundRequest model"""
 
@@ -494,3 +491,10 @@ class RefundRequestAdmin(ModelAdmin):
 
         updated = queryset.update(status="completed", processed_at=timezone.now())
         self.message_user(request, f"✨ {updated} refunds marked as completed.")
+
+
+# Register with custom admin site
+admin_site.register(PaymentGateway, PaymentGatewayAdmin)
+admin_site.register(PaymentIntent, PaymentIntentAdmin)
+admin_site.register(PaymentWebhook, PaymentWebhookAdmin)
+admin_site.register(RefundRequest, RefundRequestAdmin)

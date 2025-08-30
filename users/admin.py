@@ -5,10 +5,10 @@ from django.utils.safestring import mark_safe
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 
+from charity_backend.admin import admin_site
 from .models import User
 
 
-@admin.register(User)
 class UserAdmin(BaseUserAdmin, ModelAdmin):
     """Admin configuration for custom User model with Unfold theme"""
 
@@ -209,3 +209,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
         self.message_user(request, f"{count} users changed to admins.")
 
     make_admins.short_description = "Change role to admin"
+
+
+# Register with custom admin site
+admin_site.register(User, UserAdmin)

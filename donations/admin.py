@@ -5,10 +5,10 @@ from django.utils.safestring import mark_safe
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 
+from charity_backend.admin import admin_site
 from .models import Donation
 
 
-@admin.register(Donation)
 class DonationAdmin(ModelAdmin):
     """Admin configuration for Donation model with Unfold theme"""
 
@@ -278,3 +278,7 @@ class DonationAdmin(ModelAdmin):
     def mark_refunded(self, request, queryset):
         updated = queryset.update(status="refunded")
         self.message_user(request, f"↩️ {updated} donations marked as refunded.")
+
+
+# Register with custom admin site
+admin_site.register(Donation, DonationAdmin)

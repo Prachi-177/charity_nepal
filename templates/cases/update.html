@@ -255,7 +255,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
+<script type="text/javascript">
     // Auto-resize textarea
     document.addEventListener('DOMContentLoaded', function() {
         const textarea = document.querySelector('textarea[name="description"]');
@@ -268,18 +268,18 @@
             // Trigger initial resize
             textarea.dispatchEvent(new Event('input'));
         }
-    });
 
-    // Form validation
-    document.querySelector('form').addEventListener('submit', function(e) {
-        const targetAmount = document.querySelector('input[name="target_amount"]').value;
-        const currentAmount = {{ case.collected_amount }};
-        
-        if (targetAmount && targetAmount < currentAmount) {
-            alert('Target amount cannot be less than the amount already collected (Rs. ' + currentAmount.toFixed(0) + ')');
-            e.preventDefault();
-            return false;
-        }
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const targetAmount = parseFloat(document.querySelector('input[name="target_amount"]').value);
+            const currentAmount = parseFloat('{{ case.collected_amount }}');
+            
+            if (!isNaN(targetAmount) && targetAmount < currentAmount) {
+                alert('Target amount cannot be less than the amount already collected (Rs. ' + currentAmount.toFixed(0) + ')');
+                e.preventDefault();
+                return false;
+            }
+        });
     });
 
     // Share function
