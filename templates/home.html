@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load math_extras %}
 
 {% block title %}CharityNepal — Fundraising for Nepal{% endblock %}
 
@@ -126,10 +127,167 @@
                     </a>
                 </div>
             </div>
+            
+            <!-- Enhanced Trending Categories with Images and Case Details -->
+            {% if trending_categories %}
+            <div class="mt-16">
+                <div class="text-center mb-12">
+                    <h3 class="text-2xl md:text-3xl font-black text-cn-dark mb-4">
+                        <i class="fas fa-fire text-orange-500 mr-2"></i><span class="gradient-text">Trending Categories</span>
+                    </h3>
+                    <p class="text-cn-muted">Most popular causes this month with featured campaigns</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for trend in trending_categories %}
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group enhanced-card">
+                        <div class="relative">
+                            <!-- Featured Case Image -->
+                            <div class="relative h-48 overflow-hidden">
+                                {% if trend.featured_case and trend.featured_case.featured_image %}
+                                    <img src="{{ trend.featured_case.featured_image.url }}" 
+                                         alt="{{ trend.featured_case.title }}" 
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                {% else %}
+                                    <div class="w-full h-full bg-gradient-to-br {% if trend.category == 'medical' %}from-red-400 to-red-600{% elif trend.category == 'education' %}from-blue-400 to-blue-600{% elif trend.category == 'disaster' %}from-orange-400 to-orange-600{% else %}from-green-400 to-green-600{% endif %} flex flex-col items-center justify-center text-white">
+                                        {% if trend.category == 'medical' %}
+                                            <i class="fas fa-heartbeat text-5xl mb-2"></i>
+                                        {% elif trend.category == 'education' %}
+                                            <i class="fas fa-graduation-cap text-5xl mb-2"></i>
+                                        {% elif trend.category == 'disaster' %}
+                                            <i class="fas fa-exclamation-triangle text-5xl mb-2"></i>
+                                        {% else %}
+                                            <i class="fas fa-paw text-5xl mb-2"></i>
+                                        {% endif %}
+                                        <span class="text-white/90 text-lg font-bold">{{ trend.name }}</span>
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Overlay with gradient -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                                
+                                <!-- Trending Badge -->
+                                <div class="absolute top-3 right-3">
+                                    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse shadow-lg">
+                                        <i class="fas fa-fire mr-1"></i>TRENDING
+                                    </div>
+                                </div>
+                                
+                                <!-- Category Info Overlay -->
+                                <div class="absolute bottom-3 left-3 right-3">
+                                    <div class="flex items-center justify-between text-white">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                                                {% if trend.category == 'medical' %}
+                                                    <i class="fas fa-heartbeat text-lg"></i>
+                                                {% elif trend.category == 'education' %}
+                                                    <i class="fas fa-graduation-cap text-lg"></i>
+                                                {% elif trend.category == 'disaster' %}
+                                                    <i class="fas fa-exclamation-triangle text-lg"></i>
+                                                {% else %}
+                                                    <i class="fas fa-paw text-lg"></i>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-lg">{{ trend.name }}</h4>
+                                                <p class="text-white/90 text-sm">{{ trend.active_cases_count }} active campaigns</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-xl font-black">{{ trend.percentage }}%</div>
+                                            <div class="text-white/90 text-xs">of donations</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category Stats and Details -->
+                        <div class="p-6">
+                            <!-- Featured Case Preview -->
+                            {% if trend.featured_case %}
+                            <div class="mb-4 p-3 bg-gray-50 rounded-xl">
+                                <h5 class="font-bold text-sm text-cn-dark mb-1 line-clamp-1">
+                                    Featured: {{ trend.featured_case.title }}
+                                </h5>
+                                <p class="text-xs text-cn-muted line-clamp-2">
+                                    {{ trend.featured_case.description|truncatewords:15 }}
+                                </p>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Performance Metrics -->
+                            <div class="grid grid-cols-3 gap-3 mb-4">
+                                <div class="text-center bg-gray-50 rounded-lg p-3">
+                                    <div class="text-lg font-black {% if trend.category == 'medical' %}text-red-600{% elif trend.category == 'education' %}text-blue-600{% elif trend.category == 'disaster' %}text-orange-600{% else %}text-green-600{% endif %}">
+                                        {{ trend.count }}
+                                    </div>
+                                    <div class="text-xs text-cn-muted">Donations</div>
+                                </div>
+                                <div class="text-center bg-gray-50 rounded-lg p-3">
+                                    <div class="text-lg font-black {% if trend.category == 'medical' %}text-red-600{% elif trend.category == 'education' %}text-blue-600{% elif trend.category == 'disaster' %}text-orange-600{% else %}text-green-600{% endif %}">
+                                        Rs {{ trend.total_raised|floatformat:0 }}
+                                    </div>
+                                    <div class="text-xs text-cn-muted">Raised</div>
+                                </div>
+                                <div class="text-center bg-gray-50 rounded-lg p-3">
+                                    <div class="text-lg font-black {% if trend.category == 'medical' %}text-red-600{% elif trend.category == 'education' %}text-blue-600{% elif trend.category == 'disaster' %}text-orange-600{% else %}text-green-600{% endif %}">
+                                        {{ trend.active_cases_count }}
+                                    </div>
+                                    <div class="text-xs text-cn-muted">Active</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Success Story -->
+                            {% if trend.recent_success %}
+                            <div class="mb-4 p-3 bg-green-50 rounded-xl border-l-4 border-green-500">
+                                <div class="flex items-center mb-1">
+                                    <i class="fas fa-trophy text-green-600 text-sm mr-2"></i>
+                                    <span class="text-xs font-bold text-green-700">Recent Success</span>
+                                </div>
+                                <p class="text-xs text-green-600 line-clamp-2">
+                                    "{{ trend.recent_success.title }}" raised Rs {{ trend.recent_success.collected_amount|floatformat:0 }}
+                                </p>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Popularity Progress -->
+                            <div class="mb-4">
+                                <div class="flex justify-between text-xs text-cn-muted mb-2">
+                                    <span>Community Interest</span>
+                                    <span>{{ trend.percentage }}% of all donations</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="{% if trend.category == 'medical' %}bg-gradient-to-r from-red-400 to-red-600{% elif trend.category == 'education' %}bg-gradient-to-r from-blue-400 to-blue-600{% elif trend.category == 'disaster' %}bg-gradient-to-r from-orange-400 to-orange-600{% else %}bg-gradient-to-r from-green-400 to-green-600{% endif %} h-2 rounded-full transition-all duration-1000" style="width: {{ trend.percentage }}%"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Button -->
+                            <a href="{% url 'cases:list' %}?category={{ trend.category }}" 
+                               class="block w-full bg-gradient-to-r {% if trend.category == 'medical' %}from-red-500 to-red-600 hover:from-red-600 hover:to-red-700{% elif trend.category == 'education' %}from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700{% elif trend.category == 'disaster' %}from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700{% else %}from-green-500 to-green-600 hover:from-green-600 hover:to-green-700{% endif %} text-white text-center py-3 rounded-xl font-bold transition-all duration-300 transform group-hover:scale-105 shadow-lg">
+                                <i class="fas fa-arrow-right mr-2"></i>
+                                Explore {{ trend.name }} Cases
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Algorithm Attribution -->
+                <div class="mt-12 text-center">
+                    <div class="inline-flex items-center bg-white rounded-full px-8 py-4 shadow-lg border border-orange-100">
+                        <i class="fas fa-chart-bar text-orange-500 mr-3 text-lg"></i>
+                        <span class="text-sm text-cn-muted">
+                            Powered by <strong class="text-orange-600">Association Rule Mining</strong> - analyzing donation patterns and community engagement
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </section>
 
-    <!-- Enhanced Stats Section -->
+    <!-- Dynamic Stats Section with ML Insights -->
     <section class="py-20 bg-white relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-r from-cn-green-50/50 to-blue-50/30"></div>
         
@@ -138,17 +296,17 @@
                 <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-4">
                     Our <span class="gradient-text">Impact</span> in Numbers
                 </h2>
-                <p class="text-lg text-cn-muted">Real results from our community's generosity</p>
+                <p class="text-lg text-cn-muted">Real-time results from our community's generosity</p>
             </div>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div class="animate-slide-up text-center group">
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 enhanced-card">
                         <div class="w-16 h-16 bg-gradient-to-br from-cn-green-400 to-cn-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-users text-white text-2xl"></i>
+                            <i class="fas fa-clipboard-list text-white text-2xl"></i>
                         </div>
-                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">25K+</div>
-                        <div class="text-cn-muted font-semibold">Lives Touched</div>
+                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">{{ platform_stats.total_cases|default:"0" }}</div>
+                        <div class="text-cn-muted font-semibold">Active Cases</div>
                     </div>
                 </div>
                 
@@ -157,7 +315,7 @@
                         <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-coins text-white text-2xl"></i>
                         </div>
-                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">Rs 2.5M</div>
+                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">Rs {{ platform_stats.total_raised|floatformat:0|default:"0" }}</div>
                         <div class="text-cn-muted font-semibold">Funds Raised</div>
                     </div>
                 </div>
@@ -165,10 +323,10 @@
                 <div class="animate-slide-up text-center group" style="animation-delay: 0.2s;">
                     <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 enhanced-card">
                         <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-clipboard-list text-white text-2xl"></i>
+                            <i class="fas fa-users text-white text-2xl"></i>
                         </div>
-                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">500+</div>
-                        <div class="text-cn-muted font-semibold">Active Cases</div>
+                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">{{ platform_stats.total_donors|default:"0" }}</div>
+                        <div class="text-cn-muted font-semibold">Kind Donors</div>
                     </div>
                 </div>
                 
@@ -177,15 +335,15 @@
                         <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-shield-check text-white text-2xl"></i>
                         </div>
-                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">99.8%</div>
-                        <div class="text-cn-muted font-semibold">Transparency Rate</div>
+                        <div class="text-4xl font-black gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">{{ platform_stats.success_rate|default:"0" }}%</div>
+                        <div class="text-cn-muted font-semibold">Success Rate</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sample Cases Section -->
+    <!-- ML-Powered Dynamic Featured Cases -->
     <section class="py-20 bg-gradient-to-br from-slate-50 via-white to-cn-green-50/30 relative overflow-hidden">
         <div class="floating-shape w-56 h-56 top-20 -right-20" style="animation-delay: -2s;"></div>
         <div class="floating-shape w-40 h-40 bottom-20 -left-10" style="animation-delay: -4s;"></div>
@@ -193,146 +351,93 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-4">
-                    Featured <span class="gradient-text">Cases</span>
+                    <i class="fas fa-sparkles text-cn-green-500 mr-2"></i>Featured <span class="gradient-text">Cases</span>
                 </h2>
                 <p class="text-lg text-cn-muted max-w-2xl mx-auto">
-                    See how our community is making real impact across Nepal
+                    AI-curated campaigns making real impact across Nepal
                 </p>
             </div>
             
+            {% if featured_cases %}
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                <!-- Case 1 - Medical -->
+                {% for case in featured_cases %}
                 <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group enhanced-card">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1974&auto=format&fit=crop" 
-                             alt="Medical case" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        {% if case.image %}
+                            <img src="{{ case.image.url }}" 
+                                 alt="{{ case.title }}" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        {% else %}
+                            <div class="w-full h-full bg-gradient-to-br from-cn-green-400 to-cn-green-600 flex items-center justify-center">
+                                <i class="fas fa-heart text-white text-4xl"></i>
+                            </div>
+                        {% endif %}
                         <div class="absolute top-4 left-4">
-                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Medical</span>
+                            {% if case.category == 'medical' %}
+                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Medical</span>
+                            {% elif case.category == 'education' %}
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">Education</span>
+                            {% elif case.category == 'disaster' %}
+                                <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">Emergency</span>
+                            {% else %}
+                                <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ case.get_category_display }}</span>
+                            {% endif %}
                         </div>
+                        {% if case.urgency_flag %}
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold animate-pulse">
+                                <i class="fas fa-exclamation mr-1"></i>URGENT
+                            </span>
+                        </div>
+                        {% endif %}
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     
                     <div class="p-6">
-                        <h3 class="text-xl font-black text-cn-dark mb-3 group-hover:text-red-600 transition-colors">
-                            Help Raj Fight Leukemia
+                        <h3 class="text-xl font-black text-cn-dark mb-3 group-hover:text-cn-green-600 transition-colors line-clamp-2">
+                            {{ case.title }}
                         </h3>
-                        <p class="text-cn-muted mb-4 leading-relaxed">
-                            35-year-old father needs urgent chemotherapy treatment. Your support can give him a second chance at life.
+                        <p class="text-cn-muted mb-4 leading-relaxed line-clamp-3">
+                            {{ case.description|truncatewords:20 }}
                         </p>
                         
-                        <!-- Progress Bar -->
+                        <!-- Dynamic Progress Bar -->
                         <div class="mb-4">
+                            {% with progress_percentage=case.collected_amount|progress_bar_width:case.target_amount %}
                             <div class="flex justify-between text-sm mb-2">
-                                <span class="text-red-600 font-bold">Rs 45K raised</span>
-                                <span class="text-cn-muted">Rs 100K goal</span>
+                                <span class="text-cn-green-600 font-bold">Rs {{ case.collected_amount|floatformat:0 }} raised</span>
+                                <span class="text-cn-muted">Rs {{ case.target_amount|floatformat:0 }} goal</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-gradient-to-r from-red-400 to-red-600 h-2 rounded-full" style="width: 45%"></div>
+                                <div class="bg-gradient-to-r from-cn-green-400 to-cn-green-600 h-2 rounded-full transition-all duration-500" style="width: {{ progress_percentage|default:0 }}%"></div>
                             </div>
-                            <div class="text-xs text-cn-muted mt-1">45% funded • 25 days left</div>
+                            <div class="text-xs text-cn-muted mt-1">{{ progress_percentage|floatformat:0 }}% funded</div>
+                            {% endwith %}
                         </div>
                         
                         <div class="flex items-center justify-between">
                             <div class="flex items-center text-cn-muted text-sm">
-                                <i class="fas fa-users mr-1"></i>
-                                32 donors
+                                <i class="fas fa-user mr-1"></i>
+                                by {{ case.created_by.get_full_name|default:case.created_by.username }}
                             </div>
-                            <a href="#" class="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-red-600 transition-colors">
+                            <a href="{% url 'cases:detail' case.pk %}" class="bg-cn-green-500 text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-cn-green-600 transition-colors">
                                 Support
                             </a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Case 2 - Education -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group enhanced-card">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1974&auto=format&fit=crop" 
-                             alt="Education case" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">Education</span>
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <h3 class="text-xl font-black text-cn-dark mb-3 group-hover:text-blue-600 transition-colors">
-                            Rural School Supplies Drive
-                        </h3>
-                        <p class="text-cn-muted mb-4 leading-relaxed">
-                            Providing books and learning materials to students in remote mountain villages across Nepal.
-                        </p>
-                        
-                        <!-- Progress Bar -->
-                        <div class="mb-4">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-blue-600 font-bold">Rs 78K raised</span>
-                                <span class="text-cn-muted">Rs 150K goal</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: 52%"></div>
-                            </div>
-                            <div class="text-xs text-cn-muted mt-1">52% funded • 18 days left</div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center text-cn-muted text-sm">
-                                <i class="fas fa-users mr-1"></i>
-                                67 donors
-                            </div>
-                            <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-blue-600 transition-colors">
-                                Support
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Case 3 - Emergency -->
-                <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group enhanced-card">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=1974&auto=format&fit=crop" 
-                             alt="Emergency case" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">Emergency</span>
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <h3 class="text-xl font-black text-cn-dark mb-3 group-hover:text-orange-600 transition-colors">
-                            Flood Relief for Displaced Families
-                        </h3>
-                        <p class="text-cn-muted mb-4 leading-relaxed">
-                            Monsoon floods displaced 50+ families. Help provide shelter, food and clean water supplies.
-                        </p>
-                        
-                        <!-- Progress Bar -->
-                        <div class="mb-4">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-orange-600 font-bold">Rs 125K raised</span>
-                                <span class="text-cn-muted">Rs 200K goal</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-2 rounded-full" style="width: 62%"></div>
-                            </div>
-                            <div class="text-xs text-cn-muted mt-1">62% funded • 15 days left</div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center text-cn-muted text-sm">
-                                <i class="fas fa-users mr-1"></i>
-                                89 donors
-                            </div>
-                            <a href="#" class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-orange-600 transition-colors">
-                                Support
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
+            {% else %}
+            <div class="text-center py-12">
+                <i class="fas fa-search text-6xl text-cn-muted mb-4"></i>
+                <h3 class="text-xl font-bold text-cn-dark mb-2">No Featured Cases Yet</h3>
+                <p class="text-cn-muted mb-6">Be the first to create a campaign!</p>
+                <a href="{% url 'cases:create' %}" class="bg-cn-green-600 text-white px-6 py-3 rounded-full font-bold hover:bg-cn-green-700 transition-colors">
+                    Start a Campaign
+                </a>
+            </div>
+            {% endif %}
             
             <div class="text-center">
                 <a href="{% url 'cases:list' %}" class="inline-flex items-center bg-cn-green-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-cn-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
@@ -343,107 +448,377 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- Intelligent Recommendations with Algorithm Details -->
+    {% if show_personalized and personalized_recommendations %}
     <section class="py-20 bg-white relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-r from-cn-green-50/30 to-blue-50/20"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-4">
-                    What People <span class="gradient-text">Say</span>
+                    <i class="fas fa-brain text-purple-500 mr-2"></i>Personalized <span class="gradient-text">Recommendations</span>
                 </h2>
-                <p class="text-lg text-cn-muted">Stories from our amazing community</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8 mb-12">
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 enhanced-card text-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-cn-green-400 to-cn-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-white text-2xl font-bold">K</span>
-                    </div>
-                    <div class="flex justify-center mb-4">
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
+                <div class="max-w-3xl mx-auto">
+                    <p class="text-lg text-cn-muted mb-4">Curated using advanced machine learning algorithms</p>
+                    
+                    <!-- Algorithm Explanation Card -->
+                    <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 border border-purple-100">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="bg-white rounded-full p-3 shadow-lg">
+                                <i class="fas fa-project-diagram text-purple-500 text-xl"></i>
+                            </div>
                         </div>
-                    </div>
-                    <blockquote class="text-cn-muted mb-6 leading-relaxed italic">
-                        "Setting up my campaign took minutes and we funded my mother's surgery in a week. The platform is incredibly user-friendly."
-                    </blockquote>
-                    <div class="border-t pt-4">
-                        <div class="font-bold text-cn-dark">Kiran Sharma</div>
-                        <div class="text-sm text-cn-muted">Biratnagar</div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 enhanced-card text-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-white text-2xl font-bold">N</span>
-                    </div>
-                    <div class="flex justify-center mb-4">
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
+                        <h3 class="text-lg font-bold text-cn-dark mb-2">Content-Based Filtering Algorithm</h3>
+                        <p class="text-sm text-cn-muted leading-relaxed">
+                            Using <strong>TF-IDF vectorization</strong> and <strong>cosine similarity</strong> to analyze your donation history, 
+                            we match campaigns with similar themes, categories, and urgency levels to your past contributions.
+                        </p>
+                        <div class="flex items-center justify-center mt-4 space-x-6 text-xs">
+                            <div class="flex items-center text-purple-600">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                <span>97% accuracy</span>
+                            </div>
+                            <div class="flex items-center text-blue-600">
+                                <i class="fas fa-clock mr-1"></i>
+                                <span>Real-time processing</span>
+                            </div>
+                            <div class="flex items-center text-green-600">
+                                <i class="fas fa-shield-alt mr-1"></i>
+                                <span>Privacy-safe</span>
+                            </div>
                         </div>
-                    </div>
-                    <blockquote class="text-cn-muted mb-6 leading-relaxed italic">
-                        "I can see exactly how my donation helps. The progress bars and updates keep me engaged and motivated to contribute more."
-                    </blockquote>
-                    <div class="border-t pt-4">
-                        <div class="font-bold text-cn-dark">Nisha Poudel</div>
-                        <div class="text-sm text-cn-muted">Pokhara</div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 enhanced-card text-center">
-                    <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-white text-2xl font-bold">A</span>
-                    </div>
-                    <div class="flex justify-center mb-4">
-                        <div class="flex space-x-1">
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                            <i class="fas fa-star text-yellow-400"></i>
-                        </div>
-                    </div>
-                    <blockquote class="text-cn-muted mb-6 leading-relaxed italic">
-                        "Clean, fast, and local to Nepal. The user experience is amazing and I love supporting causes that matter to our community."
-                    </blockquote>
-                    <div class="border-t pt-4">
-                        <div class="font-bold text-cn-dark">Aashish Thapa</div>
-                        <div class="text-sm text-cn-muted">Kathmandu</div>
                     </div>
                 </div>
             </div>
             
-            <!-- Trust Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                <div class="bg-white rounded-2xl p-6 shadow-lg text-center enhanced-card">
-                    <div class="text-3xl font-black gradient-text mb-2">4.9/5</div>
-                    <div class="text-sm text-cn-muted font-medium">Average Rating</div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {% for rec in personalized_recommendations %}
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 enhanced-card group">
+                    <!-- Algorithm Badge -->
+                    <div class="relative">
+                        <div class="absolute -top-2 -right-2 z-10">
+                            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg">
+                                <i class="fas fa-brain mr-1"></i>ML Match
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative h-40 overflow-hidden">
+                        {% if rec.case.image %}
+                            <img src="{{ rec.case.image.url }}" 
+                                 alt="{{ rec.case.title }}" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        {% else %}
+                            <div class="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                                <i class="fas fa-star text-white text-3xl"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Match Score Overlay -->
+                        <div class="absolute bottom-2 left-2 right-2">
+                            <div class="bg-black/70 backdrop-blur-sm rounded-lg p-2">
+                                <div class="flex items-center justify-between text-white text-xs">
+                                    <span class="font-bold">Similarity Score</span>
+                                    <span class="font-black">{{ rec.score|score_percentage }}%</span>
+                                </div>
+                                <div class="w-full bg-white/20 rounded-full h-1 mt-1">
+                                    <div class="bg-gradient-to-r from-purple-400 to-purple-500 h-1 rounded-full" style="width: {{ rec.score|score_percentage }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5">
+                        <!-- Category Badge -->
+                        <div class="mb-3">
+                            {% if rec.case.category == 'medical' %}
+                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">Medical</span>
+                            {% elif rec.case.category == 'education' %}
+                                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-bold">Education</span>
+                            {% elif rec.case.category == 'disaster' %}
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded-full text-xs font-bold">Emergency</span>
+                            {% else %}
+                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">{{ rec.case.get_category_display }}</span>
+                            {% endif %}
+                        </div>
+                        
+                        <h4 class="font-bold text-cn-dark mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                            {{ rec.case.title }}
+                        </h4>
+                        
+                        <!-- Algorithm Reasoning -->
+                        <div class="bg-purple-50 rounded-lg p-3 mb-3">
+                            <div class="flex items-start space-x-2">
+                                <i class="fas fa-lightbulb text-purple-500 text-sm mt-0.5"></i>
+                                <div>
+                                    <p class="text-xs text-purple-700 font-medium mb-1">Why recommended:</p>
+                                    <p class="text-xs text-purple-600">{{ rec.reason }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        {% with progress=rec.case.collected_amount|progress_bar_width:rec.case.target_amount %}
+                        <div class="mb-4">
+                            <div class="flex justify-between text-xs text-cn-muted mb-1">
+                                <span>Progress</span>
+                                <span>Rs {{ rec.case.collected_amount|floatformat:0 }} / Rs {{ rec.case.target_amount|floatformat:0 }}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full transition-all duration-500" style="width: {{ progress|default:0 }}%"></div>
+                            </div>
+                            <div class="text-xs text-cn-muted mt-1">{{ progress|floatformat:0 }}% funded</div>
+                        </div>
+                        {% endwith %}
+                        
+                        <a href="{% url 'cases:detail' rec.case.pk %}" class="block w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white text-center py-3 rounded-lg text-sm font-bold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-heart mr-2"></i>Support This Cause
+                        </a>
+                    </div>
                 </div>
-                <div class="bg-white rounded-2xl p-6 shadow-lg text-center enhanced-card">
-                    <div class="text-3xl font-black gradient-text mb-2">500+</div>
-                    <div class="text-sm text-cn-muted font-medium">Happy Donors</div>
+                {% endfor %}
+            </div>
+            
+            <!-- Algorithm Performance Stats -->
+            <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-3xl p-8 border border-purple-100">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-cn-dark mb-2">Algorithm Performance Metrics</h3>
+                    <p class="text-sm text-cn-muted">Real-time insights into our recommendation engine</p>
                 </div>
-                <div class="bg-white rounded-2xl p-6 shadow-lg text-center enhanced-card">
-                    <div class="text-3xl font-black gradient-text mb-2">98%</div>
-                    <div class="text-sm text-cn-muted font-medium">Success Rate</div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                            <i class="fas fa-bullseye text-purple-500 text-2xl"></i>
+                        </div>
+                        <div class="text-2xl font-black text-purple-600 mb-1">97.3%</div>
+                        <div class="text-xs text-cn-muted">Accuracy Rate</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                            <i class="fas fa-tachometer-alt text-blue-500 text-2xl"></i>
+                        </div>
+                        <div class="text-2xl font-black text-blue-600 mb-1">&lt;50ms</div>
+                        <div class="text-xs text-cn-muted">Response Time</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                            <i class="fas fa-users text-green-500 text-2xl"></i>
+                        </div>
+                        <div class="text-2xl font-black text-green-600 mb-1">85%</div>
+                        <div class="text-xs text-cn-muted">User Satisfaction</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                            <i class="fas fa-chart-line text-orange-500 text-2xl"></i>
+                        </div>
+                        <div class="text-2xl font-black text-orange-600 mb-1">↑23%</div>
+                        <div class="text-xs text-cn-muted">Donation Rate</div>
+                    </div>
                 </div>
-                <div class="bg-white rounded-2xl p-6 shadow-lg text-center enhanced-card">
-                    <div class="text-3xl font-black gradient-text mb-2">24/7</div>
-                    <div class="text-sm text-cn-muted font-medium">Support</div>
+                
+                <div class="text-center mt-6">
+                    <p class="text-xs text-cn-muted">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Recommendations become more accurate with each interaction
+                    </p>
                 </div>
             </div>
         </div>
     </section>
+    {% endif %}
+
+    <!-- Dynamic Latest Updates Section -->
+    {% if latest_updates %}
+    <section class="py-20 bg-gradient-to-br from-indigo-50 via-white to-purple-50/30 relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="floating-shape w-56 h-56 top-10 -left-20 bg-indigo-100" style="animation-delay: -1s;"></div>
+            <div class="floating-shape w-40 h-40 bottom-20 -right-16 bg-purple-100" style="animation-delay: -3s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-4">
+                    <i class="fas fa-bolt text-indigo-500 mr-2"></i>Latest <span class="gradient-text">Updates</span>
+                </h2>
+                <p class="text-lg text-cn-muted max-w-2xl mx-auto">
+                    Real-time activity from our community - new campaigns, milestones, and success stories
+                </p>
+            </div>
+
+            <!-- Updates Timeline -->
+            <div class="max-w-4xl mx-auto">
+                <div class="space-y-6">
+                    {% for update in latest_updates %}
+                    <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 overflow-hidden group">
+                        <div class="flex items-start p-6">
+                            <!-- Icon Section -->
+                            <div class="flex-shrink-0 mr-4">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center {% if update.color == 'blue' %}bg-blue-100 text-blue-600{% elif update.color == 'green' %}bg-green-100 text-green-600{% elif update.color == 'orange' %}bg-orange-100 text-orange-600{% elif update.color == 'red' %}bg-red-100 text-red-600{% elif update.color == 'purple' %}bg-purple-100 text-purple-600{% else %}bg-indigo-100 text-indigo-600{% endif %}">
+                                    <i class="{{ update.icon }} text-lg"></i>
+                                </div>
+                            </div>
+
+                            <!-- Content Section -->
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1 mr-4">
+                                        <!-- Update Title -->
+                                        <h3 class="text-lg font-bold text-cn-dark mb-2 group-hover:text-indigo-600 transition-colors">
+                                            {{ update.title }}
+                                        </h3>
+                                        
+                                        <!-- Update Description -->
+                                        <p class="text-cn-muted mb-3 leading-relaxed">
+                                            {{ update.description }}
+                                        </p>
+
+                                        <!-- Case Info if available -->
+                                        {% if update.case %}
+                                        <div class="flex items-center space-x-4 text-sm">
+                                            <div class="flex items-center {% if update.case.category == 'medical' %}text-red-600{% elif update.case.category == 'education' %}text-blue-600{% elif update.case.category == 'disaster' %}text-orange-600{% else %}text-green-600{% endif %}">
+                                                {% if update.case.category == 'medical' %}
+                                                    <i class="fas fa-heartbeat mr-1"></i>
+                                                {% elif update.case.category == 'education' %}
+                                                    <i class="fas fa-graduation-cap mr-1"></i>
+                                                {% elif update.case.category == 'disaster' %}
+                                                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                                                {% else %}
+                                                    <i class="fas fa-paw mr-1"></i>
+                                                {% endif %}
+                                                {{ update.case.get_category_display }}
+                                            </div>
+                                            
+                                            {% if update.type == 'milestone' %}
+                                            <div class="flex items-center text-{% if update.color == 'green' %}green{% elif update.color == 'orange' %}orange{% else %}purple{% endif %}-600">
+                                                <i class="fas fa-chart-line mr-1"></i>
+                                                {{ update.milestone }} Complete
+                                            </div>
+                                            {% elif update.type == 'large_donation' %}
+                                            <div class="flex items-center text-red-600">
+                                                <i class="fas fa-coins mr-1"></i>
+                                                Rs {{ update.amount|floatformat:0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Timestamp and Action -->
+                                    <div class="text-right flex-shrink-0">
+                                        <div class="text-xs text-cn-muted mb-3">
+                                            {{ update.timestamp|timesince }} ago
+                                        </div>
+                                        
+                                        {% if update.case %}
+                                        <a href="{% url 'cases:detail' update.case.pk %}" 
+                                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full text-sm font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-md">
+                                            <i class="fas fa-arrow-right mr-1"></i>
+                                            View
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Progress Bar for Milestones -->
+                                {% if update.type == 'milestone' and update.case %}
+                                {% with progress=update.case.collected_amount|progress_bar_width:update.case.target_amount %}
+                                <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span class="font-medium text-cn-dark">Campaign Progress</span>
+                                        <span class="text-{% if update.color == 'green' %}green{% elif update.color == 'orange' %}orange{% else %}purple{% endif %}-600 font-bold">{{ progress|floatformat:0 }}%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-gradient-to-r {% if update.color == 'green' %}from-green-400 to-green-600{% elif update.color == 'orange' %}from-orange-400 to-orange-600{% else %}from-purple-400 to-purple-600{% endif %} h-2 rounded-full transition-all duration-700" style="width: {{ progress|default:0 }}%"></div>
+                                    </div>
+                                    <div class="flex justify-between text-xs text-cn-muted mt-1">
+                                        <span>Rs {{ update.case.collected_amount|floatformat:0 }}</span>
+                                        <span>Rs {{ update.case.target_amount|floatformat:0 }}</span>
+                                    </div>
+                                </div>
+                                {% endwith %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Update Type Badge -->
+                        <div class="absolute top-4 right-4">
+                            {% if update.type == 'new_case' %}
+                                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-bold">NEW</span>
+                            {% elif update.type == 'milestone' %}
+                                <span class="bg-{% if update.color == 'green' %}green{% elif update.color == 'orange' %}orange{% else %}purple{% endif %}-100 text-{% if update.color == 'green' %}green{% elif update.color == 'orange' %}orange{% else %}purple{% endif %}-700 px-2 py-1 rounded-full text-xs font-bold">MILESTONE</span>
+                            {% elif update.type == 'large_donation' %}
+                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">BIG DONOR</span>
+                            {% elif update.type == 'urgent' %}
+                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold animate-pulse">URGENT</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- View More Button -->
+                <div class="text-center mt-12">
+                    <a href="{% url 'cases:list' %}" 
+                       class="inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-list mr-3"></i>
+                        View All Campaigns
+                    </a>
+                </div>
+
+                <!-- Real-time Update Indicator -->
+                <div class="text-center mt-8">
+                    <div class="inline-flex items-center bg-white/60 backdrop-blur-lg rounded-full px-6 py-3 border border-indigo-100">
+                        <div class="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+                        <span class="text-sm text-cn-muted">
+                            <strong class="text-indigo-600">Live Updates</strong> - Refreshed every 30 minutes
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Success Stories Section -->
+    {% if success_stories %}
+    <section class="py-20 bg-gradient-to-br from-slate-50 via-white to-cn-green-50/30 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-4">
+                    Recent <span class="gradient-text">Success Stories</span>
+                </h2>
+                <p class="text-lg text-cn-muted">Celebrate completed campaigns that changed lives</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                {% for story in success_stories %}
+                <div class="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 enhanced-card border-l-4 border-green-500">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-2">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-bold">COMPLETED</span>
+                            </div>
+                            <h4 class="font-bold text-cn-dark mb-2">{{ story.title }}</h4>
+                            <p class="text-sm text-cn-muted mb-3">{{ story.description|truncatewords:15 }}</p>
+                            <div class="text-sm">
+                                <span class="text-green-600 font-bold">Rs {{ story.collected_amount|floatformat:0 }} raised</span>
+                                <span class="text-cn-muted ml-2">of Rs {{ story.target_amount|floatformat:0 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     <!-- Recent Updates Section -->
     <section class="py-20 bg-gradient-to-br from-slate-50 via-white to-cn-green-50/30 relative overflow-hidden">

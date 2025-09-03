@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load math_extras %}
 
 {% block title %}{{ case.title }} - CharityNepal{% endblock %}
 
@@ -405,6 +406,199 @@
             </div>
         </div>
     </section>
+
+    <!-- ML-Powered Similar Cases Recommendations -->
+    {% if similar_cases %}
+    <section class="py-20 bg-gradient-to-br from-slate-50 via-white to-purple-50/30 relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="floating-shape w-64 h-64 top-10 -right-20 bg-purple-100" style="animation-delay: -2s;"></div>
+            <div class="floating-shape w-48 h-48 bottom-20 -left-16 bg-blue-100" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Section Header with Algorithm Details -->
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-6">
+                    <i class="fas fa-magic text-purple-500 mr-3"></i>You Might Also Like
+                </h2>
+                
+                <!-- Algorithm Explanation Card -->
+                <div class="max-w-4xl mx-auto mb-12">
+                    <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-purple-100">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="text-left">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                                        <i class="fas fa-brain text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-black text-cn-dark">{{ algorithm_info.name }}</h3>
+                                        <p class="text-sm text-cn-muted">Advanced ML Algorithm</p>
+                                    </div>
+                                </div>
+                                <p class="text-cn-muted leading-relaxed mb-4">
+                                    {{ algorithm_info.description }}
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    {% for feature in algorithm_info.features_analyzed %}
+                                    <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
+                                        {{ feature }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <!-- Performance Metrics -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-4 text-center">
+                                    <div class="text-2xl font-black text-purple-600 mb-1">{{ algorithm_info.accuracy }}</div>
+                                    <div class="text-xs text-purple-700">Accuracy Rate</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 text-center">
+                                    <div class="text-2xl font-black text-blue-600 mb-1">{{ algorithm_info.processing_time }}</div>
+                                    <div class="text-xs text-blue-700">Response Time</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-4 text-center col-span-2">
+                                    <div class="text-lg font-black text-green-600 mb-1">{{ similar_cases|length }} Matches Found</div>
+                                    <div class="text-xs text-green-700">Based on content similarity analysis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Similar Cases Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for similar in similar_cases %}
+                <div class="bg-white/80 backdrop-blur-lg rounded-3xl overflow-hidden shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 group enhanced-card">
+                    <!-- Algorithm Badge -->
+                    <div class="relative">
+                        <div class="absolute -top-3 -right-3 z-20">
+                            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold shadow-lg">
+                                <i class="fas fa-percentage mr-1"></i>{{ similar.match_percentage }}% Match
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Case Image -->
+                    <div class="relative h-48 overflow-hidden">
+                        {% if similar.case.featured_image %}
+                            <img src="{{ similar.case.featured_image.url }}" 
+                                 alt="{{ similar.case.title }}" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        {% else %}
+                            <div class="w-full h-full bg-gradient-to-br {% if similar.case.category == 'medical' %}from-red-400 to-red-600{% elif similar.case.category == 'education' %}from-blue-400 to-blue-600{% elif similar.case.category == 'disaster' %}from-orange-400 to-orange-600{% else %}from-green-400 to-green-600{% endif %} flex items-center justify-center">
+                                {% if similar.case.category == 'medical' %}
+                                    <i class="fas fa-heartbeat text-white text-4xl"></i>
+                                {% elif similar.case.category == 'education' %}
+                                    <i class="fas fa-graduation-cap text-white text-4xl"></i>
+                                {% elif similar.case.category == 'disaster' %}
+                                    <i class="fas fa-exclamation-triangle text-white text-4xl"></i>
+                                {% else %}
+                                    <i class="fas fa-paw text-white text-4xl"></i>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Category Badge -->
+                        <div class="absolute top-4 left-4">
+                            {% if similar.case.category == 'medical' %}
+                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Medical</span>
+                            {% elif similar.case.category == 'education' %}
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">Education</span>
+                            {% elif similar.case.category == 'disaster' %}
+                                <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">Emergency</span>
+                            {% else %}
+                                <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ similar.case.get_category_display }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Similarity Score Overlay -->
+                        <div class="absolute bottom-3 left-3 right-3">
+                            <div class="bg-black/70 backdrop-blur-sm rounded-lg p-3">
+                                <div class="flex items-center justify-between text-white text-sm mb-2">
+                                    <span class="font-bold">Similarity</span>
+                                    <span class="font-black">{{ similar.match_percentage }}%</span>
+                                </div>
+                                <div class="w-full bg-white/20 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full transition-all duration-1000" style="width: {{ similar.match_percentage }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Case Content -->
+                    <div class="p-6">
+                        <h3 class="text-xl font-black text-cn-dark mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                            {{ similar.case.title }}
+                        </h3>
+                        
+                        <p class="text-cn-muted mb-4 leading-relaxed line-clamp-3">
+                            {{ similar.case.description|truncatewords:20 }}
+                        </p>
+
+                        <!-- Algorithm Reasoning -->
+                        <div class="bg-purple-50 rounded-xl p-4 mb-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fas fa-lightbulb text-white text-xs"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-purple-700 font-bold mb-1">Why this match:</p>
+                                    <p class="text-xs text-purple-600 leading-relaxed">{{ similar.reason }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Information -->
+                        {% with progress=similar.case.collected_amount|progress_bar_width:similar.case.target_amount %}
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-cn-muted">Progress</span>
+                                <span class="font-bold text-cn-dark">{{ progress|floatformat:0 }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="{% if similar.case.category == 'medical' %}bg-gradient-to-r from-red-400 to-red-600{% elif similar.case.category == 'education' %}bg-gradient-to-r from-blue-400 to-blue-600{% elif similar.case.category == 'disaster' %}bg-gradient-to-r from-orange-400 to-orange-600{% else %}bg-gradient-to-r from-green-400 to-green-600{% endif %} h-2 rounded-full transition-all duration-700" style="width: {{ progress|default:0 }}%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-cn-muted mt-1">
+                                <span>Rs {{ similar.case.collected_amount|floatformat:0 }} raised</span>
+                                <span>Rs {{ similar.case.target_amount|floatformat:0 }} goal</span>
+                            </div>
+                        </div>
+                        {% endwith %}
+
+                        <!-- Action Button -->
+                        <a href="{% url 'cases:detail' similar.case.pk %}" 
+                           class="block w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white text-center py-3 rounded-xl text-sm font-bold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-eye mr-2"></i>View Campaign
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Algorithm Performance Footer -->
+            <div class="mt-16 text-center">
+                <div class="bg-white/60 backdrop-blur-lg rounded-2xl p-6 border border-white/30 max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-line text-white text-xl"></i>
+                        </div>
+                        <div class="text-left">
+                            <h4 class="text-lg font-bold text-cn-dark">Smart Recommendations</h4>
+                            <p class="text-sm text-cn-muted">Powered by machine learning</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-cn-muted">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        These recommendations are generated using advanced content analysis and become more accurate over time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}

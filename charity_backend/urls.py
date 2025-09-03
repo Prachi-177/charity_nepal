@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
+from cases.views import HomeView
 from recommendations.ml_analytics import (
     MLAnalyticsView,
     algorithm_comparison,
@@ -49,8 +50,8 @@ urlpatterns = [
     path("donations/", include("donations.urls")),
     path("payments/", include("payments.urls")),
     path("recommendations/", include("recommendations.urls")),
-    # Home page
-    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    # Home page with ML-powered dynamic content
+    path("", HomeView.as_view(), name="home"),
 ]
 
 # Serve media files in development

@@ -25,6 +25,7 @@ class CharityCase(models.Model):
         ("pending", "Pending Verification"),
         ("approved", "Approved"),
         ("rejected", "Rejected"),
+        ("flagged", "Flagged for Review"),
         ("completed", "Completed"),
         ("cancelled", "Cancelled"),
     ]
@@ -80,6 +81,11 @@ class CharityCase(models.Model):
     slug = models.SlugField(max_length=250, unique=True, blank=True)
     tags = models.CharField(
         max_length=500, blank=True, help_text="Comma-separated tags"
+    )
+
+    # AI/ML fields
+    fraud_score = models.FloatField(
+        null=True, blank=True, help_text="AI-computed fraud risk score (0.0 to 1.0)"
     )
 
     class Meta:

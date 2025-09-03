@@ -544,6 +544,48 @@
         </div>
     </div>
 
+    <!-- Fraud Detection Analytics -->
+    <div class="row mb-5">
+        <div class="col-lg-12 mb-4">
+            <div class="stat-card danger">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="stat-icon me-4" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">AI Fraud Detection System</h4>
+                            <p class="mb-1">Machine Learning powered fraud prevention</p>
+                            <small>🤖 Protecting donors and beneficiaries</small>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <div class="text-center">
+                                    <h6 class="mb-0">{{ high_risk_cases|default:0 }}</h6>
+                                    <small>High Risk Cases</small>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="text-center">
+                                    <h6 class="mb-0">{{ flagged_cases|default:0 }}</h6>
+                                    <small>Flagged for Review</small>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="text-center">
+                                    <h6 class="mb-0">{{ fraud_prevented|default:0 }}%</h6>
+                                    <small>Fraud Prevention Rate</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Performance Metrics Grid -->
     <div class="row mb-5">
         <div class="col-lg-3 col-md-6 mb-4">
