@@ -177,6 +177,26 @@
 
         <!-- Campaign Creation Form -->
         <div class="glass-effect rounded-3xl shadow-2xl p-8 mb-8">
+            <!-- Form Errors Display -->
+            {% if form.errors %}
+                <div class="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl">
+                    <h3 class="font-bold text-lg mb-3">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Please fix the following errors:
+                    </h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
             <form method="post" enctype="multipart/form-data" class="space-y-8">
                 {% csrf_token %}
                 
@@ -196,9 +216,14 @@
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-heading mr-2 text-cn-green-600"></i>
-                                Campaign Title
+                                Campaign Title <span class="text-red-500">*</span>
                             </label>
                             {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.title.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                             <div class="help-text">
                                 <i class="fas fa-lightbulb mr-1"></i>
                                 Make it compelling and specific to attract donors
@@ -208,9 +233,14 @@
                         <div>
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-tags mr-2 text-cn-green-600"></i>
-                                Category
+                                Category <span class="text-red-500">*</span>
                             </label>
                             {{ form.category }}
+                            {% if form.category.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.category.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
                         <div>
@@ -219,14 +249,24 @@
                                 Urgency Level
                             </label>
                             {{ form.urgency_flag }}
+                            {% if form.urgency_flag.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.urgency_flag.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-align-left mr-2 text-cn-green-600"></i>
-                                Campaign Description
+                                Campaign Description <span class="text-red-500">*</span>
                             </label>
                             {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.description.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                             <div class="character-counter" id="description-counter">0 characters</div>
                             <div class="help-text">
                                 <i class="fas fa-info-circle mr-1"></i>
@@ -252,9 +292,14 @@
                         <div>
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-money-bill mr-2 text-cn-green-600"></i>
-                                Target Amount (NPR)
+                                Target Amount (NPR) <span class="text-red-500">*</span>
                             </label>
                             {{ form.target_amount }}
+                            {% if form.target_amount.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.target_amount.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                             <div class="help-text">
                                 <i class="fas fa-chart-line mr-1"></i>
                                 Set a realistic and specific goal amount to increase donor confidence
@@ -267,6 +312,11 @@
                                 Campaign Deadline (Optional)
                             </label>
                             {{ form.deadline }}
+                            {% if form.deadline.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.deadline.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                             <div class="help-text">
                                 <i class="fas fa-clock mr-1"></i>
                                 Set a deadline to create urgency and encourage action
@@ -291,25 +341,40 @@
                         <div>
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-location-dot mr-2 text-cn-green-600"></i>
-                                Location
+                                Location (Optional)
                             </label>
                             {{ form.location }}
+                            {% if form.location.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.location.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
                         <div>
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-phone mr-2 text-cn-green-600"></i>
-                                Contact Phone
+                                Contact Phone <span class="text-red-500">*</span>
                             </label>
                             {{ form.contact_phone }}
+                            {% if form.contact_phone.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.contact_phone.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-envelope mr-2 text-cn-green-600"></i>
-                                Contact Email
+                                Contact Email <span class="text-red-500">*</span>
                             </label>
                             {{ form.contact_email }}
+                            {% if form.contact_email.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.contact_email.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -330,9 +395,14 @@
                         <div>
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-user mr-2 text-cn-green-600"></i>
-                                Beneficiary Name
+                                Beneficiary Name <span class="text-red-500">*</span>
                             </label>
                             {{ form.beneficiary_name }}
+                            {% if form.beneficiary_name.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.beneficiary_name.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
                         <div>
@@ -341,6 +411,11 @@
                                 Beneficiary Age (Optional)
                             </label>
                             {{ form.beneficiary_age }}
+                            {% if form.beneficiary_age.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.beneficiary_age.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -361,9 +436,14 @@
                         <div>
                             <label class="block text-sm font-bold text-cn-dark mb-2">
                                 <i class="fas fa-image mr-2 text-cn-green-600"></i>
-                                Featured Image
+                                Featured Image (Optional)
                             </label>
                             {{ form.featured_image }}
+                            {% if form.featured_image.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.featured_image.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                             <div class="help-text">
                                 <i class="fas fa-info-circle mr-1"></i>
                                 A compelling image can increase donations by up to 40%. Use high-quality photos that tell your story.
@@ -376,6 +456,11 @@
                                 Supporting Documents (Optional)
                             </label>
                             {{ form.documents }}
+                            {% if form.documents.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.documents.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                             <div class="help-text">
                                 <i class="fas fa-shield-check mr-1"></i>
                                 Upload supporting documents (medical reports, certificates, etc.) to build trust
@@ -388,6 +473,11 @@
                                 Campaign Tags (Optional)
                             </label>
                             {{ form.tags }}
+                            {% if form.tags.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.tags.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
                             <div class="help-text">
                                 <i class="fas fa-search mr-1"></i>
                                 Use relevant tags separated by commas to help people find your campaign (e.g., medical, urgent, surgery)
