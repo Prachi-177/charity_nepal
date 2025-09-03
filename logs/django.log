@@ -13064,3 +13064,16 @@ Watching for file changes with StatReloader
 "GET /cases/ HTTP/1.1" 200 96820
 "GET / HTTP/1.1" 200 150010
 "GET /cases/?category=cancer HTTP/1.1" 200 66851
+Watching for file changes with StatReloader
+"GET /cases/ HTTP/1.1" 200 97481
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10037
+"GET /cases/ HTTP/1.1" 200 97481
+"GET /cases/?search=emergency&category=all HTTP/1.1" 200 87258
+"GET / HTTP/1.1" 200 150010
+"GET /cases/ HTTP/1.1" 200 97481
+"GET / HTTP/1.1" 200 150010
+"GET / HTTP/1.1" 200 150010
+/Users/bibektimilsina/projects/charity_nepal/cases/views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 150010

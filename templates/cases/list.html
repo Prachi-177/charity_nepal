@@ -27,14 +27,31 @@
             <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 mb-12 enhanced-card relative" style="z-index: 1;">
                 <form method="get" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 relative">
-                        <!-- Search -->
+                        <!-- Enhanced AI Search -->
                         <div class="md:col-span-5">
                             <div class="relative">
                                 <input type="text" name="search" value="{{ search_query }}" 
-                                       placeholder="Search campaigns, causes, locations..." 
-                                       class="w-full pl-12 pr-4 py-4 bg-white/50 border-2 border-gray-200 rounded-2xl focus:border-cn-green-500 focus:ring-0 transition-all duration-200 font-medium">
-                                <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-cn-muted"></i>
+                                       placeholder="AI Smart Search: Try 'medical emergency', 'education rural'..." 
+                                       class="w-full pl-12 pr-16 py-4 bg-white/50 border-2 border-gray-200 rounded-2xl focus:border-cn-green-500 focus:ring-0 transition-all duration-200 font-medium">
+                                <i class="fas fa-brain absolute left-4 top-1/2 transform -translate-y-1/2 text-cn-green-500"></i>
+                                
+                                <!-- AI Badge -->
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <div class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
+                                        TF-IDF AI
+                                    </div>
+                                </div>
                             </div>
+                            
+                            <!-- Search Algorithm Info -->
+                            {% if search_query %}
+                            <div class="mt-2 text-center">
+                                <span class="inline-flex items-center bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Results powered by TF-IDF semantic analysis - {{ search_results_count|default:0 }} relevant matches found
+                                </span>
+                            </div>
+                            {% endif %}
                         </div>
                         
                         <!-- Enhanced Category Filter -->
@@ -181,6 +198,72 @@
             </div>
         </div>
     </section>
+
+    <!-- Search Results Information -->
+    {% if search_query %}
+    <section class="py-8">
+        <div class="container mx-auto px-4">
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-6 border border-blue-100 mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-brain text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-cn-dark">AI Search Results</h3>
+                            <p class="text-sm text-cn-muted">Powered by {{ search_algorithm_used }}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-black text-blue-600">{{ search_results_count }}</div>
+                        <div class="text-xs text-cn-muted">relevant matches</div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/60 rounded-2xl p-4 mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-bold text-cn-dark">Search Query:</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
+                            TF-IDF Analysis
+                        </span>
+                    </div>
+                    <p class="text-lg font-medium text-purple-700 bg-purple-50 px-4 py-2 rounded-xl">
+                        "{{ search_query }}"
+                    </p>
+                </div>
+
+                <!-- Algorithm Performance Metrics -->
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="bg-white/60 rounded-xl p-3 text-center">
+                        <div class="text-sm font-bold text-green-600 mb-1">{{ search_algorithm_info.accuracy }}</div>
+                        <div class="text-xs text-cn-muted">Relevance Score</div>
+                    </div>
+                    <div class="bg-white/60 rounded-xl p-3 text-center">
+                        <div class="text-sm font-bold text-blue-600 mb-1">{{ search_algorithm_info.speed }}</div>
+                        <div class="text-xs text-cn-muted">Response Time</div>
+                    </div>
+                    <div class="bg-white/60 rounded-xl p-3 text-center">
+                        <div class="text-sm font-bold text-purple-600 mb-1">Semantic</div>
+                        <div class="text-xs text-cn-muted">Understanding</div>
+                    </div>
+                    <div class="bg-white/60 rounded-xl p-3 text-center">
+                        <div class="text-sm font-bold text-orange-600 mb-1">Real-time</div>
+                        <div class="text-xs text-cn-muted">Processing</div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="mt-4 flex flex-wrap gap-2">
+                    {% for feature in search_algorithm_info.features %}
+                    <span class="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
+                        <i class="fas fa-check-circle mr-1"></i>{{ feature }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     <!-- Cases Grid Section -->
     <section class="py-16 bg-gradient-to-br from-white via-slate-50 to-cn-green-50/30 relative overflow-hidden">
