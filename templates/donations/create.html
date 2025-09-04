@@ -1,0 +1,613 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block title %}Donate to {{ case.title }} - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* CharityNepal Color Palette */
+    :root {
+        --cn-green-50: #f0fdf4;
+        --cn-green-100: #dcfce7;
+        --cn-green-200: #bbf7d0;
+        --cn-green-300: #86efac;
+        --cn-green-400: #4ade80;
+        --cn-green-500: #22c55e;
+        --cn-green-600: #16a34a;
+        --cn-green-700: #15803d;
+        --cn-green-800: #166534;
+        --cn-green-900: #14532d;
+        --cn-dark: #1e293b;
+        --cn-muted: #64748b;
+    }
+
+    /* Page Background */
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    /* Hero Pattern Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(rgba(34, 197, 94, 0.08) 2px, transparent 2px),
+            radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+        background-size: 60px 60px, 30px 30px;
+        background-position: 0 0, 15px 15px;
+        z-index: -2;
+        opacity: 0.4;
+    }
+
+    /* Floating Background Shapes */
+    .floating-shape {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.05));
+        border-radius: 50%;
+        position: absolute;
+        animation: float 12s ease-in-out infinite;
+        z-index: -1;
+        filter: blur(1px);
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+        50% { transform: translateY(-40px) rotate(180deg); opacity: 0.6; }
+    }
+    
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(40px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    /* Glass Effect Cards */
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.1),
+            0 8px 25px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+    
+    .donation-card {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-left: 6px solid var(--cn-green-600);
+        box-shadow: 
+            0 25px 60px rgba(34, 197, 94, 0.15),
+            0 10px 30px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    /* Enhanced Buttons */
+    .btn-hover {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(0);
+        position: relative;
+        overflow: hidden;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-hover::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.2), 
+            transparent);
+        transition: left 0.6s ease;
+    }
+    
+    .btn-hover:hover::before {
+        left: 100%;
+    }
+    
+    .btn-hover:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.15),
+            0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-hover:active {
+        transform: translateY(-1px) scale(1.01);
+    }
+
+    /* Enhanced Form Elements */
+    .form-input {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(229, 231, 235, 0.8);
+        border-radius: 16px;
+        padding: 16px 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        width: 100%;
+    }
+    
+    .form-input:focus {
+        border-color: var(--cn-green-600);
+        outline: none;
+        box-shadow: 
+            0 0 0 4px rgba(34, 197, 94, 0.1),
+            0 8px 25px rgba(34, 197, 94, 0.15);
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 1);
+    }
+    
+    /* Payment Method Cards */
+    .payment-method {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        border: 2px solid rgba(229, 231, 235, 0.8);
+        border-radius: 20px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .payment-method:hover {
+        border-color: var(--cn-green-500);
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 
+            0 20px 40px rgba(34, 197, 94, 0.15),
+            0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .payment-method.selected {
+        border-color: var(--cn-green-600);
+        background: linear-gradient(135deg, 
+            rgba(34, 197, 94, 0.1), 
+            rgba(34, 197, 94, 0.05));
+        box-shadow: 
+            0 20px 40px rgba(34, 197, 94, 0.2),
+            0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .payment-method::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.3), 
+            transparent);
+        transition: left 0.6s ease;
+    }
+    
+    .payment-method:hover::before {
+        left: 100%;
+    }
+    
+    /* Donation Amount Buttons */
+    .amount-btn {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid rgba(34, 197, 94, 0.3);
+        border-radius: 16px;
+        padding: 16px 24px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--cn-green-700);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .amount-btn:hover {
+        border-color: var(--cn-green-600);
+        background: rgba(34, 197, 94, 0.1);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+    }
+    
+    .amount-btn.selected {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        border-color: var(--cn-green-600);
+        color: white;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+    
+    /* Case Preview */
+    .case-preview {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.06),
+            0 8px 25px rgba(0, 0, 0, 0.04);
+        animation: slideUp 0.8s ease-out;
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+        background: rgba(229, 231, 235, 0.5);
+        border-radius: 20px;
+        height: 16px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, var(--cn-green-500), var(--cn-green-600));
+        height: 100%;
+        border-radius: 20px;
+        transition: width 1s ease-in-out;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .progress-bar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.3), 
+            transparent);
+        animation: shimmer 2s infinite;
+    }
+    
+    /* Typography Enhancement */
+    h1, h2, h3, h4 {
+        font-weight: 800;
+        color: var(--cn-dark);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .gradient-text {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .glass-effect, .donation-card, .case-preview {
+            margin: 16px;
+            padding: 24px;
+        }
+        
+        .btn-hover {
+            padding: 16px 24px;
+            font-size: 0.9rem;
+        }
+        
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.5rem; }
+        
+        .floating-shape { display: none; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Floating Background Shapes -->
+<div class="floating-shape" style="width: 300px; height: 300px; top: -100px; left: -150px; animation-delay: -2s;"></div>
+<div class="floating-shape" style="width: 200px; height: 200px; top: 20%; right: -100px; animation-delay: -4s;"></div>
+<div class="floating-shape" style="width: 250px; height: 250px; bottom: -125px; left: 30%; animation-delay: -6s;"></div>
+
+<section class="relative min-h-screen py-16">
+    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+        
+        <!-- Header -->
+        <div class="text-center mb-12" style="animation: slideUp 0.6s ease-out;">
+            <div class="inline-flex items-center bg-gradient-to-r from-cn-green-100 to-blue-100 text-cn-green-700 px-6 py-3 rounded-full text-sm font-bold mb-6">
+                <i class="fas fa-heart mr-2"></i>
+                Make a Difference
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black mb-4">
+                Support <span class="gradient-text">{{ case.title }}</span>
+            </h1>
+            <p class="text-xl text-gray-600 font-medium max-w-2xl mx-auto">
+                Your contribution will help make a real difference in someone's life. Every donation counts!
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            <!-- Case Information -->
+            <div class="space-y-8">
+                <!-- Case Preview -->
+                <div class="case-preview">
+                    {% if case.featured_image %}
+                        <div class="relative mb-8">
+                            <img src="{{ case.featured_image.url }}" alt="{{ case.title }}" 
+                                 class="w-full h-64 object-cover rounded-2xl shadow-lg">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="inline-flex items-center bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 px-4 py-2 rounded-full text-sm font-bold mb-4">
+                                <i class="fas fa-tag mr-2"></i>
+                                {{ case.get_category_display }}
+                            </div>
+                            <h3 class="text-2xl font-black text-gray-800 mb-4">{{ case.title }}</h3>
+                            <p class="text-gray-600 leading-relaxed">{{ case.description|truncatewords:30 }}</p>
+                        </div>
+                        
+                        <!-- Progress -->
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-bold text-gray-600 uppercase tracking-wide">Progress</span>
+                                <span class="text-lg font-black text-cn-green-600">{{ case.completion_percentage|floatformat:1 }}%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: {{ case.completion_percentage }}%"></div>
+                            </div>
+                            <div class="flex justify-between text-sm font-semibold text-gray-600">
+                                <span>Rs. {{ case.collected_amount|floatformat:0 }} raised</span>
+                                <span>Rs. {{ case.target_amount|floatformat:0 }} goal</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Campaign Stats -->
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-2xl">
+                                <div class="text-2xl font-black text-green-600">{{ case.donations.count }}</div>
+                                <div class="text-xs font-bold text-green-700 uppercase tracking-wide">Donors</div>
+                            </div>
+                            <div class="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl">
+                                <div class="text-2xl font-black text-blue-600">{{ case.created_at|timesince }}</div>
+                                <div class="text-xs font-bold text-blue-700 uppercase tracking-wide">Days Active</div>
+                            </div>
+                            <div class="text-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-2xl">
+                                <div class="text-2xl font-black text-purple-600">{{ case.urgency_flag|title }}</div>
+                                <div class="text-xs font-bold text-purple-700 uppercase tracking-wide">Priority</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Donation Form -->
+            <div class="space-y-8">
+                <div class="donation-card rounded-3xl" style="animation: slideUp 0.8s ease-out;">
+                    <div class="p-8">
+                        <div class="text-center mb-8">
+                            <div class="w-16 h-16 bg-gradient-to-r from-cn-green-500 to-cn-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                <i class="fas fa-heart text-white text-2xl"></i>
+                            </div>
+                            <h2 class="text-3xl font-black text-gray-800 mb-2">Make a Donation</h2>
+                            <p class="text-gray-600 font-medium">Choose your amount and payment method</p>
+                        </div>
+
+                        <form method="post" id="donation-form" class="space-y-8">
+                            {% csrf_token %}
+                            
+                            <!-- Quick Amount Selection -->
+                            <div class="space-y-4">
+                                <label class="block text-lg font-bold text-gray-800">Quick Select Amount</label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    <button type="button" class="amount-btn" data-amount="500">Rs. 500</button>
+                                    <button type="button" class="amount-btn" data-amount="1000">Rs. 1,000</button>
+                                    <button type="button" class="amount-btn" data-amount="2500">Rs. 2,500</button>
+                                    <button type="button" class="amount-btn" data-amount="5000">Rs. 5,000</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Custom Amount -->
+                            <div class="space-y-4">
+                                <label for="{{ form.amount.id_for_label }}" class="block text-lg font-bold text-gray-800">
+                                    {{ form.amount.label }}
+                                </label>
+                                <div class="relative">
+                                    {{ form.amount|add_class:"form-input" }}
+                                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">
+                                        NPR
+                                    </div>
+                                </div>
+                                {% if form.amount.errors %}
+                                    <div class="text-red-600 text-sm font-semibold">{{ form.amount.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Payment Methods -->
+                            <div class="space-y-4">
+                                <label class="block text-lg font-bold text-gray-800">Select Payment Method</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="payment-method" data-method="khalti">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            <img src="https://khalti.s3.ap-south-1.amazonaws.com/website/khalti-logo.png" 
+                                                 alt="Khalti" class="h-8">
+                                            <span class="font-bold text-gray-800">Khalti</span>
+                                        </div>
+                                        <div class="text-sm text-gray-600 mt-2">Digital wallet & Banking</div>
+                                    </div>
+                                    <div class="payment-method" data-method="esewa">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            <img src="https://esewa.com.np/common/images/esewa-logo.png" 
+                                                 alt="eSewa" class="h-8">
+                                            <span class="font-bold text-gray-800">eSewa</span>
+                                        </div>
+                                        <div class="text-sm text-gray-600 mt-2">Digital wallet</div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="payment_method" id="payment-method-input" required>
+                            </div>
+                            
+                            <!-- Donor Information -->
+                            {% if not user.is_authenticated %}
+                            <div class="space-y-4">
+                                <h3 class="text-lg font-bold text-gray-800">Donor Information</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="{{ form.donor_name.id_for_label }}" class="block text-sm font-bold text-gray-700 mb-2">
+                                            {{ form.donor_name.label }}
+                                        </label>
+                                        {{ form.donor_name|add_class:"form-input" }}
+                                        {% if form.donor_name.errors %}
+                                            <div class="text-red-600 text-sm font-semibold mt-1">{{ form.donor_name.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <label for="{{ form.donor_email.id_for_label }}" class="block text-sm font-bold text-gray-700 mb-2">
+                                            {{ form.donor_email.label }}
+                                        </label>
+                                        {{ form.donor_email|add_class:"form-input" }}
+                                        {% if form.donor_email.errors %}
+                                            <div class="text-red-600 text-sm font-semibold mt-1">{{ form.donor_email.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Message -->
+                            <div class="space-y-4">
+                                <label for="{{ form.donor_message.id_for_label }}" class="block text-lg font-bold text-gray-800">
+                                    {{ form.donor_message.label }} <span class="text-gray-500 font-normal">(Optional)</span>
+                                </label>
+                                {{ form.donor_message|add_class:"form-input" }}
+                                {% if form.donor_message.errors %}
+                                    <div class="text-red-600 text-sm font-semibold">{{ form.donor_message.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Anonymous Option -->
+                            <div class="space-y-4">
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    {{ form.is_anonymous }}
+                                    <span class="text-lg font-bold text-gray-800">{{ form.is_anonymous.label }}</span>
+                                </label>
+                                <p class="text-sm text-gray-600">Your name will not be displayed publicly if checked</p>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="pt-6">
+                                <button type="submit" 
+                                        class="btn-hover w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 hover:from-cn-green-700 hover:to-cn-green-800 text-white py-6 px-8 rounded-2xl text-xl shadow-2xl flex items-center justify-center">
+                                    <i class="fas fa-heart mr-4"></i>
+                                    💝 Donate Now
+                                </button>
+                            </div>
+                            
+                            <div class="text-center text-sm text-gray-500 font-medium">
+                                <i class="fas fa-shield-alt mr-2 text-cn-green-600"></i>
+                                Your donation is secure and goes directly to the campaign
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Quick amount selection
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove selected class from all buttons
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            
+            // Add selected class to clicked button
+            this.classList.add('selected');
+            
+            // Update amount input
+            const amount = this.dataset.amount;
+            document.getElementById('{{ form.amount.id_for_label }}').value = amount;
+        });
+    });
+    
+    // Payment method selection
+    document.querySelectorAll('.payment-method').forEach(method => {
+        method.addEventListener('click', function() {
+            // Remove selected class from all methods
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            
+            // Add selected class to clicked method
+            this.classList.add('selected');
+            
+            // Update hidden input
+            document.getElementById('payment-method-input').value = this.dataset.method;
+        });
+    });
+    
+    // Form validation
+    document.getElementById('donation-form').addEventListener('submit', function(e) {
+        const paymentMethod = document.getElementById('payment-method-input').value;
+        
+        if (!paymentMethod) {
+            e.preventDefault();
+            alert('Please select a payment method');
+            return;
+        }
+        
+        const amount = document.getElementById('{{ form.amount.id_for_label }}').value;
+        if (!amount || parseFloat(amount) < 50) {
+            e.preventDefault();
+            alert('Please enter a valid donation amount (minimum Rs. 50)');
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+        `;
+        submitBtn.disabled = true;
+    });
+    
+    // Animation on load
+    window.addEventListener('load', function() {
+        const animatedElements = document.querySelectorAll('[style*="slideUp"]');
+        animatedElements.forEach((el, index) => {
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0) scale(1)';
+            }, index * 100);
+        });
+    });
+</script>
+{% endblock %}

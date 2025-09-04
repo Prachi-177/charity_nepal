@@ -265,23 +265,16 @@
                                 </div>
 
                                 <!-- Enhanced Donate Button -->
-                                {% if user.is_authenticated %}
-                                    <button class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl mb-6" onclick="handleDonation()">
+                                <div class="mb-6">
+                                    <a href="{% url 'donations:create' case.pk %}" class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block text-center">
                                         <i class="fas fa-heart mr-2"></i>
-                                        Donate Now
-                                    </button>
-                                {% else %}
-                                    <div class="text-center mb-6">
-                                        <p class="text-sm text-cn-muted mb-4 bg-yellow-50 p-3 rounded-xl">
-                                            <i class="fas fa-info-circle mr-2 text-yellow-500"></i>
-                                            Please login to make a donation
-                                        </p>
-                                        <a href="{% url 'users:login' %}?next={{ request.path }}%23donate" class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block">
-                                            <i class="fas fa-sign-in-alt mr-2"></i>
-                                            Login to Donate
-                                        </a>
-                                    </div>
-                                {% endif %}
+                                        💝 Donate Now
+                                    </a>
+                                    <p class="text-xs text-center text-gray-600 mt-2">
+                                        <i class="fas fa-shield-alt mr-1 text-cn-green-600"></i>
+                                        Secure payment with Khalti & eSewa
+                                    </p>
+                                </div>
 
                                 <!-- Enhanced Share Section -->
                                 <div class="border-t border-gray-200 pt-6">

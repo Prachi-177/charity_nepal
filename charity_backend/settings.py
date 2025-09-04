@@ -223,6 +223,7 @@ ESEWA_MERCHANT_CODE = config("ESEWA_MERCHANT_CODE", default="")
 ESEWA_SECRET_KEY = config("ESEWA_SECRET_KEY", default="")
 KHALTI_PUBLIC_KEY = config("KHALTI_PUBLIC_KEY", default="")
 KHALTI_SECRET_KEY = config("KHALTI_SECRET_KEY", default="")
+KHALTI_LIVE_MODE = config("KHALTI_LIVE_MODE", default=False, cast=bool)
 
 # Security Settings
 if not DEBUG:

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Failed - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        min-height: 100vh;
+    }
+    
+    .failed-animation {
+        animation: failedShake 0.8s ease-out;
+    }
+    
+    @keyframes failedShake {
+        0% { opacity: 0; transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        50% { transform: translateX(10px); }
+        75% { transform: translateX(-5px); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+    
+    .failed-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        position: relative;
+    }
+    
+    .failed-icon::before {
+        content: '✕';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+    }
+    
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.1),
+            0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex items-center justify-center py-16">
+    <div class="container mx-auto px-4 max-w-2xl">
+        <div class="glass-effect p-12 text-center failed-animation">
+            <div class="failed-icon mx-auto mb-8"></div>
+            
+            <h1 class="text-4xl font-black text-gray-800 mb-4">
+                Payment Failed 😔
+            </h1>
+            
+            <p class="text-xl text-gray-600 mb-8">
+                Unfortunately, your payment could not be processed. Please try again or contact support.
+            </p>
+            
+            {% if error_message %}
+            <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
+                <p class="text-red-700 font-semibold">{{ error_message }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'donations:create' case_id %}" 
+                   class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 hover:transform hover:scale-105">
+                    Try Again
+                </a>
+                <a href="{% url 'cases:case_list' %}" 
+                   class="bg-white hover:bg-gray-50 text-gray-800 px-8 py-4 rounded-xl font-bold border-2 border-gray-200 transition-all duration-300 hover:transform hover:scale-105">
+                    Browse Other Cases
+                </a>
+            </div>
+            
+            <div class="mt-8 text-sm text-gray-500">
+                <p>Need help? Contact us at <a href="mailto:support@charitynepal.org" class="text-blue-600 hover:underline">support@charitynepal.org</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

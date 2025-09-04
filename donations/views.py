@@ -1,18 +1,25 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Sum
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from cases.models import CharityCase
 
 from .forms import DonationForm
+from .khalti_utils import khalti_gateway
 from .models import Donation
 
 
 class DonationCreateView(CreateView):
-    """Create a new donation"""
+    """Create a new donation with Khalti payment integration"""
 
     model = Donation
     form_class = DonationForm
@@ -35,17 +42,97 @@ class DonationCreateView(CreateView):
         return kwargs
 
     def form_valid(self, form):
-        form.instance.case = self.get_case()
-        if self.request.user.is_authenticated:
-            form.instance.donor = self.request.user
+        # Create donation instance but don't save to database yet
+        donation = form.save(commit=False)
+        donation.case = self.get_case()
 
-        response = super().form_valid(form)
-        messages.success(self.request, "Thank you for your generous donation!")
-        return response
+        if self.request.user.is_authenticated:
+            donation.donor = self.request.user
+
+        # Generate payment reference
+        donation.payment_reference = khalti_gateway.generate_payment_reference()
+        donation.status = "pending"
+
+        # Get client IP
+        x_forwarded_for = self.request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            donation.ip_address = x_forwarded_for.split(",")[0]
+        else:
+            donation.ip_address = self.request.META.get("REMOTE_ADDR")
+
+        # Get user agent
+        donation.user_agent = self.request.META.get("HTTP_USER_AGENT", "")
+
+        # Save the donation
+        donation.save()
+
+        # Handle payment method
+        if donation.payment_method == "khalti":
+            return self.handle_khalti_payment(donation)
+        elif donation.payment_method == "esewa":
+            return self.handle_esewa_payment(donation)
+        else:
+            # For other payment methods, mark as completed for now
+            donation.status = "completed"
+            donation.completed_at = timezone.now()
+            donation.save()
+            messages.success(self.request, "Thank you for your generous donation!")
+            return HttpResponseRedirect(self.get_success_url())
+
+    def handle_khalti_payment(self, donation):
+        """Handle Khalti payment initiation"""
+        try:
+            # Get donor information
+            donor_name = donation.donor_name or "Anonymous Donor"
+            donor_email = donation.donor_email or "anonymous@charity.np"
+
+            if donation.donor and not donation.is_anonymous:
+                donor_name = donation.donor.get_full_name() or donation.donor.email
+                donor_email = donation.donor.email
+
+            # Initiate payment with Khalti
+            payment_response = khalti_gateway.initiate_payment(
+                amount=donation.amount,
+                donation_id=donation.id,
+                donor_name=donor_name,
+                donor_email=donor_email,
+                case_title=donation.case.title,
+                request=self.request,
+            )
+
+            if payment_response["success"]:
+                # Update donation with payment details
+                donation.payment_reference = payment_response["purchase_order_id"]
+                donation.save()
+
+                # Redirect to Khalti payment page
+                payment_url = payment_response["data"]["payment_url"]
+                return HttpResponseRedirect(payment_url)
+            else:
+                # Payment initiation failed
+                donation.status = "failed"
+                donation.save()
+                messages.error(
+                    self.request,
+                    f"Failed to initiate payment: {payment_response.get('message', 'Unknown error')}",
+                )
+                return self.form_invalid(self.get_form())
+
+        except Exception as e:
+            donation.status = "failed"
+            donation.save()
+            messages.error(self.request, f"Payment initialization failed: {str(e)}")
+            return self.form_invalid(self.get_form())
+
+    def handle_esewa_payment(self, donation):
+        """Handle eSewa payment (placeholder for future implementation)"""
+        messages.info(self.request, "eSewa payment integration coming soon!")
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         # Redirect to case detail page with success message
-        return reverse("cases:detail", kwargs={"pk": self.object.case.pk})
+        case = self.get_case()
+        return reverse("cases:detail", kwargs={"pk": case.pk})
 
 
 class MyDonationsView(LoginRequiredMixin, ListView):
@@ -196,3 +283,117 @@ class DonationStatsView(TemplateView):
         context["monthly_stats"] = monthly_stats
 
         return context
+
+
+# Khalti Payment Gateway Views
+def khalti_success(request, donation_id):
+    """Handle successful Khalti payment callback"""
+    try:
+        donation = get_object_or_404(Donation, id=donation_id)
+        pidx = request.GET.get("pidx")
+
+        if not pidx:
+            messages.error(request, "Invalid payment callback - missing payment index")
+            return redirect("cases:detail", pk=donation.case.pk)
+
+        # Verify payment with Khalti
+        verification_response = khalti_gateway.verify_payment(pidx)
+
+        if verification_response["success"]:
+            payment_status = verification_response["status"]
+
+            if payment_status == "completed":
+                # Payment successful
+                donation.status = "completed"
+                donation.transaction_id = verification_response["transaction_id"]
+                donation.completed_at = timezone.now()
+                donation.save()
+
+                # Update case collected amount
+                donation.case.update_collected_amount()
+
+                messages.success(
+                    request,
+                    f"🎉 Thank you for your generous donation of Rs. {donation.amount}! "
+                    f"Your contribution will make a real difference.",
+                )
+            else:
+                # Payment failed or pending
+                donation.status = payment_status
+                donation.save()
+
+                messages.warning(
+                    request,
+                    f"Payment status: {payment_status}. Please contact support if you have any issues.",
+                )
+        else:
+            # Verification failed
+            donation.status = "failed"
+            donation.save()
+            messages.error(
+                request,
+                f"Payment verification failed: {verification_response.get('message', 'Unknown error')}",
+            )
+
+    except Exception as e:
+        messages.error(request, f"Error processing payment: {str(e)}")
+
+    return redirect("cases:detail", pk=donation.case.pk)
+
+
+@csrf_exempt
+@require_POST
+def khalti_webhook(request):
+    """Handle Khalti webhook for payment notifications"""
+    try:
+        payload = json.loads(request.body.decode("utf-8"))
+        signature = request.headers.get("Khalti-Signature", "")
+
+        # Verify webhook signature
+        if not khalti_gateway.verify_webhook_signature(payload, signature):
+            return JsonResponse({"error": "Invalid signature"}, status=400)
+
+        # Process webhook data
+        event_type = payload.get("type")
+        payment_data = payload.get("data", {})
+
+        if event_type == "payment_completed":
+            # Find donation by payment reference or transaction ID
+            purchase_order_id = payment_data.get("purchase_order_id")
+
+            try:
+                donation = Donation.objects.get(payment_reference=purchase_order_id)
+
+                if donation.status != "completed":
+                    donation.status = "completed"
+                    donation.transaction_id = payment_data.get("transaction_id")
+                    donation.completed_at = timezone.now()
+                    donation.save()
+
+                    # Update case collected amount
+                    donation.case.update_collected_amount()
+
+            except Donation.DoesNotExist:
+                return JsonResponse({"error": "Donation not found"}, status=404)
+
+        return JsonResponse({"status": "success"})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+def payment_failed(request, donation_id):
+    """Handle failed payment"""
+    try:
+        donation = get_object_or_404(Donation, id=donation_id)
+        donation.status = "failed"
+        donation.save()
+
+        messages.error(
+            request,
+            "Payment was not completed. You can try again or choose a different payment method.",
+        )
+    except Exception as e:
+        messages.error(request, f"Error processing failed payment: {str(e)}")
+
+    return redirect("cases:detail", pk=donation.case.pk)
