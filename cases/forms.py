@@ -24,7 +24,6 @@ class CharityCaseForm(forms.ModelForm):
             "documents",
             "deadline",
             "tags",
-            "is_featured",
         ]
         widgets = {
             "title": forms.TextInput(

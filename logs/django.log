@@ -13326,3 +13326,249 @@ crispy_forms.exceptions.CrispyError: |as_crispy_field got passed an invalid or i
 "GET /cases/17/edit/ HTTP/1.1" 500 162818
 /Users/prachi/Desktop/charity_nepal/cases/forms.py changed, reloading.
 Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET / HTTP/1.1" 400 75331
+Watching for file changes with StatReloader
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET / HTTP/1.1" 400 75453
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET / HTTP/1.1" 400 75453
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET / HTTP/1.1" 400 75453
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET / HTTP/1.1" 400 75581
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET /favicon.ico HTTP/1.1" 400 75418
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET / HTTP/1.1" 400 75581
+Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'api.bibektimilsina.tech'. You may need to add 'api.bibektimilsina.tech' to ALLOWED_HOSTS.
+"GET /favicon.ico HTTP/1.1" 400 75418
+/Users/bibektimilsina/projects/charity_nepal/charity_backend/settings.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/bibektimilsina/projects/charity_nepal/charity_backend/settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 120587
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 200 623
+"GET /static/django-browser-reload/reload-worker.js HTTP/1.1" 200 2711
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10376
+Not Found: /robots.txt
+"GET /robots.txt HTTP/1.1" 404 10373
+"GET / HTTP/1.1" 200 120587
+"GET / HTTP/1.1" 200 120587
+"GET / HTTP/1.1" 200 120587
+"GET /?fbclid=IwZXh0bgNhZW0CMTEAAR4Lgui2PQNSkqpxAp6KcpIW9WFXuFcdrPXLfmZw4ydjxW8p-hZKwr3v2KlQSg_aem_GwLk0tGaHeBQZkKhAo5jXA HTTP/1.1" 200 120587
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 200 623
+"GET /static/django-browser-reload/reload-worker.js HTTP/1.1" 200 2711
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10376
+"GET /auth/login/ HTTP/1.1" 200 30853
+"GET /auth/login/ HTTP/1.1" 200 30853
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 200 623
+Forbidden (Origin checking failed - https://api.bibektimilsina.tech does not match any trusted origins.): /auth/login/
+"POST /auth/login/ HTTP/1.1" 403 2754
+"GET / HTTP/1.1" 200 120587
+Forbidden (Origin checking failed - https://api.bibektimilsina.tech does not match any trusted origins.): /auth/login/
+"POST /auth/login/ HTTP/1.1" 403 2754
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10376
+Forbidden (Origin checking failed - https://api.bibektimilsina.tech does not match any trusted origins.): /auth/login/
+"POST /auth/login/ HTTP/1.1" 403 2754
+/Users/bibektimilsina/projects/charity_nepal/charity_backend/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Forbidden (Origin checking failed - https://api.bibektimilsina.tech does not match any trusted origins.): /auth/login/
+"POST /auth/login/ HTTP/1.1" 403 2754
+/Users/bibektimilsina/projects/charity_nepal/charity_backend/settings.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /auth/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 150777
+/Users/bibektimilsina/projects/charity_nepal/charity_backend/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 150032
+"GET /cases/create/ HTTP/1.1" 200 56464
+"POST /auth/login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 150777
+"GET / HTTP/1.1" 200 150032
+"GET /cases/ HTTP/1.1" 200 97502
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 10376
+"GET /cases/12/ HTTP/1.1" 200 109778
+"GET /cases/ HTTP/1.1" 200 97502
+Internal Server Error: /cases/12/edit/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'detail' with arguments '('',)' not found. 1 pattern(s) tried: ['cases/(?P<pk>[0-9]+)/\\Z']
+"GET /cases/12/edit/ HTTP/1.1" 500 178437
+"GET /static/django-browser-reload/reload-worker.js HTTP/1.1" 200 2711
+/Users/bibektimilsina/projects/charity_nepal/cases/views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cases/12/edit/ HTTP/1.1" 200 53812
+"GET /cases/ HTTP/1.1" 200 97502
+"GET /cases/12/edit/ HTTP/1.1" 200 53812
+"GET /cases/ HTTP/1.1" 200 97502
+"GET /cases/12/edit/ HTTP/1.1" 200 53812
+"GET /cases/ HTTP/1.1" 200 97502
+"GET /cases/12/edit/ HTTP/1.1" 200 53822
+"GET /cases/ HTTP/1.1" 200 97502
+"GET /admin HTTP/1.1" 301 0
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+"GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+"GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+"GET /cases/12/edit/ HTTP/1.1" 200 53830
+"GET /cases/12/edit/ HTTP/1.1" 200 53981
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+"GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+"GET /cases/12/edit/ HTTP/1.1" 200 53981
+"GET /cases/12/edit/ HTTP/1.1" 200 53981
+"GET /cases/12/edit/ HTTP/1.1" 200 53981
+"GET /cases/12/edit/ HTTP/1.1" 200 54007
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /static/admin/css/base.css HTTP/1.1" 200 22120
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+"GET /cases/12/edit/ HTTP/1.1" 200 53981
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /cases/12/edit/ HTTP/1.1" 200 53981
+"GET /admin/ HTTP/1.1" 200 18558
+/Users/bibektimilsina/projects/charity_nepal/cases/views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cases/12/edit/ HTTP/1.1" 200 53981
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /admin/cases/charitycase/ HTTP/1.1" 200 41078

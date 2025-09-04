@@ -33,7 +33,9 @@ SECRET_KEY = config(
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=lambda v: v.split(",")
+    "ALLOWED_HOSTS",
+    default="localhost,127.0.0.1,api.bibektimilsina.tech,bibektimilsina.tech",
+    cast=lambda v: [host.strip() for host in v.split(",")],
 )
 
 
@@ -128,9 +130,20 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:8080",
     "http://127.0.0.1:8080",
+    "https://api.bibektimilsina.tech",
+    "https://bibektimilsina.tech",
+    "http://api.bibektimilsina.tech",
+    "http://bibektimilsina.tech",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://api.bibektimilsina.tech",
+    "https://bibektimilsina.tech",
+    "http://api.bibektimilsina.tech",
+    "http://bibektimilsina.tech",
+]
 
 
 # Password validation

@@ -1178,6 +1178,7 @@ class CaseUpdateView(LoginRequiredMixin, UpdateView):
     model = CharityCase
     form_class = CharityCaseForm
     template_name = "cases/update.html"
+    context_object_name = "case"
 
     def get_queryset(self):
         # Only allow editing own cases or admin can edit all
