@@ -52,6 +52,8 @@ urlpatterns = [
     path("recommendations/", include("recommendations.urls")),
     # Home page with ML-powered dynamic content
     path("", HomeView.as_view(), name="home"),
+    path('about/', TemplateView.as_view(template_name="about.html"), name='about'),
+    path('contact/', TemplateView.as_view(template_name="contact.html"), name='contact'),
 ]
 
 # Serve media files in development

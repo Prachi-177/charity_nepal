@@ -13077,3 +13077,252 @@ Not Found: /favicon.ico
 /Users/bibektimilsina/projects/charity_nepal/cases/views.py changed, reloading.
 Watching for file changes with StatReloader
 "GET / HTTP/1.1" 200 150010
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 120565
+"GET /cases/create/ HTTP/1.1" 302 0
+"GET /auth/login/?next=/cases/create/ HTTP/1.1" 200 30825
+"POST /auth/login/?next=/cases/create/ HTTP/1.1" 200 31595
+"POST /auth/login/?next=/cases/create/ HTTP/1.1" 200 31595
+"POST /auth/login/?next=/cases/create/ HTTP/1.1" 200 31595
+"POST /auth/login/?next=/cases/create/ HTTP/1.1" 200 31595
+"GET /auth/login/ HTTP/1.1" 200 30825
+"POST /auth/login/ HTTP/1.1" 200 31595
+"POST /auth/login/ HTTP/1.1" 200 31595
+Internal Server Error: /password/reset/
+Traceback (most recent call last):
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: users/password_reset.html
+"GET /password/reset/ HTTP/1.1" 500 82108
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4371
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 120559
+"GET /static/django-browser-reload/reload-listener.js HTTP/1.1" 304 0
+"GET /static/django-browser-reload/reload-worker.js HTTP/1.1" 304 0
+"GET /auth/login/ HTTP/1.1" 200 30825
+"POST /auth/login/ HTTP/1.1" 200 31595
+"GET /auth/login/ HTTP/1.1" 200 30825
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4371
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/css/login.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 18558
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+"GET /admin/ HTTP/1.1" 200 18558
+"GET / HTTP/1.1" 200 150004
+"GET / HTTP/1.1" 200 150004
+/Users/prachi/Desktop/charity_nepal/charity_backend/urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 150004
+"GET / HTTP/1.1" 200 150032
+"GET / HTTP/1.1" 200 150032
+"GET /about/ HTTP/1.1" 200 29864
+"GET /contact/ HTTP/1.1" 200 30354
+"GET /about/ HTTP/1.1" 200 29864
+"GET / HTTP/1.1" 200 150032
+"GET /cases/ HTTP/1.1" 200 97502
+"GET / HTTP/1.1" 200 150032
+"GET /cases/create/ HTTP/1.1" 200 56464
+"POST /cases/create/ HTTP/1.1" 302 0
+"GET /cases/17/ HTTP/1.1" 200 96388
+"GET /media/cases/images/4c03e6d4-9e6e-4ac1-ac31-4f97cd16ac3a.jpeg HTTP/1.1" 200 103505
+Internal Server Error: /cases/17/edit/
+Traceback (most recent call last):
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'detail' with arguments '('',)' not found. 1 pattern(s) tried: ['cases/(?P<pk>[0-9]+)/\\Z']
+"GET /cases/17/edit/ HTTP/1.1" 500 168962
+"GET /cases/17/ HTTP/1.1" 200 95608
+"GET /cases/17/ HTTP/1.1" 200 95608
+"GET /media/cases/images/4c03e6d4-9e6e-4ac1-ac31-4f97cd16ac3a.jpeg HTTP/1.1" 304 0
+"GET /cases/17/ HTTP/1.1" 200 95608
+"GET /cases/17/ HTTP/1.1" 200 95608
+"GET /media/cases/images/4c03e6d4-9e6e-4ac1-ac31-4f97cd16ac3a.jpeg HTTP/1.1" 304 0
+"GET /cases/17/ HTTP/1.1" 200 95608
+/Users/prachi/Desktop/charity_nepal/charity_backend/urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /cases/17/ HTTP/1.1" 200 95608
+"GET /media/cases/images/4c03e6d4-9e6e-4ac1-ac31-4f97cd16ac3a.jpeg HTTP/1.1" 304 0
+"GET /cases/17/ HTTP/1.1" 200 95608
+Internal Server Error: /cases/17/delete/
+Traceback (most recent call last):
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'detail' with arguments '('',)' not found. 1 pattern(s) tried: ['cases/(?P<pk>[0-9]+)/\\Z']
+"GET /cases/17/delete/ HTTP/1.1" 500 161912
+Internal Server Error: /cases/17/edit/
+Traceback (most recent call last):
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 749, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 99, in as_crispy_field
+    raise CrispyError("|as_crispy_field got passed an invalid or inexistent field")
+crispy_forms.exceptions.CrispyError: |as_crispy_field got passed an invalid or inexistent field
+"GET /cases/17/edit/ HTTP/1.1" 500 162818
+/Users/prachi/Desktop/charity_nepal/cases/forms.py changed, reloading.
+Watching for file changes with StatReloader
