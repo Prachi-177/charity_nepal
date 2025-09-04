@@ -13572,3 +13572,89 @@ Watching for file changes with StatReloader
 "GET /cases/12/edit/ HTTP/1.1" 200 53981
 "GET /admin/ HTTP/1.1" 200 18558
 "GET /admin/cases/charitycase/ HTTP/1.1" 200 41078
+Not Found: /favicon.ico
+Not Found: /apple-touch-icon-precomposed.png
+Not Found: /apple-touch-icon.png
+"GET /favicon.ico HTTP/1.1" 404 10376
+"GET /apple-touch-icon.png HTTP/1.1" 404 10403
+"GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 10439
+"GET /cases/12/ HTTP/1.1" 200 102879
+Internal Server Error: /cases/12/delete/
+Traceback (most recent call last):
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/Users/bibektimilsina/projects/charity_nepal/.venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'detail' with arguments '('',)' not found. 1 pattern(s) tried: ['cases/(?P<pk>[0-9]+)/\\Z']
+"GET /cases/12/delete/ HTTP/1.1" 500 168575
+Watching for file changes with StatReloader
+"GET /cases/12/delete/ HTTP/1.1" 200 41536
+"GET /cases/12/delete/ HTTP/1.1" 200 41536
+"GET /cases/12/delete/ HTTP/1.1" 200 41536
+"GET /cases/12/delete/ HTTP/1.1" 200 41536
+"GET /cases/12/delete/ HTTP/1.1" 200 41536
+"GET /cases/12/delete/ HTTP/1.1" 200 41536
+"GET /cases/12/edit/ HTTP/1.1" 200 57175
+"GET /cases/12/edit/ HTTP/1.1" 200 57175
+"POST /cases/12/edit/ HTTP/1.1" 302 0
+"GET /cases/12/ HTTP/1.1" 200 110547
+"GET /cases/12/edit/ HTTP/1.1" 200 57175
+"GET /cases/12/edit/ HTTP/1.1" 200 56599
+"GET /cases/12/edit/ HTTP/1.1" 200 56599
+"GET /cases/12/edit/ HTTP/1.1" 200 56599
+"GET /cases/12/edit/ HTTP/1.1" 200 57417
+"GET /cases/?id=997782b7-d53d-4d83-9e90-5dd10e019560&vscodeBrowserReqId=1756960006150 HTTP/1.1" 200 91481
+"GET /cases/12/edit/ HTTP/1.1" 200 57417
+"GET /cases/12/edit/ HTTP/1.1" 200 57417
+"GET /cases/12/edit/ HTTP/1.1" 200 57417
+"GET /cases/12/edit/ HTTP/1.1" 200 57399
+"GET /cases/12/edit/ HTTP/1.1" 200 57399
+"GET /cases/12/edit/ HTTP/1.1" 200 57399
+"GET /cases/12/delete/ HTTP/1.1" 200 41536

@@ -1204,6 +1204,7 @@ class CaseDeleteView(LoginRequiredMixin, DeleteView):
 
     model = CharityCase
     template_name = "cases/delete.html"
+    context_object_name = "case"
     success_url = reverse_lazy("cases:list")
 
     def get_queryset(self):

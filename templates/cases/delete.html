@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Delete {{ case.title }} - CharityNepal{% endblock %}
+{% block title %}Delete {{ case.title|default:"Campaign" }} - CharityNepal{% endblock %}
 
 {% block content %}
+{% if case %}
 <section class="py-12 bg-slate-50 min-h-screen">
     <div class="container mx-auto px-4 max-w-2xl">
         <!-- Breadcrumb -->
@@ -10,7 +11,7 @@
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'cases:list' %}">Campaigns</a></li>
-                <li><a href="{% url 'cases:detail' case.pk %}">{{ case.title|truncatechars:20 }}</a></li>
+                <li><a href="{% if case and case.pk %}{% url 'cases:detail' case.pk %}{% else %}#{% endif %}">{{ case.title|default:"Campaign"|truncatechars:20 }}</a></li>
                 <li>Delete</li>
             </ul>
         </div>
@@ -31,7 +32,7 @@
                 <div class="bg-slate-50 rounded-lg p-6 mb-6">
                     <div class="flex items-start space-x-4">
                         {% if case.featured_image %}
-                            <img src="{{ case.featured_image.url }}" alt="{{ case.title }}" class="w-20 h-16 object-cover rounded-lg">
+                            <img src="{{ case.featured_image.url }}" alt="{{ case.title|default:"Campaign" }}" class="w-20 h-16 object-cover rounded-lg">
                         {% else %}
                             <div class="w-20 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -41,8 +42,8 @@
                         {% endif %}
                         
                         <div class="flex-1">
-                            <h3 class="font-semibold text-lg text-slate-800 mb-2">{{ case.title }}</h3>
-                            <div class="text-sm text-slate-600 mb-2">{{ case.get_category_display }}</div>
+                            <h3 class="font-semibold text-lg text-slate-800 mb-2">{{ case.title|default:"Campaign" }}</h3>
+                            <div class="text-sm text-slate-600 mb-2">{{ case.get_category_display|default:"General" }}</div>
                             <div class="flex items-center text-xs text-slate-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
@@ -138,7 +139,7 @@
                             Permanently Delete Campaign
                         </button>
                         
-                        <a href="{% url 'cases:detail' case.pk %}" class="btn btn-outline btn-lg flex-1">
+                        <a href="{% if case and case.pk %}{% url 'cases:detail' case.pk %}{% else %}#{% endif %}" class="btn btn-outline btn-lg flex-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -196,6 +197,15 @@
         </div>
     </div>
 </section>
+{% else %}
+<div class="min-h-screen flex items-center justify-center">
+    <div class="text-center">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Campaign Not Found</h1>
+        <p class="text-gray-600 mb-6">The campaign you're trying to delete doesn't exist or you don't have permission to access it.</p>
+        <a href="{% url 'cases:list' %}" class="btn btn-primary">Back to Campaigns</a>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}
