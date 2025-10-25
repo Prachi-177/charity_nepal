@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from donations.models import Donation
+from donations.khalti_utils import khalti_gateway
 
 from .models import PaymentIntent
 from .serializers import PaymentIntentSerializer
@@ -30,17 +31,21 @@ class CreatePaymentIntentView(APIView):
     def post(self, request):
         try:
             donation_id = request.data.get("donation_id")
-            payment_method = request.data.get("payment_method", "esewa")
-
             donation = get_object_or_404(Donation, id=donation_id, donor=request.user)
+
+            # Get the Khalti gateway
+            gateway = PaymentIntent.objects.get(name="khalti")
 
             # Create payment intent
             payment_intent = PaymentIntent.objects.create(
                 donation=donation,
-                payment_method=payment_method,
+                gateway=gateway,
                 amount=donation.amount,
                 currency="NPR",
                 status="pending",
+                return_url=request.build_absolute_uri(f"/donations/khalti/success/{donation.id}/"),
+                cancel_url=request.build_absolute_uri(f"/donations/khalti/failed/{donation.id}/"),
+                expires_at=timezone.now() + timezone.timedelta(hours=1)
             )
 
             serializer = PaymentIntentSerializer(payment_intent)
@@ -64,43 +69,10 @@ class PaymentIntentDetailView(APIView):
             return Response(serializer.data)
 
         except Exception as e:
-            logger.error(f"Error retrieving payment intent: {str(e)}")
+            logger.error(f"Error getting payment intent: {str(e)}")
             return Response(
-                {"error": "Payment intent not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-
-class EsewaVerificationView(APIView):
-    """Verify eSewa payment"""
-
-    def post(self, request):
-        try:
-            payment_intent_id = request.data.get("payment_intent_id")
-            transaction_code = request.data.get("transaction_code")
-
-            payment_intent = get_object_or_404(PaymentIntent, id=payment_intent_id)
-
-            # TODO: Implement actual eSewa verification API call
-            # For now, simulate successful verification
-
-            payment_intent.status = "completed"
-            payment_intent.save()
-
-            # Update donation status
-            donation = payment_intent.donation
-            donation.status = "completed"
-            donation.completed_at = timezone.now()
-            donation.save()
-
-            return Response(
-                {"status": "success", "message": "Payment verified successfully"}
-            )
-
-        except Exception as e:
-            logger.error(f"Error verifying eSewa payment: {str(e)}")
-            return Response(
-                {"error": "Payment verification failed"},
-                status=status.HTTP_400_BAD_REQUEST,
+                {"error": "Payment intent not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
 
 
@@ -110,26 +82,39 @@ class KhaltiVerificationView(APIView):
     def post(self, request):
         try:
             payment_intent_id = request.data.get("payment_intent_id")
-            token = request.data.get("token")
-            amount = request.data.get("amount")
+            pidx = request.data.get("pidx")
 
             payment_intent = get_object_or_404(PaymentIntent, id=payment_intent_id)
+            
+            # Verify payment with Khalti
+            verification = khalti_gateway.verify_payment(pidx)
 
-            # TODO: Implement actual Khalti verification API call
-            # For now, simulate successful verification
+            if verification["success"]:
+                # Update payment intent
+                payment_intent.status = "succeeded"
+                payment_intent.gateway_payment_id = verification["transaction_id"]
+                payment_intent.processed_at = timezone.now()
+                payment_intent.save()
 
-            payment_intent.status = "completed"
-            payment_intent.save()
+                # Update donation
+                donation = payment_intent.donation
+                donation.status = "completed"
+                donation.transaction_id = verification["transaction_id"]
+                donation.completed_at = timezone.now()
+                donation.save()
 
-            # Update donation status
-            donation = payment_intent.donation
-            donation.status = "completed"
-            donation.completed_at = timezone.now()
-            donation.save()
+                # Update case collected amount
+                donation.case.update_collected_amount()
 
-            return Response(
-                {"status": "success", "message": "Payment verified successfully"}
-            )
+                return Response({
+                    "status": "success",
+                    "message": "Payment verified successfully"
+                })
+            else:
+                return Response(
+                    {"error": "Payment verification failed"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         except Exception as e:
             logger.error(f"Error verifying Khalti payment: {str(e)}")
@@ -139,20 +124,56 @@ class KhaltiVerificationView(APIView):
             )
 
 
-class EsewaCallbackView(APIView):
-    """Handle eSewa callback"""
-
-    def post(self, request):
-        # Handle eSewa payment callback
-        return Response({"status": "received"})
-
-
 class KhaltiWebhookView(APIView):
     """Handle Khalti webhook"""
 
     def post(self, request):
-        # Handle Khalti webhook
-        return Response({"status": "received"})
+        try:
+            # Verify webhook signature
+            signature = request.headers.get("Khalti-Signature")
+            if not khalti_gateway.verify_webhook_signature(request.body, signature):
+                return Response(
+                    {"error": "Invalid webhook signature"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Process webhook data
+            payload = json.loads(request.body)
+            event_type = payload.get("type")
+            payment_data = payload.get("data", {})
+
+            if event_type == "payment.completed":
+                pidx = payment_data.get("pidx")
+                if pidx:
+                    # Find and update payment intent
+                    try:
+                        payment_intent = PaymentIntent.objects.get(
+                            gateway_payment_id=pidx
+                        )
+                        payment_intent.status = "succeeded"
+                        payment_intent.processed_at = timezone.now()
+                        payment_intent.save()
+
+                        # Update donation status
+                        donation = payment_intent.donation
+                        donation.status = "completed"
+                        donation.completed_at = timezone.now()
+                        donation.save()
+
+                        # Update case collected amount
+                        donation.case.update_collected_amount()
+
+                    except PaymentIntent.DoesNotExist:
+                        logger.error(f"Payment intent not found for pidx: {pidx}")
+
+            return Response({"status": "success"})
+
+        except Exception as e:
+            logger.error(f"Error processing Khalti webhook: {str(e)}")
+            return Response(
+                {"error": "Webhook processing failed"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class QRCodeView(APIView):
@@ -162,12 +183,8 @@ class QRCodeView(APIView):
         try:
             payment_intent = get_object_or_404(PaymentIntent, id=payment_intent_id)
 
-            # TODO: Generate actual QR code
-            qr_data = {
-                "payment_intent_id": payment_intent.id,
-                "amount": str(payment_intent.amount),
-                "currency": payment_intent.currency,
-            }
+            # Generate QR code data for Khalti
+            qr_data = khalti_gateway.generate_qr_data(payment_intent)
 
             return Response(qr_data)
 
@@ -175,57 +192,5 @@ class QRCodeView(APIView):
             logger.error(f"Error generating QR code: {str(e)}")
             return Response(
                 {"error": "Failed to generate QR code"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
-
-
-class TransactionHistoryView(APIView):
-    """Get transaction history"""
-
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        try:
-            # Get user's payment intents
-            payment_intents = PaymentIntent.objects.filter(
-                donation__donor=request.user
-            ).order_by("-created_at")
-
-            serializer = PaymentIntentSerializer(payment_intents, many=True)
-            return Response(serializer.data)
-
-        except Exception as e:
-            logger.error(f"Error retrieving transaction history: {str(e)}")
-            return Response(
-                {"error": "Failed to retrieve transactions"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
-
-
-class PaymentAnalyticsView(APIView):
-    """Get payment analytics (admin only)"""
-
-    permission_classes = [permissions.IsAdminUser]
-
-    def get(self, request):
-        try:
-            # Basic analytics
-            total_payments = PaymentIntent.objects.filter(status="completed").count()
-            total_amount = sum(
-                pi.amount for pi in PaymentIntent.objects.filter(status="completed")
-            )
-
-            analytics = {
-                "total_payments": total_payments,
-                "total_amount": total_amount,
-                "currency": "NPR",
-            }
-
-            return Response(analytics)
-
-        except Exception as e:
-            logger.error(f"Error generating payment analytics: {str(e)}")
-            return Response(
-                {"error": "Failed to generate analytics"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )

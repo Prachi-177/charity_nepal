@@ -18,7 +18,6 @@ class Donation(models.Model):
     ]
 
     PAYMENT_METHOD_CHOICES = [
-        ("esewa", "eSewa"),
         ("khalti", "Khalti"),
         ("bank_transfer", "Bank Transfer"),
         ("cash", "Cash"),

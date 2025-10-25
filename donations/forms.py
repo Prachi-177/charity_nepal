@@ -15,7 +15,6 @@ class DonationForm(forms.ModelForm):
             "is_anonymous",
             "donor_name",
             "donor_email",
-            "payment_method",
         ]
         widgets = {
             "amount": forms.NumberInput(
@@ -48,9 +47,6 @@ class DonationForm(forms.ModelForm):
                     "placeholder": "your.email@example.com",
                 }
             ),
-            "payment_method": forms.Select(
-                attrs={"class": "select select-bordered w-full"}
-            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -70,31 +66,9 @@ class DonationForm(forms.ModelForm):
         self.fields["is_anonymous"].label = "Make this donation anonymous"
         self.fields["donor_name"].label = "Full Name"
         self.fields["donor_email"].label = "Email Address"
-        self.fields["payment_method"].label = "Payment Method"
 
     def clean_amount(self):
         amount = self.cleaned_data.get("amount")
         if amount and amount < 50:
-            raise ValidationError("Minimum donation amount is Rs. 50")
-        if amount and amount > 1000000:
-            raise ValidationError("Maximum donation amount is Rs. 10,00,000")
+            raise ValidationError("Minimum donation amount is Rs. 50.")
         return amount
-
-    def clean(self):
-        cleaned_data = super().clean()
-        is_anonymous = cleaned_data.get("is_anonymous")
-        donor_name = cleaned_data.get("donor_name")
-        donor_email = cleaned_data.get("donor_email")
-
-        # If not anonymous, require name and email
-        if not is_anonymous:
-            if not donor_name:
-                self.add_error(
-                    "donor_name", "Name is required for non-anonymous donations"
-                )
-            if not donor_email:
-                self.add_error(
-                    "donor_email", "Email is required for non-anonymous donations"
-                )
-
-        return cleaned_data

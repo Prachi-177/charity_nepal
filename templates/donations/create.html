@@ -446,26 +446,16 @@
                             
                             <!-- Payment Methods -->
                             <div class="space-y-4">
-                                <label class="block text-lg font-bold text-gray-800">Select Payment Method</label>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="payment-method" data-method="khalti">
-                                        <div class="flex items-center justify-center space-x-3">
-                                            <img src="https://khalti.s3.ap-south-1.amazonaws.com/website/khalti-logo.png" 
-                                                 alt="Khalti" class="h-8">
-                                            <span class="font-bold text-gray-800">Khalti</span>
-                                        </div>
-                                        <div class="text-sm text-gray-600 mt-2">Digital wallet & Banking</div>
+                                <label class="block text-lg font-bold text-gray-800">Payment Method</label>
+                                <div class="payment-method selected" data-method="khalti">
+                                    <div class="flex items-center justify-center space-x-3">
+                                        <img src="https://khalti.s3.ap-south-1.amazonaws.com/website/khalti-logo.png" 
+                                             alt="Khalti" class="h-8">
+                                        <span class="font-bold text-gray-800">Khalti</span>
                                     </div>
-                                    <div class="payment-method" data-method="esewa">
-                                        <div class="flex items-center justify-center space-x-3">
-                                            <img src="https://esewa.com.np/common/images/esewa-logo.png" 
-                                                 alt="eSewa" class="h-8">
-                                            <span class="font-bold text-gray-800">eSewa</span>
-                                        </div>
-                                        <div class="text-sm text-gray-600 mt-2">Digital wallet</div>
-                                    </div>
+                                    <div class="text-sm text-gray-600 mt-2">Digital wallet & Banking</div>
                                 </div>
-                                <input type="hidden" name="payment_method" id="payment-method-input" required>
+                                <input type="hidden" name="payment_method" id="payment-method-input" value="khalti" required>
                             </div>
                             
                             <!-- Donor Information -->

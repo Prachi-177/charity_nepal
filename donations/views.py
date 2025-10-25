@@ -52,6 +52,7 @@ class DonationCreateView(CreateView):
         # Generate payment reference
         donation.payment_reference = khalti_gateway.generate_payment_reference()
         donation.status = "pending"
+        donation.payment_method = "khalti"  # Force Khalti as payment method
 
         # Get client IP
         x_forwarded_for = self.request.META.get("HTTP_X_FORWARDED_FOR")
@@ -66,18 +67,8 @@ class DonationCreateView(CreateView):
         # Save the donation
         donation.save()
 
-        # Handle payment method
-        if donation.payment_method == "khalti":
-            return self.handle_khalti_payment(donation)
-        elif donation.payment_method == "esewa":
-            return self.handle_esewa_payment(donation)
-        else:
-            # For other payment methods, mark as completed for now
-            donation.status = "completed"
-            donation.completed_at = timezone.now()
-            donation.save()
-            messages.success(self.request, "Thank you for your generous donation!")
-            return HttpResponseRedirect(self.get_success_url())
+        # Handle Khalti payment
+        return self.handle_khalti_payment(donation)
 
     def handle_khalti_payment(self, donation):
         """Handle Khalti payment initiation"""
@@ -106,8 +97,7 @@ class DonationCreateView(CreateView):
                 donation.save()
 
                 # Redirect to Khalti payment page
-                payment_url = payment_response["data"]["payment_url"]
-                return HttpResponseRedirect(payment_url)
+                return HttpResponseRedirect(payment_response["data"]["payment_url"])
             else:
                 # Payment initiation failed
                 donation.status = "failed"
@@ -124,13 +114,7 @@ class DonationCreateView(CreateView):
             messages.error(self.request, f"Payment initialization failed: {str(e)}")
             return self.form_invalid(self.get_form())
 
-    def handle_esewa_payment(self, donation):
-        """Handle eSewa payment (placeholder for future implementation)"""
-        messages.info(self.request, "eSewa payment integration coming soon!")
-        return HttpResponseRedirect(self.get_success_url())
-
     def get_success_url(self):
-        # Redirect to case detail page with success message
         case = self.get_case()
         return reverse("cases:detail", kwargs={"pk": case.pk})
 

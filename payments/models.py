@@ -11,9 +11,7 @@ class PaymentGateway(models.Model):
     """Model to store payment gateway configurations"""
 
     GATEWAY_CHOICES = [
-        ("esewa", "eSewa"),
         ("khalti", "Khalti"),
-        ("imepay", "IMEPay"),
     ]
 
     name = models.CharField(max_length=20, choices=GATEWAY_CHOICES, unique=True)
