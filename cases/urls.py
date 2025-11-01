@@ -18,4 +18,8 @@ urlpatterns = [
     # Featured and stats
     path("cases/featured/", views.FeaturedCasesView.as_view(), name="featured"),
     path("cases/stats/", views.CaseStatsView.as_view(), name="stats"),
+    # User campaigns
+    path("my-campaigns/", views.MyCampaignsView.as_view(), name="my_campaigns"),
+    # About page
+    path("about/", views.AboutView.as_view(), name="about"),
 ]

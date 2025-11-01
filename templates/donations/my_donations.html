@@ -1,68 +1,443 @@
 {% extends "base.html" %}
+
+{% block title %}{{ title }} - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+    :root {
+        --cn-green-50: #f0fdf4;
+        --cn-green-100: #dcfce7;
+        --cn-green-200: #bbf7d0;
+        --cn-green-300: #86efac;
+        --cn-green-400: #4ade80;
+        --cn-green-500: #22c55e;
+        --cn-green-600: #16a34a;
+        --cn-green-700: #15803d;
+        --cn-green-800: #166534;
+        --cn-green-900: #14532d;
+        --cn-dark: #1e293b;
+        --cn-muted: #64748b;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(rgba(34, 197, 94, 0.08) 2px, transparent 2px),
+            radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+        background-size: 60px 60px, 30px 30px;
+        background-position: 0 0, 15px 15px;
+        z-index: -2;
+        opacity: 0.4;
+    }
+
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+        border: 2px solid rgba(34, 197, 94, 0.2);
+        border-radius: 20px;
+        padding: 28px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: default;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 40px rgba(34, 197, 94, 0.15);
+        border-color: var(--cn-green-500);
+    }
+
+    .stat-card-value {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-green-600);
+        margin-bottom: 8px;
+    }
+
+    .stat-card-label {
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .donation-card {
+        background: white;
+        border: 1px solid rgba(229, 231, 235, 0.8);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .donation-card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        border-color: var(--cn-green-500);
+        transform: translateY(-2px);
+    }
+
+    .donation-card-left {
+        flex: 1;
+    }
+
+    .donation-case-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .donation-case-title a {
+        color: var(--cn-green-600);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .donation-case-title a:hover {
+        color: var(--cn-green-700);
+        text-decoration: underline;
+    }
+
+    .donation-meta {
+        display: flex;
+        gap: 24px;
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+    }
+
+    .donation-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .donation-meta-item i {
+        color: var(--cn-green-500);
+    }
+
+    .donation-card-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .donation-amount {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--cn-green-600);
+        white-space: nowrap;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .status-badge.completed {
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--cn-green-700);
+        border: 1px solid var(--cn-green-300);
+    }
+
+    .status-badge.pending {
+        background: rgba(245, 158, 11, 0.1);
+        color: #92400e;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-badge.failed {
+        background: rgba(239, 68, 68, 0.1);
+        color: #991b1b;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .header p {
+        font-size: 1.125rem;
+        color: var(--cn-muted);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        font-size: 1rem;
+        color: var(--cn-muted);
+        margin-bottom: 30px;
+    }
+
+    .btn-donate {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        color: white;
+        font-weight: 700;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-donate:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+        background: linear-gradient(135deg, var(--cn-green-700), var(--cn-green-800));
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(229, 231, 235, 0.8);
+        color: var(--cn-dark);
+    }
+
+    .pagination a:hover {
+        border-color: var(--cn-green-600);
+        color: var(--cn-green-600);
+        background: rgba(34, 197, 94, 0.05);
+    }
+
+    .pagination span.current {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        color: white;
+        border-color: var(--cn-green-600);
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    .donation-item {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @media (max-width: 768px) {
+        .header h1 {
+            font-size: 1.875rem;
+        }
+
+        .donation-card {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .donation-card-right {
+            width: 100%;
+            justify-content: space-between;
+            flex-direction: row-reverse;
+        }
+
+        .donation-amount {
+            font-size: 1.25rem;
+        }
+
+        .donation-meta {
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            padding: 20px;
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-  <div class="card shadow-sm p-4">
-    <h3 class="mb-3 text-success text-center">{{ title }}</h3>
+<div id="donations-app">
+    <section class="py-12 md:py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="header animate-slide-up">
+                <h1>
+                    <i class="fas fa-gift"></i>
+                    {{ title }}
+                </h1>
+                <p>Track your contributions to help those in need</p>
+            </div>
 
-    <div class="mb-3 text-center">
-      <p><strong>Total Donated:</strong> Rs. {{ total_donated }}</p>
-      <p><strong>Total Donations:</strong> {{ total_donations }}</p>
-    </div>
+            {% if donations %}
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <div class="stat-card animate-slide-up" style="animation-delay: 0.1s;">
+                        <div class="stat-card-value">Rs. {{ total_donated|floatformat:0 }}</div>
+                        <div class="stat-card-label">Total Donated</div>
+                    </div>
+                    <div class="stat-card animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="stat-card-value">{{ total_donations }}</div>
+                        <div class="stat-card-label">Total Donations</div>
+                    </div>
+                </div>
 
-    {% if donations %}
-      <table class="table table-hover align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>#</th>
-            <th>Case</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for donation in donations %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ donation.case.title }}</td>
-            <td>Rs. {{ donation.amount }}</td>
-            <td>{{ donation.created_at|date:"M d, Y" }}</td>
-            <td>
-              {% if donation.status == "completed" %}
-                <span class="badge bg-success">Completed</span>
-              {% elif donation.status == "pending" %}
-                <span class="badge bg-warning text-dark">Pending</span>
-              {% else %}
-                <span class="badge bg-danger">Failed</span>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+                <!-- Donations List -->
+                <div class="glass-effect rounded-2xl p-8 md:p-12 animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="space-y-4">
+                        {% for donation in donations %}
+                        <div class="donation-card donation-item" style="animation-delay: calc(0.35s + {{ forloop.counter }}* 0.05s);">
+                            <div class="donation-card-left">
+                                <div class="donation-case-title">
+                                    <i class="fas fa-heart text-red-500"></i>
+                                    <a href="{% url 'cases:detail' donation.case.pk %}">{{ donation.case.title }}</a>
+                                </div>
+                                <div class="donation-meta">
+                                    <div class="donation-meta-item">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span>{{ donation.created_at|date:"M d, Y" }}</span>
+                                    </div>
+                                    <div class="donation-meta-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ donation.created_at|timesince }} ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="donation-card-right">
+                                <div class="donation-amount">
+                                    Rs. {{ donation.amount|floatformat:0 }}
+                                </div>
+                                <div class="status-badge {% if donation.status == 'completed' %}completed{% elif donation.status == 'pending' %}pending{% else %}failed{% endif %}">
+                                    <i class="fas fa-{% if donation.status == 'completed' %}check-circle{% elif donation.status == 'pending' %}hourglass-half{% else %}times-circle{% endif %}"></i>
+                                    <span>{{ donation.status|capfirst }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
 
-      <!-- Pagination -->
-      <div class="d-flex justify-content-center mt-3">
-        {% if is_paginated %}
-          <nav>
-            <ul class="pagination">
-              {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-              {% endif %}
-              <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
-              {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-              {% endif %}
-            </ul>
-          </nav>
-        {% endif %}
-      </div>
+                    <!-- Pagination -->
+                    {% if is_paginated %}
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1"><i class="fas fa-chevron-left"></i> First</a>
+                            <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                        {% endif %}
 
-    {% else %}
-      <div class="text-center text-muted mt-3">
-        <p>You haven’t made any donations yet.</p>
-      </div>
-    {% endif %}
-  </div>
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <span class="current">{{ num }}</span>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <a href="?page={{ num }}">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">Last <i class="fas fa-chevron-right"></i></a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div class="glass-effect rounded-2xl animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="empty-state">
+                        <div class="empty-icon">🎁</div>
+                        <h3>No Donations Yet</h3>
+                        <p>You haven't made any donations yet. Start making a difference today!</p>
+                        <a href="{% url 'cases:list' %}" class="btn-donate">
+                            <i class="fas fa-heart"></i>
+                            <span>Browse Cases</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
 </div>
 {% endblock %}

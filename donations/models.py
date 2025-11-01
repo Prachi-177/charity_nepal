@@ -23,7 +23,9 @@ class Donation(models.Model):
         ("cash", "Cash"),
     ]
 
-    donor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="donations")
+    donor = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="donations", null=True, blank=True
+    )
     case = models.ForeignKey(
         "cases.CharityCase", on_delete=models.CASCADE, related_name="donations"
     )
@@ -61,11 +63,15 @@ class Donation(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.donor.email if not self.is_anonymous else 'Anonymous'} - {self.amount} to {self.case.title}"
+        if self.is_anonymous or not self.donor:
+            donor_str = "Anonymous"
+        else:
+            donor_str = self.donor.email
+        return f"{donor_str} - {self.amount} to {self.case.title}"
 
     @property
     def donor_display_name(self):
-        if self.is_anonymous:
+        if self.is_anonymous or not self.donor:
             return "Anonymous Donor"
         return (
             self.donor_name or f"{self.donor.first_name} {self.donor.last_name}".strip()

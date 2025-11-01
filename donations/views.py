@@ -34,6 +34,12 @@ class DonationCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context["case"] = self.get_case()
         context["title"] = f'Donate to {context["case"].title}'
+
+        # Get amount from query parameter if provided
+        amount_param = self.request.GET.get("amount")
+        if amount_param:
+            context["prefilled_amount"] = amount_param
+
         return context
 
     def get_form_kwargs(self):
@@ -277,7 +283,10 @@ def khalti_success(request, donation_id):
         pidx = request.GET.get("pidx")
 
         if not pidx:
-            messages.error(request, "Invalid payment callback - missing payment index")
+            messages.error(
+                request,
+                "❌ Payment callback error: Missing payment reference. Please try again.",
+            )
             return redirect("cases:detail", pk=donation.case.pk)
 
         # Verify payment with Khalti
@@ -294,7 +303,12 @@ def khalti_success(request, donation_id):
                 donation.save()
 
                 # Update case collected amount
-                donation.case.update_collected_amount()
+                case = donation.case
+                completed_donations = Donation.objects.filter(
+                    case=case, status="completed"
+                ).aggregate(total=Sum("amount"))
+                case.collected_amount = completed_donations["total"] or 0
+                case.save()
 
                 messages.success(
                     request,
@@ -316,11 +330,14 @@ def khalti_success(request, donation_id):
             donation.save()
             messages.error(
                 request,
-                f"Payment verification failed: {verification_response.get('message', 'Unknown error')}",
+                f"❌ Payment verification failed. {verification_response.get('message', 'Please contact support if the problem persists.')}",
             )
 
     except Exception as e:
-        messages.error(request, f"Error processing payment: {str(e)}")
+        messages.error(
+            request,
+            f"⚠️ Unable to process your payment. Please try again or contact support. Error: {str(e)}",
+        )
 
     return redirect("cases:detail", pk=donation.case.pk)
 
@@ -381,3 +398,54 @@ def payment_failed(request, donation_id):
         messages.error(request, f"Error processing failed payment: {str(e)}")
 
     return redirect("cases:detail", pk=donation.case.pk)
+
+
+class NotificationsView(LoginRequiredMixin, TemplateView):
+    """Display user notifications"""
+
+    template_name = "donations/notifications.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Notifications"
+
+        # Get user's recent donation activity
+        user_donations = Donation.objects.filter(donor=self.request.user).order_by(
+            "-created_at"
+        )[:10]
+        context["recent_donations"] = user_donations
+
+        # Get campaigns created by user
+        user_campaigns = CharityCase.objects.filter(
+            created_by=self.request.user
+        ).order_by("-created_at")[:5]
+        context["recent_campaigns"] = user_campaigns
+
+        return context
+
+
+def user_donation_stats(request):
+    """API view for user donation statistics"""
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Unauthorized"}, status=401)
+
+    from cases.models import CharityCase
+
+    user = request.user
+
+    # Get completed donation stats
+    user_donations = Donation.objects.filter(donor=user, status="completed")
+
+    total_donations = user_donations.count()
+    total_amount = user_donations.aggregate(total=Sum("amount"))["total"] or 0
+
+    # Get campaign stats (created by user)
+    campaign_count = CharityCase.objects.filter(created_by=user).count()
+
+    return JsonResponse(
+        {
+            "donation_count": total_donations,
+            "total_amount": float(total_amount),
+            "campaign_count": campaign_count,
+        }
+    )

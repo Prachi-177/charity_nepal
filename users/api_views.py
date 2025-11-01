@@ -384,3 +384,36 @@ class PasswordResetConfirmView(APIView):
                 {"error": "Password validation failed"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+class UserStatsView(APIView):
+    """API view for user statistics and donations summary"""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        """Get user donation statistics"""
+        from django.db.models import Count, Sum
+
+        from cases.models import CharityCase
+        from donations.models import Donation
+
+        user = request.user
+
+        # Get donation stats
+        user_donations = Donation.objects.filter(donor=user, status="completed")
+
+        total_donations = user_donations.count()
+        total_amount = user_donations.aggregate(total=Sum("amount"))["total"] or 0
+
+        # Get campaign stats (created by user)
+        campaign_count = CharityCase.objects.filter(created_by=user).count()
+
+        return Response(
+            {
+                "donation_count": total_donations,
+                "total_amount": float(total_amount),
+                "campaign_count": campaign_count,
+            },
+            status=status.HTTP_200_OK,
+        )

@@ -1325,3 +1325,95 @@ class CaseStatsView(TemplateView):
         }
 
         return context
+
+
+class MyCampaignsView(LoginRequiredMixin, ListView):
+    """Display campaigns created by the current user"""
+
+    model = CharityCase
+    template_name = "cases/my_campaigns.html"
+    context_object_name = "campaigns"
+    paginate_by = 12
+
+    def get_queryset(self):
+        return CharityCase.objects.filter(created_by=self.request.user).order_by(
+            "-created_at"
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "My Campaigns"
+
+        # Calculate summary statistics
+        queryset = self.get_queryset()
+        context["total_campaigns"] = queryset.count()
+        context["total_target"] = (
+            queryset.aggregate(total=Sum("target_amount"))["total"] or 0
+        )
+        context["total_collected"] = (
+            queryset.aggregate(total=Sum("collected_amount"))["total"] or 0
+        )
+        context["approved_count"] = queryset.filter(
+            verification_status="approved"
+        ).count()
+        context["pending_count"] = queryset.filter(
+            verification_status="pending"
+        ).count()
+
+        return context
+
+
+class AboutView(TemplateView):
+    """Display about page with dynamic statistics"""
+
+    template_name = "about.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "About Us"
+
+        # Get platform statistics
+        from donations.models import Donation
+
+        # Total approved cases
+        total_cases = CharityCase.objects.filter(
+            verification_status="approved"
+        ).count()
+        
+        # Total amount collected
+        total_collected = (
+            Donation.objects.filter(status="completed").aggregate(total=Sum("amount"))[
+                "total"
+            ]
+            or 0
+        )
+        
+        # Total unique donors
+        total_donors = (
+            Donation.objects.filter(status="completed")
+            .values("donor_id")
+            .distinct()
+            .count()
+        )
+        
+        # Calculate transparency/completion rate
+        total_approved_cases = CharityCase.objects.filter(
+            verification_status="approved"
+        ).count()
+        completed_cases = CharityCase.objects.filter(
+            verification_status="approved",
+            collected_amount__gte=F("target_amount"),
+        ).count()
+        
+        transparency_rate = 100
+        if total_approved_cases > 0:
+            transparency_rate = round((completed_cases / total_approved_cases) * 100)
+
+        context["stats"] = {
+            "total_cases": total_cases,
+            "total_collected": int(total_collected),
+            "total_donors": total_donors,
+            "transparency_rate": transparency_rate,
+        }
+
+        return context

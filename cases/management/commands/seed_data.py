@@ -493,7 +493,7 @@ class Command(BaseCommand):
             "You are not alone in this fight.",
         ]
 
-        payment_methods = ["esewa", "khalti", "bank_transfer"]
+        payment_methods = [" ", "khalti", "bank_transfer"]
 
         for i in range(count):
             case = random.choice(approved_cases)

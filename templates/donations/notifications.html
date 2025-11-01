@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+    :root {
+        --cn-green-50: #f0fdf4;
+        --cn-green-100: #dcfce7;
+        --cn-green-200: #bbf7d0;
+        --cn-green-300: #86efac;
+        --cn-green-400: #4ade80;
+        --cn-green-500: #22c55e;
+        --cn-green-600: #16a34a;
+        --cn-green-700: #15803d;
+        --cn-green-800: #166534;
+        --cn-green-900: #14532d;
+        --cn-dark: #1e293b;
+        --cn-muted: #64748b;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(rgba(34, 197, 94, 0.08) 2px, transparent 2px),
+            radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+        background-size: 60px 60px, 30px 30px;
+        background-position: 0 0, 15px 15px;
+        z-index: -2;
+        opacity: 0.4;
+    }
+
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .header p {
+        font-size: 1.125rem;
+        color: var(--cn-muted);
+    }
+
+    .tabs {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 32px;
+        border-bottom: 2px solid rgba(229, 231, 235, 0.8);
+        flex-wrap: wrap;
+    }
+
+    .tab-button {
+        padding: 14px 24px;
+        border: none;
+        background: none;
+        color: var(--cn-muted);
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+    }
+
+    .tab-button:hover {
+        color: var(--cn-green-600);
+    }
+
+    .tab-button.active {
+        color: var(--cn-green-600);
+        border-bottom-color: var(--cn-green-600);
+    }
+
+    .notification-item {
+        background: white;
+        border: 1px solid rgba(229, 231, 235, 0.8);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .notification-item:hover {
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        border-color: var(--cn-green-500);
+    }
+
+    .notification-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .notification-icon.donation {
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--cn-green-600);
+    }
+
+    .notification-icon.campaign {
+        background: rgba(168, 85, 247, 0.1);
+        color: #a855f7;
+    }
+
+    .notification-content {
+        flex: 1;
+    }
+
+    .notification-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 4px;
+    }
+
+    .notification-description {
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+        margin-bottom: 8px;
+    }
+
+    .notification-time {
+        font-size: 0.75rem;
+        color: #9ca3af;
+    }
+
+    .notification-amount {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: var(--cn-green-600);
+        text-align: right;
+    }
+
+    .notification-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .notification-status.completed {
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--cn-green-700);
+    }
+
+    .notification-status.pending {
+        background: rgba(245, 158, 11, 0.1);
+        color: #92400e;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        font-size: 1rem;
+        color: var(--cn-muted);
+        margin-bottom: 30px;
+    }
+
+    .btn-action {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        color: white;
+        font-weight: 700;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-action:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    .notification-item {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @media (max-width: 768px) {
+        .header h1 {
+            font-size: 1.875rem;
+        }
+
+        .notification-item {
+            flex-direction: column;
+        }
+
+        .notification-amount {
+            text-align: left;
+        }
+
+        .tabs {
+            gap: 8px;
+        }
+
+        .tab-button {
+            padding: 12px 16px;
+            font-size: 0.875rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="notifications-app">
+    <section class="py-12 md:py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="header animate-slide-up">
+                <h1>
+                    <i class="fas fa-bell"></i>
+                    {{ title }}
+                </h1>
+                <p>Stay updated on your donations and campaigns</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="glass-effect rounded-2xl p-6 md:p-8 animate-slide-up" style="animation-delay: 0.1s;">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="switchTab('donations')">
+                        <i class="fas fa-gift"></i>
+                        My Donations
+                    </button>
+                    <button class="tab-button" onclick="switchTab('campaigns')">
+                        <i class="fas fa-megaphone"></i>
+                        My Campaigns
+                    </button>
+                </div>
+
+                <!-- Donations Tab -->
+                <div id="donations-tab" class="animate-slide-up" style="animation-delay: 0.2s;">
+                    {% if recent_donations %}
+                        <div>
+                            {% for donation in recent_donations %}
+                            <div class="notification-item" style="animation-delay: calc(0.2s + {{ forloop.counter }} * 0.05s);">
+                                <div class="notification-icon donation">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">
+                                        Donated to: {{ donation.case.title }}
+                                    </div>
+                                    <div class="notification-description">
+                                        {{ donation.created_at|date:"M d, Y \a\t H:i" }}
+                                    </div>
+                                    <div>
+                                        <span class="notification-status {% if donation.status == 'completed' %}completed{% else %}pending{% endif %}">
+                                            <i class="fas fa-{% if donation.status == 'completed' %}check-circle{% else %}hourglass-half{% endif %}"></i>
+                                            <span>{{ donation.status|capfirst }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="notification-amount">
+                                    Rs. {{ donation.amount|floatformat:0 }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <div class="empty-icon">💝</div>
+                            <h3>No Donations Yet</h3>
+                            <p>You haven't made any donations yet. Help someone in need today!</p>
+                            <a href="{% url 'cases:list' %}" class="btn-action">
+                                <i class="fas fa-heart"></i>
+                                <span>Browse Cases</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Campaigns Tab -->
+                <div id="campaigns-tab" class="animate-slide-up" style="animation-delay: 0.2s; display: none;">
+                    {% if recent_campaigns %}
+                        <div>
+                            {% for campaign in recent_campaigns %}
+                            <div class="notification-item" style="animation-delay: calc(0.2s + {{ forloop.counter }} * 0.05s);">
+                                <div class="notification-icon campaign">
+                                    <i class="fas fa-bullhorn"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <div class="notification-title">
+                                        {{ campaign.title }}
+                                    </div>
+                                    <div class="notification-description">
+                                        Created on {{ campaign.created_at|date:"M d, Y" }} • {{ campaign.get_category_display }}
+                                    </div>
+                                    <div>
+                                        <span class="notification-status {% if campaign.verification_status == 'approved' %}completed{% else %}pending{% endif %}">
+                                            <i class="fas fa-{% if campaign.verification_status == 'approved' %}check-circle{% else %}hourglass-half{% endif %}"></i>
+                                            <span>{{ campaign.verification_status|capfirst }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="notification-amount">
+                                    Rs. {{ campaign.collected_amount|floatformat:0 }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <div class="empty-icon">📋</div>
+                            <h3>No Campaigns Yet</h3>
+                            <p>You haven't created any campaigns yet. Start helping someone in need today!</p>
+                            <a href="{% url 'cases:create' %}" class="btn-action">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Create Campaign</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function switchTab(tabName) {
+        // Hide all tabs
+        document.getElementById('donations-tab').style.display = 'none';
+        document.getElementById('campaigns-tab').style.display = 'none';
+
+        // Show selected tab
+        document.getElementById(tabName + '-tab').style.display = 'block';
+
+        // Update button states
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+    }
+</script>
+{% endblock %}

@@ -2,124 +2,408 @@
 
 {% block title %}{{ title }} - CharityNepal{% endblock %}
 
+{% block extra_css %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+    :root {
+        --cn-green-50: #f0fdf4;
+        --cn-green-100: #dcfce7;
+        --cn-green-200: #bbf7d0;
+        --cn-green-300: #86efac;
+        --cn-green-400: #4ade80;
+        --cn-green-500: #22c55e;
+        --cn-green-600: #16a34a;
+        --cn-green-700: #15803d;
+        --cn-green-800: #166534;
+        --cn-green-900: #14532d;
+        --cn-dark: #1e293b;
+        --cn-muted: #64748b;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(rgba(34, 197, 94, 0.08) 2px, transparent 2px),
+            radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+        background-size: 60px 60px, 30px 30px;
+        background-position: 0 0, 15px 15px;
+        z-index: -2;
+        opacity: 0.4;
+    }
+
+    .floating-shape {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.05));
+        border-radius: 50%;
+        position: absolute;
+        animation: float 12s ease-in-out infinite;
+        z-index: -1;
+        filter: blur(1px);
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.3;
+        }
+        50% {
+            transform: translateY(-40px) rotate(180deg);
+            opacity: 0.6;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    .profile-card {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 24px;
+        box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.06),
+            0 8px 25px rgba(0, 0, 0, 0.04);
+        animation: slideUp 0.8s ease-out;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(34, 197, 94, 0.15);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .action-btn {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(34, 197, 94, 0.2);
+        border-radius: 16px;
+        padding: 16px 24px;
+        font-weight: 600;
+        color: var(--cn-green-700);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .action-btn:hover {
+        border-color: var(--cn-green-600);
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+    }
+
+    .action-btn-primary {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        border-color: var(--cn-green-600);
+        color: white;
+    }
+
+    .action-btn-primary:hover {
+        background: linear-gradient(135deg, var(--cn-green-700), var(--cn-green-800));
+        box-shadow: 0 12px 30px rgba(34, 197, 94, 0.3);
+    }
+
+    .avatar-circle {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        font-weight: 800;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .info-field {
+        background: rgba(229, 231, 235, 0.4);
+        padding: 16px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .info-field:hover {
+        background: rgba(229, 231, 235, 0.6);
+    }
+
+    .info-label {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--cn-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .info-value {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--cn-dark);
+    }
+
+    @media (max-width: 768px) {
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<section class="py-16 bg-slate-50 min-h-screen">
-    <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto">
-            <div class="card bg-white shadow-xl">
-                <div class="card-body p-8">
-                    <div class="flex items-center mb-8">
-                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mr-6">
-                            <span class="text-2xl font-bold text-green-600">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</span>
-                        </div>
-                        <div>
-                            <h1 class="text-3xl font-bold text-slate-800">{{ user.get_full_name|default:user.username }}</h1>
-                            <p class="text-slate-600">{{ user.email }}</p>
-                            <div class="badge badge-success text-white mt-2">{{ user.get_role_display }}</div>
+<div id="profile-app">
+    <div class="floating-shape" style="width: 300px; height: 300px; top: -100px; left: -150px; animation-delay: -2s;"></div>
+    <div class="floating-shape" style="width: 200px; height: 200px; top: 20%; right: -100px; animation-delay: -4s;"></div>
+    <div class="floating-shape" style="width: 250px; height: 250px; bottom: -125px; left: 30%; animation-delay: -6s;"></div>
+
+    <section class="relative py-12 md:py-20 min-h-screen">
+        <div class="container mx-auto px-4 max-w-5xl relative z-10">
+
+            <!-- Header Card -->
+            <div class="profile-card p-8 mb-8">
+                <div class="flex flex-col md:flex-row md:items-center gap-8 mb-8">
+                    <div class="avatar-circle">{{ "{" }}{{ "{" }} user.initials {{ "}" }}{{ "}" }}</div>
+                    <div class="flex-1">
+                        <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ "{" }}{{ "{" }} user.fullName {{ "}" }}{{ "}" }}</h1>
+                        <p class="text-gray-600 text-lg mb-4">{{ "{" }}{{ "{" }} user.email {{ "}" }}{{ "}" }}</p>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full font-semibold text-sm">
+                                <i class="fas fa-check-circle mr-2"></i>{{ "{" }}{{ "{" }} user.role {{ "}" }}{{ "}" }}
+                            </span>
+                            <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-semibold text-sm">
+                                <i class="fas fa-calendar mr-2"></i>Member since {{ "{" }}{{ "{" }} user.joinDate {{ "}" }}{{ "}" }}
+                            </span>
                         </div>
                     </div>
+                    <a href="{% url 'users:profile_edit' %}" class="action-btn action-btn-primary self-start">
+                        <i class="fas fa-edit"></i>
+                        Edit Profile
+                    </a>
+                </div>
+            </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Profile Information -->
-                        <div class="space-y-6">
-                            <div class="flex items-center justify-between">
-                                <h2 class="text-xl font-semibold text-slate-800">Profile Information</h2>
-                                <a href="{% url 'users:profile_edit' %}" class="btn btn-sm btn-outline">Edit Profile</a>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <!-- Profile Information -->
+                <div class="lg:col-span-2">
+                    <div class="profile-card p-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Profile Information</h2>
+                        <div class="space-y-4">
+                            <div class="info-field">
+                                <div class="info-label">Username</div>
+                                <div class="info-value">{{ "{" }}{{ "{" }} user.username {{ "}" }}{{ "}" }}</div>
                             </div>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="text-sm font-medium text-slate-600">Full Name</label>
-                                    <p class="text-slate-800 font-semibold">{{ user.get_full_name|default:"Not provided" }}</p>
-                                </div>
-                                
-                                <div>
-                                    <label class="text-sm font-medium text-slate-600">Username</label>
-                                    <p class="text-slate-800 font-semibold">{{ user.username }}</p>
-                                </div>
-                                
-                                <div>
-                                    <label class="text-sm font-medium text-slate-600">Email Address</label>
-                                    <p class="text-slate-800 font-semibold">{{ user.email }}</p>
-                                </div>
-                                
-                                <div>
-                                    <label class="text-sm font-medium text-slate-600">Phone Number</label>
-                                    <p class="text-slate-800 font-semibold">{{ user.phone|default:"Not provided" }}</p>
-                                </div>
-                                
-                                <div>
-                                    <label class="text-sm font-medium text-slate-600">Address</label>
-                                    <p class="text-slate-800 font-semibold">{{ user.address|default:"Not provided" }}</p>
-                                </div>
-                                
-                                <div>
-                                    <label class="text-sm font-medium text-slate-600">Member Since</label>
-                                    <p class="text-slate-800 font-semibold">{{ user.date_joined|date:"F j, Y" }}</p>
-                                </div>
+                            <div class="info-field">
+                                <div class="info-label">Email Address</div>
+                                <div class="info-value">{{ "{" }}{{ "{" }} user.email {{ "}" }}{{ "}" }}</div>
                             </div>
-                        </div>
-
-                        <!-- Quick Actions -->
-                        <div class="space-y-6">
-                            <h2 class="text-xl font-semibold text-slate-800">Quick Actions</h2>
-                            
-                            <div class="grid grid-cols-1 gap-4">
-                                <a href="{% url 'cases:create' %}" class="btn btn-success text-white justify-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    Start a New Campaign
-                                </a>
-                                
-                                <a href="{% url 'cases:list' %}" class="btn btn-outline justify-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                    Browse Campaigns
-                                </a>
-                                
-                                <a href="{% url 'donations:my_donations' %}" class="btn btn-outline justify-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                    My Donations
-                                </a>
-                                
-                                <a href="{% url 'users:password_change' %}" class="btn btn-outline justify-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                                    </svg>
-                                    Change Password
-                                </a>
+                            <div class="info-field">
+                                <div class="info-label">Phone Number</div>
+                                <div class="info-value">{{ "{" }}{{ "{" }} user.phone || 'Not provided' {{ "}" }}{{ "}" }}</div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Profile Stats (if available) -->
-                    <div class="mt-8 pt-8 border-t border-slate-200">
-                        <h2 class="text-xl font-semibold text-slate-800 mb-6">Your Impact</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="stat">
-                                <div class="stat-title">Total Donations</div>
-                                <div class="stat-value text-green-600">0</div>
-                                <div class="stat-desc">Donations made</div>
+                            <div class="info-field">
+                                <div class="info-label">Address</div>
+                                <div class="info-value">{{ "{" }}{{ "{" }} user.address || 'Not provided' {{ "}" }}{{ "}" }}</div>
                             </div>
-                            <div class="stat">
-                                <div class="stat-title">Amount Donated</div>
-                                <div class="stat-value text-green-600">Rs. 0</div>
-                                <div class="stat-desc">Total contribution</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-title">Campaigns Created</div>
-                                <div class="stat-value text-green-600">0</div>
-                                <div class="stat-desc">Active campaigns</div>
+                            <div class="info-field">
+                                <div class="info-label">Account Status</div>
+                                <div class="info-value">
+                                    <span v-if="user.isVerified" class="text-green-600">
+                                        <i class="fas fa-check-circle mr-2"></i>Verified
+                                    </span>
+                                    <span v-else class="text-orange-600">
+                                        <i class="fas fa-hourglass-half mr-2"></i>Pending Verification
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Quick Stats -->
+                <div class="profile-card p-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6">Quick Stats</h2>
+                    <div class="space-y-4">
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-3xl font-bold text-green-600">{{ "{" }}{{ "{" }} stats.donationCount {{ "}" }}{{ "}" }}</div>
+                            <div class="text-sm text-gray-600 mt-1">Donations Made</div>
+                        </div>
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <div class="text-3xl font-bold text-blue-600">{{ "{" }}{{ "{" }} stats.totalAmount {{ "}" }}{{ "}" }}</div>
+                            <div class="text-sm text-gray-600 mt-1">Total Donated</div>
+                        </div>
+                        <div class="text-center p-4 bg-purple-50 rounded-lg">
+                            <div class="text-3xl font-bold text-purple-600">{{ "{" }}{{ "{" }} stats.campaignCount {{ "}" }}{{ "}" }}</div>
+                            <div class="text-sm text-gray-600 mt-1">Campaigns Created</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your Impact Section -->
+            <div class="profile-card p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8">Your Impact</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="stat-card">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="info-label">Total Donations</div>
+                            <i class="fas fa-heart text-red-500 text-xl"></i>
+                        </div>
+                        <div class="stat-value mb-2">{{ "{" }}{{ "{" }} stats.donationCount {{ "}" }}{{ "}" }}</div>
+                        <p class="text-gray-600 text-sm">Donations made to campaigns</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="info-label">Amount Donated</div>
+                            <i class="fas fa-coins text-yellow-500 text-xl"></i>
+                        </div>
+                        <div class="stat-value mb-2">{{ "{" }}{{ "{" }} stats.formattedAmount {{ "}" }}{{ "}" }}</div>
+                        <p class="text-gray-600 text-sm">Total contribution to charity</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="info-label">Campaigns Created</div>
+                            <i class="fas fa-flag text-blue-500 text-xl"></i>
+                        </div>
+                        <div class="stat-value mb-2">{{ "{" }}{{ "{" }} stats.campaignCount {{ "}" }}{{ "}" }}</div>
+                        <p class="text-gray-600 text-sm">Active campaigns launched</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="profile-card p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="{% url 'cases:create' %}" class="action-btn action-btn-primary">
+                        <i class="fas fa-plus-circle"></i>
+                        Start a New Campaign
+                    </a>
+                    <a href="{% url 'cases:list' %}" class="action-btn">
+                        <i class="fas fa-search"></i>
+                        Browse Campaigns
+                    </a>
+                    <a href="{% url 'donations:my_donations' %}" class="action-btn">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        My Donations
+                    </a>
+                    <a href="{% url 'users:password_change' %}" class="action-btn">
+                        <i class="fas fa-lock"></i>
+                        Change Password
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                user: {
+                    fullName: "{{ user.get_full_name|default:user.username }}",
+                    email: "{{ user.email }}",
+                    username: "{{ user.username }}",
+                    phone: "{{ user.phone|default:'' }}",
+                    address: "{{ user.address|default:'' }}",
+                    role: "{{ user.get_role_display }}",
+                    joinDate: "{{ user.date_joined|date:'M d, Y' }}",
+                    isVerified: {{ user.is_verified|lower }},
+                    initials: "{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}"
+                },
+                stats: {
+                    donationCount: 0,
+                    totalAmount: 0,
+                    formattedAmount: "Rs. 0",
+                    campaignCount: 0
+                }
+            };
+        },
+        mounted() {
+            this.fetchUserStats();
+        },
+        methods: {
+            fetchUserStats() {
+                // Fetch donation statistics
+                fetch('{% url "donations:api_my_stats" %}')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.stats.donationCount = data.donation_count;
+                        this.stats.totalAmount = data.total_amount;
+                        this.stats.formattedAmount = this.formatAmount(data.total_amount);
+                        this.stats.campaignCount = data.campaign_count;
+                    })
+                    .catch(error => {
+                        console.log('Stats endpoint not yet implemented, showing default stats');
+                        this.stats = {
+                            donationCount: 0,
+                            totalAmount: 0,
+                            formattedAmount: "Rs. 0",
+                            campaignCount: 0
+                        };
+                    });
+            },
+            formatAmount(amount) {
+                return new Intl.NumberFormat('en-NP', {
+                    style: 'currency',
+                    currency: 'NPR',
+                    minimumFractionDigits: 0
+                }).format(amount).replace('Rs', 'Rs.');
+            }
+        }
+    }).mount('#profile-app');
+</script>
 {% endblock %}

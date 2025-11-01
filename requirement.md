@@ -44,7 +44,7 @@
   - GET `/api/cases/search?q={keyword}&category={category}`
 
 ### 4. Payment Integration
-- QR-code-based payment gateway (eSewa, Khalti API).
+- QR-code-based payment gateway ( , Khalti API).
 - Store transaction reference securely in Donation table.
 
 ### 5. Notifications
@@ -113,7 +113,7 @@
   - Scikit-learn (K-Means, Decision Tree, Naïve Bayes, Apriori)  
   - NLTK/Scikit-learn TF-IDF (for search improvement)  
   - Statsmodels (for ARIMA forecasting, optional)
-- **Payment Integration**: eSewa/Khalti API with QR code support
+- **Payment Integration**:  /Khalti API with QR code support
 - **Task Scheduling**: Celery + Redis (for periodic notifications)
 - **Deployment**: Docker + Nginx + Gunicorn
 - **Version Control**: Git + GitHub

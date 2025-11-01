@@ -21,4 +21,8 @@ urlpatterns = [
     path("recent/", views.RecentDonationsView.as_view(), name="recent"),
     path("leaderboard/", views.DonationLeaderboardView.as_view(), name="leaderboard"),
     path("stats/", views.DonationStatsView.as_view(), name="stats"),
+    # User notifications
+    path("notifications/", views.NotificationsView.as_view(), name="notifications"),
+    # API endpoints
+    path("api/my-stats/", views.user_donation_stats, name="api_my_stats"),
 ]

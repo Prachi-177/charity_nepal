@@ -1,0 +1,538 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+    :root {
+        --cn-green-50: #f0fdf4;
+        --cn-green-100: #dcfce7;
+        --cn-green-200: #bbf7d0;
+        --cn-green-300: #86efac;
+        --cn-green-400: #4ade80;
+        --cn-green-500: #22c55e;
+        --cn-green-600: #16a34a;
+        --cn-green-700: #15803d;
+        --cn-green-800: #166534;
+        --cn-green-900: #14532d;
+        --cn-dark: #1e293b;
+        --cn-muted: #64748b;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(rgba(34, 197, 94, 0.08) 2px, transparent 2px),
+            radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+        background-size: 60px 60px, 30px 30px;
+        background-position: 0 0, 15px 15px;
+        z-index: -2;
+        opacity: 0.4;
+    }
+
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .header p {
+        font-size: 1.125rem;
+        color: var(--cn-muted);
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+        border: 2px solid rgba(34, 197, 94, 0.2);
+        border-radius: 20px;
+        padding: 28px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 40px rgba(34, 197, 94, 0.15);
+        border-color: var(--cn-green-500);
+    }
+
+    .stat-card-value {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-green-600);
+        margin-bottom: 8px;
+    }
+
+    .stat-card-label {
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .campaign-card {
+        background: white;
+        border: 1px solid rgba(229, 231, 235, 0.8);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .campaign-card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        border-color: var(--cn-green-500);
+        transform: translateY(-4px);
+    }
+
+    .campaign-image {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, var(--cn-green-500), var(--cn-green-600));
+        position: relative;
+        overflow: hidden;
+    }
+
+    .campaign-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .campaign-image-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .campaign-status {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-badge.approved {
+        background: rgba(34, 197, 94, 0.9);
+        color: white;
+        border: 2px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status-badge.pending {
+        background: rgba(245, 158, 11, 0.9);
+        color: white;
+        border: 2px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-badge.rejected {
+        background: rgba(239, 68, 68, 0.9);
+        color: white;
+        border: 2px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .campaign-content {
+        padding: 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .campaign-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+
+    .campaign-category {
+        display: inline-block;
+        font-size: 0.75rem;
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--cn-green-700);
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 12px;
+        font-weight: 600;
+    }
+
+    .campaign-description {
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+        margin-bottom: 16px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: rgba(229, 231, 235, 0.8);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 16px 0;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--cn-green-500), var(--cn-green-600));
+        transition: width 0.4s ease;
+        border-radius: 10px;
+    }
+
+    .progress-text {
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .amount-collected {
+        color: var(--cn-green-600);
+        font-weight: 700;
+    }
+
+    .amount-target {
+        color: var(--cn-dark);
+    }
+
+    .campaign-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: auto;
+    }
+
+    .btn-small {
+        flex: 1;
+        padding: 10px 16px;
+        border: 2px solid rgba(229, 231, 235, 0.8);
+        background: white;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: var(--cn-dark);
+    }
+
+    .btn-small:hover {
+        border-color: var(--cn-green-600);
+        color: var(--cn-green-600);
+        background: rgba(34, 197, 94, 0.05);
+    }
+
+    .btn-small.primary {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        color: white;
+        border-color: var(--cn-green-600);
+    }
+
+    .btn-small.primary:hover {
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .campaigns-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        font-size: 1rem;
+        color: var(--cn-muted);
+        margin-bottom: 30px;
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        color: white;
+        font-weight: 700;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-create:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+        background: linear-gradient(135deg, var(--cn-green-700), var(--cn-green-800));
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .pagination a,
+    .pagination span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(229, 231, 235, 0.8);
+        color: var(--cn-dark);
+    }
+
+    .pagination a:hover {
+        border-color: var(--cn-green-600);
+        color: var(--cn-green-600);
+        background: rgba(34, 197, 94, 0.05);
+    }
+
+    .pagination span.current {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        color: white;
+        border-color: var(--cn-green-600);
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @media (max-width: 768px) {
+        .header h1 {
+            font-size: 1.875rem;
+        }
+
+        .campaigns-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            padding: 20px;
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="campaigns-app">
+    <section class="py-12 md:py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="header animate-slide-up">
+                <h1>
+                    <i class="fas fa-megaphone"></i>
+                    {{ title }}
+                </h1>
+                <p>Manage and track your fundraising campaigns</p>
+            </div>
+
+            {% if campaigns %}
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                    <div class="stat-card animate-slide-up" style="animation-delay: 0.1s;">
+                        <div class="stat-card-value">{{ total_campaigns }}</div>
+                        <div class="stat-card-label">Total Campaigns</div>
+                    </div>
+                    <div class="stat-card animate-slide-up" style="animation-delay: 0.15s;">
+                        <div class="stat-card-value">{{ approved_count }}</div>
+                        <div class="stat-card-label">Approved</div>
+                    </div>
+                    <div class="stat-card animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="stat-card-value">{{ pending_count }}</div>
+                        <div class="stat-card-label">Pending</div>
+                    </div>
+                    <div class="stat-card animate-slide-up" style="animation-delay: 0.25s;">
+                        <div class="stat-card-value">Rs. {{ total_collected|floatformat:0 }}</div>
+                        <div class="stat-card-label">Total Collected</div>
+                    </div>
+                </div>
+
+                <!-- Campaigns Grid -->
+                <div class="campaigns-grid animate-slide-up" style="animation-delay: 0.3s;">
+                    {% for campaign in campaigns %}
+                    <div class="campaign-card">
+                        <!-- Campaign Image -->
+                        <div class="campaign-image">
+                            {% if campaign.featured_image %}
+                                <img src="{{ campaign.featured_image.url }}" alt="{{ campaign.title }}">
+                            {% else %}
+                                <div class="campaign-image-placeholder">
+                                    <i class="fas fa-hand-holding-heart"></i>
+                                </div>
+                            {% endif %}
+                            <div class="campaign-status">
+                                <div class="status-badge {% if campaign.verification_status == 'approved' %}approved{% elif campaign.verification_status == 'pending' %}pending{% else %}rejected{% endif %}">
+                                    <i class="fas fa-{% if campaign.verification_status == 'approved' %}check-circle{% elif campaign.verification_status == 'pending' %}hourglass-half{% else %}times-circle{% endif %}"></i>
+                                    <span>{{ campaign.verification_status|capfirst }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campaign Content -->
+                        <div class="campaign-content">
+                            <div class="campaign-category">{{ campaign.get_category_display }}</div>
+                            <h3 class="campaign-title">{{ campaign.title }}</h3>
+                            <p class="campaign-description">{{ campaign.description }}</p>
+
+                            <!-- Progress -->
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: {{ campaign.completion_percentage|default:0 }}%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span class="amount-collected">Rs. {{ campaign.collected_amount|floatformat:0 }}</span>
+                                <span class="amount-target">of Rs. {{ campaign.target_amount|floatformat:0 }}</span>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="campaign-actions">
+                                <a href="{% url 'cases:detail' campaign.pk %}" class="btn-small">
+                                    <i class="fas fa-eye"></i>
+                                    View
+                                </a>
+                                <a href="{% url 'cases:update' campaign.pk %}" class="btn-small primary">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1"><i class="fas fa-chevron-left"></i> First</a>
+                        <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <span class="current">{{ num }}</span>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">Last <i class="fas fa-chevron-right"></i></a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% else %}
+                <!-- Empty State -->
+                <div class="glass-effect rounded-2xl animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <h3>No Campaigns Yet</h3>
+                        <p>You haven't created any campaigns yet. Start helping someone in need today!</p>
+                        <a href="{% url 'cases:create' %}" class="btn-create">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Create Your First Campaign</span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

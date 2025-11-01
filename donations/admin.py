@@ -152,7 +152,7 @@ class DonationAdmin(admin.ModelAdmin):
     def payment_method_badge(self, obj):
         """Display payment method with badge"""
         colors = {
-            "esewa": "#60c951",
+            " ": "#60c951",
             "khalti": "#5c2d91",
             "bank_transfer": "#007bff",
             "cash": "#28a745",

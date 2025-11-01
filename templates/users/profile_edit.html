@@ -1,0 +1,449 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<style>
+    :root {
+        --cn-green-50: #f0fdf4;
+        --cn-green-100: #dcfce7;
+        --cn-green-200: #bbf7d0;
+        --cn-green-300: #86efac;
+        --cn-green-400: #4ade80;
+        --cn-green-500: #22c55e;
+        --cn-green-600: #16a34a;
+        --cn-green-700: #15803d;
+        --cn-green-800: #166534;
+        --cn-green-900: #14532d;
+        --cn-dark: #1e293b;
+        --cn-muted: #64748b;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(rgba(34, 197, 94, 0.08) 2px, transparent 2px),
+            radial-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+        background-size: 60px 60px, 30px 30px;
+        background-position: 0 0, 15px 15px;
+        z-index: -2;
+        opacity: 0.4;
+    }
+
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-input {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(229, 231, 235, 0.8);
+        border-radius: 16px;
+        padding: 16px 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        font-family: inherit;
+    }
+
+    .form-input:focus {
+        border-color: var(--cn-green-600);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1), 0 8px 25px rgba(34, 197, 94, 0.15);
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 1);
+    }
+
+    .form-textarea {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(229, 231, 235, 0.8);
+        border-radius: 16px;
+        padding: 16px 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        font-family: inherit;
+        resize: vertical;
+    }
+
+    .form-textarea:focus {
+        border-color: var(--cn-green-600);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1), 0 8px 25px rgba(34, 197, 94, 0.15);
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 1);
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        color: white;
+        font-weight: 700;
+        padding: 16px 32px;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-submit:hover:not(:disabled) {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(34, 197, 94, 0.4);
+        background: linear-gradient(135deg, var(--cn-green-700), var(--cn-green-800));
+    }
+
+    .btn-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-cancel {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid var(--cn-muted);
+        color: var(--cn-dark);
+        font-weight: 700;
+        padding: 16px 32px;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .btn-cancel:hover {
+        background: white;
+        border-color: var(--cn-green-600);
+        color: var(--cn-green-600);
+        transform: translateY(-2px);
+    }
+
+    .field-group {
+        margin-bottom: 24px;
+    }
+
+    .field-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .field-label .required {
+        color: #dc2626;
+    }
+
+    .form-hint {
+        font-size: 0.75rem;
+        color: var(--cn-muted);
+        margin-top: 4px;
+    }
+
+    .error-text {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+    }
+
+    .error-text i {
+        margin-right: 6px;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .profile-header h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+    }
+
+    .profile-header p {
+        font-size: 1.125rem;
+        color: var(--cn-muted);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .button-group {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.6s ease-out;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="edit-profile-app">
+    <section class="py-12 md:py-20 px-4">
+        <div class="max-w-2xl mx-auto">
+            <!-- Profile Header -->
+            <div class="profile-header animate-slide-up">
+                <h1>✏️ Edit Profile</h1>
+                <p>Update your account information</p>
+            </div>
+
+            <!-- Edit Form Card -->
+            <div class="glass-effect rounded-3xl p-8 md:p-12 animate-slide-up" style="animation-delay: 0.1s;">
+                <form method="POST" @submit.prevent="handleSubmit" class="space-y-8">
+                    {% csrf_token %}
+
+                    <!-- Name Fields Row -->
+                    <div class="form-grid">
+                        <!-- First Name -->
+                        <div class="field-group">
+                            <label class="field-label" for="id_first_name">
+                                First Name <span class="required">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="id_first_name"
+                                name="first_name"
+                                class="form-input"
+                                :class="{ 'border-red-500 bg-red-50': errors.first_name }"
+                                v-model="form.first_name"
+                                @blur="validateField('first_name')"
+                                @input="clearError('first_name')"
+                                placeholder="John"
+                                required>
+                            <div v-if="errors.first_name" class="error-text">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ "{" }}{{ "{" }} errors.first_name {{ "}" }}{{ "}" }}
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="field-group">
+                            <label class="field-label" for="id_last_name">
+                                Last Name <span class="required">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="id_last_name"
+                                name="last_name"
+                                class="form-input"
+                                :class="{ 'border-red-500 bg-red-50': errors.last_name }"
+                                v-model="form.last_name"
+                                @blur="validateField('last_name')"
+                                @input="clearError('last_name')"
+                                placeholder="Doe"
+                                required>
+                            <div v-if="errors.last_name" class="error-text">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ "{" }}{{ "{" }} errors.last_name {{ "}" }}{{ "}" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="field-group">
+                        <label class="field-label" for="id_phone">
+                            Phone Number
+                        </label>
+                        <input
+                            type="tel"
+                            id="id_phone"
+                            name="phone"
+                            class="form-input"
+                            :class="{ 'border-red-500 bg-red-50': errors.phone }"
+                            v-model="form.phone"
+                            @blur="validateField('phone')"
+                            @input="clearError('phone')"
+                            placeholder="+977-XXXXXXXXX">
+                        <div v-if="errors.phone" class="error-text">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ "{" }}{{ "{" }} errors.phone {{ "}" }}{{ "}" }}
+                        </div>
+                        <p class="form-hint">Format: +977-XXXXXXXXX (optional)</p>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="field-group">
+                        <label class="field-label" for="id_address">
+                            Address
+                        </label>
+                        <textarea
+                            id="id_address"
+                            name="address"
+                            class="form-textarea"
+                            :class="{ 'border-red-500 bg-red-50': errors.address }"
+                            v-model="form.address"
+                            @blur="validateField('address')"
+                            @input="clearError('address')"
+                            placeholder="Enter your address"
+                            rows="4"></textarea>
+                        <div v-if="errors.address" class="error-text">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ "{" }}{{ "{" }} errors.address {{ "}" }}{{ "}" }}
+                        </div>
+                        <p class="form-hint">Optional - helps us reach you for important updates</p>
+                    </div>
+
+                    <!-- Submit & Cancel Buttons -->
+                    <div class="button-group">
+                        <button
+                            type="submit"
+                            :disabled="isSubmitting"
+                            class="btn-submit flex items-center justify-center space-x-2">
+                            <svg v-if="isSubmitting" class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <i v-else class="fas fa-save"></i>
+                            <span>{{ "{" }}{{ "{" }} isSubmitting ? 'Saving...' : 'Save Changes' {{ "}" }}{{ "}" }}</span>
+                        </button>
+                        <a href="{% url 'users:profile' %}" class="btn-cancel flex items-center justify-center space-x-2">
+                            <i class="fas fa-times"></i>
+                            <span>Cancel</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Info Box -->
+            <div class="glass-effect rounded-2xl p-6 mt-8 animate-slide-up" style="animation-delay: 0.2s;">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-cn-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-cn-dark mb-2">✨ Tips for your profile</h3>
+                        <ul class="text-sm text-cn-muted space-y-1">
+                            <li>• Use your real name for better community trust</li>
+                            <li>• Keep your contact information updated</li>
+                            <li>• Your profile helps other donors connect with you</li>
+                            <li>• All changes are saved immediately</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                form: {
+                    first_name: '{{ user.first_name }}',
+                    last_name: '{{ user.last_name }}',
+                    phone: '{{ user.phone }}',
+                    address: '{{ user.address }}'
+                },
+                errors: {},
+                isSubmitting: false
+            };
+        },
+        methods: {
+            validateField(field) {
+                const value = this.form[field].trim();
+                
+                if (field === 'first_name' || field === 'last_name') {
+                    if (!value) {
+                        this.errors[field] = `${field.replace('_', ' ').charAt(0).toUpperCase() + field.replace('_', ' ').slice(1)} is required`;
+                    } else if (value.length < 2) {
+                        this.errors[field] = `${field.replace('_', ' ').charAt(0).toUpperCase() + field.replace('_', ' ').slice(1)} must be at least 2 characters`;
+                    } else {
+                        this.errors[field] = '';
+                    }
+                } else if (field === 'phone') {
+                    if (value && value.length < 10) {
+                        this.errors[field] = 'Phone number must be at least 10 characters';
+                    } else {
+                        this.errors[field] = '';
+                    }
+                }
+            },
+            clearError(field) {
+                if (this.form[field].trim()) {
+                    this.errors[field] = '';
+                }
+            },
+            handleSubmit() {
+                let hasError = false;
+                
+                // Validate required fields
+                if (!this.form.first_name.trim()) {
+                    this.errors.first_name = 'First name is required';
+                    hasError = true;
+                }
+                
+                if (!this.form.last_name.trim()) {
+                    this.errors.last_name = 'Last name is required';
+                    hasError = true;
+                }
+                
+                if (hasError) {
+                    return;
+                }
+                
+                // Submit form
+                this.isSubmitting = true;
+                this.$nextTick(() => {
+                    document.querySelector('form').submit();
+                });
+            }
+        }
+    }).mount('#edit-profile-app');
+</script>
+{% endblock %}

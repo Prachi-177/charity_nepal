@@ -370,7 +370,7 @@
                                         {% endif %}
                                     </div>
                                     <div class="text-xs text-cn-muted mt-2 flex items-center justify-between">
-                                        <span>{{ case.completion_percentage }}% funded</span>
+                                        <span>{{ case.completion_percentage|floatformat:2 }}% funded</span>
                                         {% if case.location %}
                                             <div class="flex items-center">
                                                 <i class="fas fa-map-marker-alt mr-1"></i>

@@ -67,7 +67,7 @@ charity_nepal/
 
 ### **4. Payment Gateway Integration**
 
-- ✅ eSewa payment gateway integration
+- ✅   payment gateway integration
 - ✅ Khalti digital wallet integration
 - ✅ Payment intent management
 - ✅ Transaction verification
@@ -166,7 +166,7 @@ GET  /api/donations/{id}/    # Donation details
 
 ```
 POST /api/payments/create-intent/   # Create payment intent
-POST /api/payments/esewa/verify/    # Verify eSewa payment
+POST /api/payments/ /verify/    # Verify   payment
 POST /api/payments/khalti/verify/   # Verify Khalti payment
 ```
 

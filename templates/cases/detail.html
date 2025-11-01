@@ -4,607 +4,707 @@
 {% block title %}{{ case.title }} - CharityNepal{% endblock %}
 
 {% block content %}
-    <!-- Hero Section with Case Image -->
-    <section class="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-cn-green-50/30 overflow-hidden">
-        <!-- Background decorative elements -->
-        <div class="floating-shape w-64 h-64 top-10 -left-20" style="animation-delay: -1s;"></div>
-        <div class="floating-shape w-48 h-48 bottom-20 -right-16" style="animation-delay: -3s;"></div>
-        
-        <div class="relative z-10 pt-24 pb-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- Enhanced Breadcrumb -->
-                <div class="mb-8 animate-fade-in">
-                    <nav class="flex items-center space-x-2 text-sm">
-                        <a href="{% url 'home' %}" class="text-cn-muted hover:text-cn-green-600 transition-colors font-medium">
-                            <i class="fas fa-home mr-1"></i>
-                            Home
-                        </a>
-                        <i class="fas fa-chevron-right text-cn-muted text-xs"></i>
-                        <a href="{% url 'cases:list' %}" class="text-cn-muted hover:text-cn-green-600 transition-colors font-medium">Campaigns</a>
-                        <i class="fas fa-chevron-right text-cn-muted text-xs"></i>
-                        <span class="text-cn-green-600 font-semibold">{{ case.title|truncatechars:30 }}</span>
-                    </nav>
-                </div>
+<!-- Hero Section with Case Image -->
+<section class="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-cn-green-50/30 overflow-hidden">
+    <!-- Background decorative elements -->
+    <div class="floating-shape w-64 h-64 top-10 -left-20" style="animation-delay: -1s;"></div>
+    <div class="floating-shape w-48 h-48 bottom-20 -right-16" style="animation-delay: -3s;"></div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                    <!-- Main Content -->
-                    <div class="lg:col-span-2 space-y-8">
-                        <!-- Enhanced Hero Section -->
-                        <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 overflow-hidden enhanced-card animate-slide-up">
-                            {% if case.featured_image %}
-                                <div class="relative h-80 md:h-96 overflow-hidden">
-                                    <img src="{{ case.featured_image.url }}" alt="{{ case.title }}" 
-                                         class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                                    
-                                    <!-- Category Badge -->
-                                    <div class="absolute top-6 left-6">
-                                        {% if case.category == 'medical' %}
-                                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
-                                                <i class="fas fa-heartbeat mr-2"></i>{{ case.get_category_display }}
-                                            </span>
-                                        {% elif case.category == 'education' %}
-                                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
-                                                <i class="fas fa-graduation-cap mr-2"></i>{{ case.get_category_display }}
-                                            </span>
-                                        {% elif case.category == 'emergency' %}
-                                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
-                                                <i class="fas fa-shield-alt mr-2"></i>{{ case.get_category_display }}
-                                            </span>
-                                        {% elif case.category == 'animal' %}
-                                            <span class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
-                                                <i class="fas fa-paw mr-2"></i>{{ case.get_category_display }}
-                                            </span>
-                                        {% else %}
-                                            <span class="bg-gradient-to-r from-cn-green-500 to-cn-green-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
-                                                <i class="fas fa-heart mr-2"></i>{{ case.get_category_display }}
-                                            </span>
-                                        {% endif %}
-                                    </div>
+    <div class="relative z-10 pt-24 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Enhanced Breadcrumb -->
+            <div class="mb-8 animate-fade-in">
+                <nav class="flex items-center space-x-2 text-sm">
+                    <a href="{% url 'home' %}"
+                        class="text-cn-muted hover:text-cn-green-600 transition-colors font-medium">
+                        <i class="fas fa-home mr-1"></i>
+                        Home
+                    </a>
+                    <i class="fas fa-chevron-right text-cn-muted text-xs"></i>
+                    <a href="{% url 'cases:list' %}"
+                        class="text-cn-muted hover:text-cn-green-600 transition-colors font-medium">Campaigns</a>
+                    <i class="fas fa-chevron-right text-cn-muted text-xs"></i>
+                    <span class="text-cn-green-600 font-semibold">{{ case.title|truncatechars:30 }}</span>
+                </nav>
+            </div>
 
-                                    <!-- Urgency Badge -->
-                                    {% if case.urgency_flag == 'critical' %}
-                                        <div class="absolute top-6 right-6">
-                                            <div class="bg-red-500 text-white px-4 py-2 rounded-full font-bold animate-pulse shadow-xl">
-                                                <i class="fas fa-exclamation-triangle mr-2"></i>
-                                                CRITICAL
-                                            </div>
-                                        </div>
-                                    {% elif case.urgency_flag == 'high' %}
-                                        <div class="absolute top-6 right-6">
-                                            <div class="bg-orange-500 text-white px-4 py-2 rounded-full font-bold shadow-xl">
-                                                <i class="fas fa-clock mr-2"></i>
-                                                HIGH PRIORITY
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% else %}
-                                <div class="relative h-80 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                    <div class="text-center text-gray-400">
-                                        {% if case.category == 'medical' %}
-                                            <i class="fas fa-heartbeat text-8xl mb-6 text-red-300"></i>
-                                        {% elif case.category == 'education' %}
-                                            <i class="fas fa-graduation-cap text-8xl mb-6 text-blue-300"></i>
-                                        {% elif case.category == 'emergency' %}
-                                            <i class="fas fa-shield-alt text-8xl mb-6 text-orange-300"></i>
-                                        {% elif case.category == 'animal' %}
-                                            <i class="fas fa-paw text-8xl mb-6 text-green-300"></i>
-                                        {% else %}
-                                            <i class="fas fa-heart text-8xl mb-6 text-cn-green-300"></i>
-                                        {% endif %}
-                                        <p class="text-2xl font-semibold">{{ case.get_category_display }}</p>
-                                    </div>
-                                </div>
-                            {% endif %}
-
-                            <div class="p-8">
-                                <h1 class="text-3xl md:text-4xl font-black text-cn-dark mb-6 leading-tight">
-                                    {{ case.title }}
-                                </h1>
-                                
-                                <!-- Enhanced Meta Information -->
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                                    {% if case.location %}
-                                        <div class="flex items-center p-4 bg-blue-50 rounded-2xl">
-                                            <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
-                                                <i class="fas fa-map-marker-alt text-white"></i>
-                                            </div>
-                                            <div>
-                                                <div class="text-sm text-blue-600 font-semibold">Location</div>
-                                                <div class="text-cn-dark font-medium">{{ case.location }}</div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                    
-                                    <div class="flex items-center p-4 bg-green-50 rounded-2xl">
-                                        <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center mr-4">
-                                            <i class="fas fa-calendar text-white"></i>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm text-green-600 font-semibold">Created</div>
-                                            <div class="text-cn-dark font-medium">{{ case.created_at|date:"M d, Y" }}</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center p-4 bg-purple-50 rounded-2xl">
-                                        <div class="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center mr-4">
-                                            <i class="fas fa-user text-white"></i>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm text-purple-600 font-semibold">Organizer</div>
-                                            <div class="text-cn-dark font-medium">{{ case.created_by.get_full_name|default:case.created_by.username|truncatechars:15 }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Campaign Description -->
-                                <div class="prose max-w-none">
-                                    <div class="text-lg text-cn-muted leading-relaxed bg-gray-50 rounded-2xl p-6">
-                                        {{ case.description|linebreaks }}
-                                    </div>
-                                </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Enhanced Hero Section -->
+                    <div
+                        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 overflow-hidden enhanced-card animate-slide-up">
+                        {% if case.featured_image %}
+                        <div class="relative h-80 md:h-96 overflow-hidden">
+                            <img src="{{ case.featured_image.url }}" alt="{{ case.title }}"
+                                class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent">
                             </div>
-                        </div>
 
-                        <!-- Enhanced Additional Images -->
-                        {% if case.images.exists %}
-                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
-                                <h2 class="text-2xl font-black text-cn-dark mb-6 flex items-center">
-                                    <i class="fas fa-images mr-3 text-cn-green-600"></i>
-                                    Campaign Gallery
-                                </h2>
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {% for image in case.images.all %}
-                                        <div class="group relative aspect-video rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                                            <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:'Campaign image' }}" 
-                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer"
-                                                 onclick="openImageModal(this.src)">
-                                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                                <i class="fas fa-expand text-white text-2xl"></i>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-
-                        <!-- Enhanced Updates Section -->
-                        {% if case.updates.exists %}
-                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
-                                <h2 class="text-2xl font-black text-cn-dark mb-8 flex items-center">
-                                    <i class="fas fa-bullhorn mr-3 text-cn-green-600"></i>
-                                    Campaign Updates
-                                </h2>
-                                <div class="space-y-8">
-                                    {% for update in case.updates.all %}
-                                        <div class="relative pl-8 border-l-4 border-cn-green-500 bg-cn-green-50 rounded-r-2xl p-6 group hover:bg-cn-green-100 transition-colors duration-200">
-                                            <div class="absolute -left-3 top-6 w-6 h-6 bg-cn-green-500 rounded-full flex items-center justify-center">
-                                                <i class="fas fa-circle text-white text-xs"></i>
-                                            </div>
-                                            <div class="flex justify-between items-start mb-4">
-                                                <h3 class="text-xl font-bold text-cn-dark group-hover:text-cn-green-700 transition-colors">{{ update.title }}</h3>
-                                                <span class="text-sm text-cn-muted bg-white px-3 py-1 rounded-full">{{ update.created_at|date:"M d, Y" }}</span>
-                                            </div>
-                                            <div class="text-cn-dark leading-relaxed">{{ update.content|linebreaks }}</div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Enhanced Sidebar -->
-                    <div class="space-y-8">
-                        <!-- Premium Donation Progress Card -->
-                        <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 sticky top-8 enhanced-card animate-slide-up" id="donate" style="animation-delay: 0.2s;">
-                            <div class="p-8">
-                                <div class="text-center mb-8">
-                                    <div class="inline-flex items-center bg-cn-green-100 text-cn-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                                        <i class="fas fa-heart mr-2"></i>
-                                        Support This Cause
-                                    </div>
-                                    <h2 class="text-2xl font-black text-cn-dark mb-6">Make a Difference Today</h2>
-                                </div>
-                                
-                                <!-- Enhanced Progress Stats -->
-                                <div class="text-center mb-8">
-                                    <div class="relative">
-                                        <div class="text-4xl font-black text-cn-green-600 mb-2">
-                                            Rs {{ case.collected_amount|floatformat:0 }}
-                                        </div>
-                                        <div class="text-lg text-cn-muted mb-6">
-                                            raised of <span class="font-bold text-cn-dark">Rs {{ case.target_amount|floatformat:0 }}</span> goal
-                                        </div>
-                                        
-                                        <!-- Enhanced Progress Bar -->
-                                        <div class="relative w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden shadow-inner">
-                                            {% if case.category == 'medical' %}
-                                                <div class="bg-gradient-to-r from-red-400 to-red-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
-                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
-                                            {% elif case.category == 'education' %}
-                                                <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
-                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
-                                            {% elif case.category == 'emergency' %}
-                                                <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
-                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
-                                            {% elif case.category == 'animal' %}
-                                                <div class="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
-                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
-                                            {% else %}
-                                                <div class="bg-gradient-to-r from-cn-green-400 to-cn-green-600 h-4 rounded-full transition-all duration-1000 shadow-sm" 
-                                                     style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;"></div>
-                                            {% endif %}
-                                        </div>
-                                        
-                                        <div class="flex justify-between text-sm">
-                                            <span class="text-cn-green-600 font-bold">{{ case.completion_percentage }}% complete</span>
-                                            <span class="text-cn-muted font-medium">{{ case.donations.count }} donation{{ case.donations.count|pluralize }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Enhanced Quick Donation Amounts -->
-                                <div class="grid grid-cols-2 gap-3 mb-6">
-                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="500">Rs 500</button>
-                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="1000">Rs 1,000</button>
-                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="2000">Rs 2,000</button>
-                                    <button class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105" data-amount="5000">Rs 5,000</button>
-                                </div>
-
-                                <!-- Enhanced Custom Amount -->
-                                <div class="mb-6">
-                                    <label class="block text-sm font-semibold text-cn-dark mb-2">
-                                        Custom Amount (Rs)
-                                    </label>
-                                    <div class="relative">
-                                        <input type="number" id="custom-amount" placeholder="Enter amount" 
-                                               class="w-full pl-12 pr-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl focus:border-cn-green-500 focus:ring-0 transition-all duration-200 font-semibold text-lg" min="50">
-                                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-cn-muted font-semibold">Rs</span>
-                                    </div>
-                                </div>
-
-                                <!-- Enhanced Donate Button -->
-                                <div class="mb-6">
-                                    <a href="{% url 'donations:create' case.pk %}" class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block text-center">
-                                        <i class="fas fa-heart mr-2"></i>
-                                        💝 Donate Now
-                                    </a>
-                                    <p class="text-xs text-center text-gray-600 mt-2">
-                                        <i class="fas fa-shield-alt mr-1 text-cn-green-600"></i>
-                                        Secure payment with Khalti & eSewa
-                                    </p>
-                                </div>
-
-                                <!-- Enhanced Share Section -->
-                                <div class="border-t border-gray-200 pt-6">
-                                    <h3 class="text-center text-sm font-bold text-cn-dark mb-4">Share This Campaign</h3>
-                                    <div class="flex justify-center space-x-3">
-                                        <button class="w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="shareOnFacebook()" title="Share on Facebook">
-                                            <i class="fab fa-facebook-f"></i>
-                                        </button>
-                                        <button class="w-12 h-12 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="shareOnTwitter()" title="Share on Twitter">
-                                            <i class="fab fa-twitter"></i>
-                                        </button>
-                                        <button class="w-12 h-12 bg-gray-500 hover:bg-gray-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="copyLink()" title="Copy Link">
-                                            <i class="fas fa-link"></i>
-                                        </button>
-                                        <button class="w-12 h-12 bg-green-500 hover:bg-green-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg" onclick="shareOnWhatsApp()" title="Share on WhatsApp">
-                                            <i class="fab fa-whatsapp"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Enhanced Campaign Organizer -->
-                        <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
-                            <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
-                                <i class="fas fa-user-heart mr-3 text-cn-green-600"></i>
-                                Campaign Organizer
-                            </h3>
-                            <div class="flex items-center space-x-4 p-4 bg-cn-green-50 rounded-2xl">
-                                <div class="relative">
-                                    {% if case.created_by.profile_image %}
-                                        <img src="{{ case.created_by.profile_image.url }}" alt="{{ case.created_by.get_full_name }}" 
-                                             class="w-16 h-16 rounded-full object-cover ring-4 ring-white shadow-lg">
-                                    {% else %}
-                                        <div class="w-16 h-16 bg-gradient-to-br from-cn-green-500 to-cn-green-700 flex items-center justify-center rounded-full ring-4 ring-white shadow-lg">
-                                            <span class="text-white font-black text-xl">
-                                                {{ case.created_by.first_name|first|default:case.created_by.username|first|upper }}
-                                            </span>
-                                        </div>
-                                    {% endif %}
-                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-check text-white text-xs"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-cn-dark text-lg">{{ case.created_by.get_full_name|default:case.created_by.username }}</div>
-                                    <div class="text-sm text-cn-muted">Organizer • Joined {{ case.created_by.date_joined|date:"M Y" }}</div>
-                                    <div class="flex items-center mt-1">
-                                        <i class="fas fa-shield-alt text-green-500 text-xs mr-1"></i>
-                                        <span class="text-xs text-green-600 font-medium">Verified Organizer</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Enhanced Recent Donations -->
-                        {% if case.donations.exists %}
-                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
-                                <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
-                                    <i class="fas fa-hands-helping mr-3 text-cn-green-600"></i>
-                                    Recent Supporters
-                                </h3>
-                                <div class="space-y-4">
-                                    {% for donation in case.donations.all|slice:":5" %}
-                                        <div class="flex justify-between items-center p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200">
-                                            <div class="flex items-center space-x-3">
-                                                <div class="w-10 h-10 bg-gradient-to-br from-cn-green-400 to-cn-green-600 rounded-full flex items-center justify-center">
-                                                    {% if donation.is_anonymous %}
-                                                        <i class="fas fa-user-secret text-white text-sm"></i>
-                                                    {% else %}
-                                                        <span class="text-white font-bold text-sm">
-                                                            {{ donation.donor.first_name|first|default:donation.donor.username|first|upper }}
-                                                        </span>
-                                                    {% endif %}
-                                                </div>
-                                                <div>
-                                                    <div class="font-semibold text-cn-dark">
-                                                        {% if donation.is_anonymous %}
-                                                            Anonymous Supporter
-                                                        {% else %}
-                                                            {{ donation.donor.get_full_name|default:donation.donor.username }}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="text-xs text-cn-muted">{{ donation.created_at|timesince }} ago</div>
-                                                </div>
-                                            </div>
-                                            <div class="text-cn-green-600 font-bold text-lg">Rs {{ donation.amount|floatformat:0 }}</div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                {% if case.donations.count > 5 %}
-                                    <div class="text-center mt-6">
-                                        <button class="bg-cn-green-100 hover:bg-cn-green-200 text-cn-green-700 px-6 py-3 rounded-2xl font-semibold transition-colors duration-200">
-                                            View All {{ case.donations.count }} Donations
-                                        </button>
-                                    </div>
+                            <!-- Category Badge -->
+                            <div class="absolute top-6 left-6">
+                                {% if case.category == 'medical' %}
+                                <span
+                                    class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                    <i class="fas fa-heartbeat mr-2"></i>{{ case.get_category_display }}
+                                </span>
+                                {% elif case.category == 'education' %}
+                                <span
+                                    class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                    <i class="fas fa-graduation-cap mr-2"></i>{{ case.get_category_display }}
+                                </span>
+                                {% elif case.category == 'emergency' %}
+                                <span
+                                    class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                    <i class="fas fa-shield-alt mr-2"></i>{{ case.get_category_display }}
+                                </span>
+                                {% elif case.category == 'animal' %}
+                                <span
+                                    class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                    <i class="fas fa-paw mr-2"></i>{{ case.get_category_display }}
+                                </span>
+                                {% else %}
+                                <span
+                                    class="bg-gradient-to-r from-cn-green-500 to-cn-green-600 text-white px-6 py-3 rounded-full font-bold shadow-xl">
+                                    <i class="fas fa-heart mr-2"></i>{{ case.get_category_display }}
+                                </span>
                                 {% endif %}
                             </div>
-                        {% endif %}
 
-                        <!-- Enhanced Admin Actions -->
-                        {% if user == case.created_by or user.is_staff %}
-                            <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
-                                <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
-                                    <i class="fas fa-cog mr-3 text-cn-green-600"></i>
-                                    Manage Campaign
-                                </h3>
-                                <div class="space-y-3">
-                                    <a href="{% url 'cases:update' case.pk %}" class="block w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-2xl font-semibold text-center transition-all duration-200 transform hover:scale-105">
-                                        <i class="fas fa-edit mr-2"></i>
-                                        Edit Campaign
-                                    </a>
-                                    <a href="{% url 'cases:delete' case.pk %}" class="block w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-2xl font-semibold text-center transition-all duration-200 transform hover:scale-105">
-                                        <i class="fas fa-trash mr-2"></i>
-                                        Delete Campaign
-                                    </a>
+                            <!-- Urgency Badge -->
+                            {% if case.urgency_flag == 'critical' %}
+                            <div class="absolute top-6 right-6">
+                                <div
+                                    class="bg-red-500 text-white px-4 py-2 rounded-full font-bold animate-pulse shadow-xl">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    CRITICAL
                                 </div>
                             </div>
+                            {% elif case.urgency_flag == 'high' %}
+                            <div class="absolute top-6 right-6">
+                                <div class="bg-orange-500 text-white px-4 py-2 rounded-full font-bold shadow-xl">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    HIGH PRIORITY
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div
+                            class="relative h-80 md:h-96 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            <div class="text-center text-gray-400">
+                                {% if case.category == 'medical' %}
+                                <i class="fas fa-heartbeat text-8xl mb-6 text-red-300"></i>
+                                {% elif case.category == 'education' %}
+                                <i class="fas fa-graduation-cap text-8xl mb-6 text-blue-300"></i>
+                                {% elif case.category == 'emergency' %}
+                                <i class="fas fa-shield-alt text-8xl mb-6 text-orange-300"></i>
+                                {% elif case.category == 'animal' %}
+                                <i class="fas fa-paw text-8xl mb-6 text-green-300"></i>
+                                {% else %}
+                                <i class="fas fa-heart text-8xl mb-6 text-cn-green-300"></i>
+                                {% endif %}
+                                <p class="text-2xl font-semibold">{{ case.get_category_display }}</p>
+                            </div>
+                        </div>
                         {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- ML-Powered Similar Cases Recommendations -->
-    {% if similar_cases %}
-    <section class="py-20 bg-gradient-to-br from-slate-50 via-white to-purple-50/30 relative overflow-hidden">
-        <div class="absolute inset-0">
-            <div class="floating-shape w-64 h-64 top-10 -right-20 bg-purple-100" style="animation-delay: -2s;"></div>
-            <div class="floating-shape w-48 h-48 bottom-20 -left-16 bg-blue-100" style="animation-delay: -4s;"></div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- Section Header with Algorithm Details -->
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-6">
-                    <i class="fas fa-magic text-purple-500 mr-3"></i>You Might Also Like
-                </h2>
-                
-                <!-- Algorithm Explanation Card -->
-                <div class="max-w-4xl mx-auto mb-12">
-                    <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-purple-100">
-                        <div class="grid md:grid-cols-2 gap-8 items-center">
-                            <div class="text-left">
-                                <div class="flex items-center mb-4">
-                                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
-                                        <i class="fas fa-brain text-white text-xl"></i>
+                        <div class="p-8">
+                            <h1 class="text-3xl md:text-4xl font-black text-cn-dark mb-6 leading-tight">
+                                {{ case.title }}
+                            </h1>
+
+                            <!-- Enhanced Meta Information -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                {% if case.location %}
+                                <div class="flex items-center p-4 bg-blue-50 rounded-2xl">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
+                                        <i class="fas fa-map-marker-alt text-white"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-xl font-black text-cn-dark">{{ algorithm_info.name }}</h3>
-                                        <p class="text-sm text-cn-muted">Advanced ML Algorithm</p>
+                                        <div class="text-sm text-blue-600 font-semibold">Location</div>
+                                        <div class="text-cn-dark font-medium">{{ case.location }}</div>
                                     </div>
                                 </div>
-                                <p class="text-cn-muted leading-relaxed mb-4">
-                                    {{ algorithm_info.description }}
-                                </p>
-                                <div class="flex flex-wrap gap-2">
-                                    {% for feature in algorithm_info.features_analyzed %}
-                                    <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
-                                        {{ feature }}
-                                    </span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            
-                            <!-- Performance Metrics -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-4 text-center">
-                                    <div class="text-2xl font-black text-purple-600 mb-1">{{ algorithm_info.accuracy }}</div>
-                                    <div class="text-xs text-purple-700">Accuracy Rate</div>
-                                </div>
-                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 text-center">
-                                    <div class="text-2xl font-black text-blue-600 mb-1">{{ algorithm_info.processing_time }}</div>
-                                    <div class="text-xs text-blue-700">Response Time</div>
-                                </div>
-                                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-4 text-center col-span-2">
-                                    <div class="text-lg font-black text-green-600 mb-1">{{ similar_cases|length }} Matches Found</div>
-                                    <div class="text-xs text-green-700">Based on content similarity analysis</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Similar Cases Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {% for similar in similar_cases %}
-                <div class="bg-white/80 backdrop-blur-lg rounded-3xl overflow-hidden shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 group enhanced-card">
-                    <!-- Algorithm Badge -->
-                    <div class="relative">
-                        <div class="absolute -top-3 -right-3 z-20">
-                            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold shadow-lg">
-                                <i class="fas fa-percentage mr-1"></i>{{ similar.match_percentage }}% Match
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Case Image -->
-                    <div class="relative h-48 overflow-hidden">
-                        {% if similar.case.featured_image %}
-                            <img src="{{ similar.case.featured_image.url }}" 
-                                 alt="{{ similar.case.title }}" 
-                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        {% else %}
-                            <div class="w-full h-full bg-gradient-to-br {% if similar.case.category == 'medical' %}from-red-400 to-red-600{% elif similar.case.category == 'education' %}from-blue-400 to-blue-600{% elif similar.case.category == 'disaster' %}from-orange-400 to-orange-600{% else %}from-green-400 to-green-600{% endif %} flex items-center justify-center">
-                                {% if similar.case.category == 'medical' %}
-                                    <i class="fas fa-heartbeat text-white text-4xl"></i>
-                                {% elif similar.case.category == 'education' %}
-                                    <i class="fas fa-graduation-cap text-white text-4xl"></i>
-                                {% elif similar.case.category == 'disaster' %}
-                                    <i class="fas fa-exclamation-triangle text-white text-4xl"></i>
-                                {% else %}
-                                    <i class="fas fa-paw text-white text-4xl"></i>
                                 {% endif %}
-                            </div>
-                        {% endif %}
-                        
-                        <!-- Category Badge -->
-                        <div class="absolute top-4 left-4">
-                            {% if similar.case.category == 'medical' %}
-                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Medical</span>
-                            {% elif similar.case.category == 'education' %}
-                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">Education</span>
-                            {% elif similar.case.category == 'disaster' %}
-                                <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">Emergency</span>
-                            {% else %}
-                                <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ similar.case.get_category_display }}</span>
-                            {% endif %}
-                        </div>
 
-                        <!-- Similarity Score Overlay -->
-                        <div class="absolute bottom-3 left-3 right-3">
-                            <div class="bg-black/70 backdrop-blur-sm rounded-lg p-3">
-                                <div class="flex items-center justify-between text-white text-sm mb-2">
-                                    <span class="font-bold">Similarity</span>
-                                    <span class="font-black">{{ similar.match_percentage }}%</span>
+                                <div class="flex items-center p-4 bg-green-50 rounded-2xl">
+                                    <div
+                                        class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center mr-4">
+                                        <i class="fas fa-calendar text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-green-600 font-semibold">Created</div>
+                                        <div class="text-cn-dark font-medium">{{ case.created_at|date:"M d, Y" }}</div>
+                                    </div>
                                 </div>
-                                <div class="w-full bg-white/20 rounded-full h-2">
-                                    <div class="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full transition-all duration-1000" style="width: {{ similar.match_percentage }}%"></div>
+
+                                <div class="flex items-center p-4 bg-purple-50 rounded-2xl">
+                                    <div
+                                        class="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center mr-4">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm text-purple-600 font-semibold">Organizer</div>
+                                        <div class="text-cn-dark font-medium">{{ case.created_by.get_full_name|default:case.created_by.username|truncatechars:15 }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campaign Description -->
+                            <div class="prose max-w-none">
+                                <div class="text-lg text-cn-muted leading-relaxed bg-gray-50 rounded-2xl p-6">
+                                    {{ case.description|linebreaks }}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Case Content -->
-                    <div class="p-6">
-                        <h3 class="text-xl font-black text-cn-dark mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
-                            {{ similar.case.title }}
-                        </h3>
-                        
-                        <p class="text-cn-muted mb-4 leading-relaxed line-clamp-3">
-                            {{ similar.case.description|truncatewords:20 }}
-                        </p>
-
-                        <!-- Algorithm Reasoning -->
-                        <div class="bg-purple-50 rounded-xl p-4 mb-4">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <i class="fas fa-lightbulb text-white text-xs"></i>
+                    <!-- Enhanced Additional Images -->
+                    {% if case.images.exists %}
+                    <div
+                        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                        <h2 class="text-2xl font-black text-cn-dark mb-6 flex items-center">
+                            <i class="fas fa-images mr-3 text-cn-green-600"></i>
+                            Campaign Gallery
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {% for image in case.images.all %}
+                            <div
+                                class="group relative aspect-video rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                                <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:'Campaign image' }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer"
+                                    onclick="openImageModal(this.src)">
+                                <div
+                                    class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                    <i class="fas fa-expand text-white text-2xl"></i>
                                 </div>
-                                <div>
-                                    <p class="text-xs text-purple-700 font-bold mb-1">Why this match:</p>
-                                    <p class="text-xs text-purple-600 leading-relaxed">{{ similar.reason }}</p>
-                                </div>
                             </div>
+                            {% endfor %}
                         </div>
-
-                        <!-- Progress Information -->
-                        {% with progress=similar.case.collected_amount|progress_bar_width:similar.case.target_amount %}
-                        <div class="mb-4">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="text-cn-muted">Progress</span>
-                                <span class="font-bold text-cn-dark">{{ progress|floatformat:0 }}%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="{% if similar.case.category == 'medical' %}bg-gradient-to-r from-red-400 to-red-600{% elif similar.case.category == 'education' %}bg-gradient-to-r from-blue-400 to-blue-600{% elif similar.case.category == 'disaster' %}bg-gradient-to-r from-orange-400 to-orange-600{% else %}bg-gradient-to-r from-green-400 to-green-600{% endif %} h-2 rounded-full transition-all duration-700" style="width: {{ progress|default:0 }}%"></div>
-                            </div>
-                            <div class="flex justify-between text-xs text-cn-muted mt-1">
-                                <span>Rs {{ similar.case.collected_amount|floatformat:0 }} raised</span>
-                                <span>Rs {{ similar.case.target_amount|floatformat:0 }} goal</span>
-                            </div>
-                        </div>
-                        {% endwith %}
-
-                        <!-- Action Button -->
-                        <a href="{% url 'cases:detail' similar.case.pk %}" 
-                           class="block w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white text-center py-3 rounded-xl text-sm font-bold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                            <i class="fas fa-eye mr-2"></i>View Campaign
-                        </a>
                     </div>
+                    {% endif %}
+
+                    <!-- Enhanced Updates Section -->
+                    {% if case.updates.exists %}
+                    <div
+                        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                        <h2 class="text-2xl font-black text-cn-dark mb-8 flex items-center">
+                            <i class="fas fa-bullhorn mr-3 text-cn-green-600"></i>
+                            Campaign Updates
+                        </h2>
+                        <div class="space-y-8">
+                            {% for update in case.updates.all %}
+                            <div
+                                class="relative pl-8 border-l-4 border-cn-green-500 bg-cn-green-50 rounded-r-2xl p-6 group hover:bg-cn-green-100 transition-colors duration-200 overflow-hidden">
+                                <div
+                                    class="absolute -left-3 top-6 w-6 h-6 bg-cn-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-xs"></i>
+                                </div>
+                                
+                                {% if update.image %}
+                                <div class="mb-4 rounded-xl overflow-hidden shadow-lg">
+                                    <img src="{{ update.image.url }}" alt="{{ update.title }}" class="w-full h-48 object-cover">
+                                </div>
+                                {% endif %}
+                                
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-cn-dark group-hover:text-cn-green-700 transition-colors">
+                                        {{ update.title }}</h3>
+                                </div>
+                                
+                                <div class="flex items-center text-sm text-cn-muted mb-4 space-x-3">
+                                    <span class="bg-white px-3 py-1 rounded-full font-medium">
+                                        <i class="fas fa-calendar-alt mr-1"></i>
+                                        {{ update.created_at|date:"M d, Y" }}
+                                    </span>
+                                    {% if update.created_by %}
+                                    <span class="bg-white px-3 py-1 rounded-full">
+                                        <i class="fas fa-user mr-1 text-cn-green-600"></i>
+                                        {{ update.created_by.get_full_name|default:update.created_by.username }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="text-cn-dark leading-relaxed prose prose-sm max-w-none">
+                                    {{ update.description|linebreaks }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
-                {% endfor %}
-            </div>
 
-            <!-- Algorithm Performance Footer -->
-            <div class="mt-16 text-center">
-                <div class="bg-white/60 backdrop-blur-lg rounded-2xl p-6 border border-white/30 max-w-2xl mx-auto">
-                    <div class="flex items-center justify-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-chart-line text-white text-xl"></i>
-                        </div>
-                        <div class="text-left">
-                            <h4 class="text-lg font-bold text-cn-dark">Smart Recommendations</h4>
-                            <p class="text-sm text-cn-muted">Powered by machine learning</p>
+                <!-- Enhanced Sidebar -->
+                <div class="space-y-8">
+                    <!-- Premium Donation Progress Card -->
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 sticky top-8 enhanced-card animate-slide-up"
+                        id="donate" style="animation-delay: 0.2s;">
+                        <div class="p-8">
+                            <div class="text-center mb-8">
+                                <div
+                                    class="inline-flex items-center bg-cn-green-100 text-cn-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                                    <i class="fas fa-heart mr-2"></i>
+                                    Support This Cause
+                                </div>
+                                <h2 class="text-2xl font-black text-cn-dark mb-6">Make a Difference Today</h2>
+                            </div>
+
+                            <!-- Enhanced Progress Stats -->
+                            <div class="text-center mb-8">
+                                <div class="relative">
+                                    <div class="text-4xl font-black text-cn-green-600 mb-2">
+                                        Rs {{ case.collected_amount }}
+                                    </div>
+                                    <div class="text-lg text-cn-muted mb-6">
+                                        raised of <span class="font-bold text-cn-dark">Rs {{ case.target_amount|floatformat:0 }}</span> goal
+                                    </div>
+
+                                    <!-- Enhanced Progress Bar -->
+                                    <div
+                                        class="relative w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden shadow-inner">
+                                        {% if case.category == 'medical' %}
+                                        <div class="bg-gradient-to-r from-red-400 to-red-600 h-4 rounded-full transition-all duration-1000 shadow-sm"
+                                            style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;">
+                                        </div>
+                                        {% elif case.category == 'education' %}
+                                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-4 rounded-full transition-all duration-1000 shadow-sm"
+                                            style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;">
+                                        </div>
+                                        {% elif case.category == 'emergency' %}
+                                        <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-4 rounded-full transition-all duration-1000 shadow-sm"
+                                            style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;">
+                                        </div>
+                                        {% elif case.category == 'animal' %}
+                                        <div class="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all duration-1000 shadow-sm"
+                                            style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;">
+                                        </div>
+                                        {% else %}
+                                        <div class="bg-gradient-to-r from-cn-green-400 to-cn-green-600 h-4 rounded-full transition-all duration-1000 shadow-sm"
+                                            style="width: {{ case.completion_percentage|floatformat:0 }}%; max-width: 100%;">
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-cn-green-600 font-bold">{{ case.completion_percentage|floatformat:2 }}%
+                                            complete</span>
+                                        <span class="text-cn-muted font-medium">{{ case.donations.count }} donation{{ case.donations.count|pluralize }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Enhanced Quick Donation Amounts -->
+                            <div class="grid grid-cols-2 gap-3 mb-6">
+                                <button
+                                    class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105"
+                                    data-amount="500">Rs 500</button>
+                                <button
+                                    class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105"
+                                    data-amount="1000">Rs 1,000</button>
+                                <button
+                                    class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105"
+                                    data-amount="2000">Rs 2,000</button>
+                                <button
+                                    class="donation-btn bg-white border-2 border-gray-200 hover:border-cn-green-500 hover:bg-cn-green-50 text-cn-dark font-bold py-3 px-4 rounded-2xl transition-all duration-200 transform hover:scale-105"
+                                    data-amount="5000">Rs 5,000</button>
+                            </div>
+
+                            <!-- Enhanced Custom Amount -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-semibold text-cn-dark mb-2">
+                                    Custom Amount (Rs)
+                                </label>
+                                <div class="relative">
+                                    <input type="number" id="custom-amount" placeholder="Enter amount"
+                                        class="w-full pl-12 pr-4 py-4 bg-white/70 border-2 border-gray-200 rounded-2xl focus:border-cn-green-500 focus:ring-0 transition-all duration-200 font-semibold text-lg"
+                                        min="50">
+                                    <span
+                                        class="absolute left-4 top-1/2 transform -translate-y-1/2 text-cn-muted font-semibold">Rs</span>
+                                </div>
+                            </div>
+
+                            <!-- Enhanced Donate Button -->
+                            <div class="mb-6">
+                                <button type="button" onclick="proceedToDonation()"
+                                    class="w-full bg-gradient-to-r from-cn-green-600 to-cn-green-700 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:from-cn-green-700 hover:to-cn-green-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl inline-block text-center">
+                                    <i class="fas fa-arrow-right mr-2"></i>
+                                    Proceed
+                                </button>
+                                <p class="text-xs text-center text-gray-600 mt-2">
+                                    <i class="fas fa-shield-alt mr-1 text-cn-green-600"></i>
+                                    Secure payment with Khalti
+                                </p>
+                            </div>
+
+                            <!-- Enhanced Share Section -->
+                            <div class="border-t border-gray-200 pt-6">
+                                <h3 class="text-center text-sm font-bold text-cn-dark mb-4">Share This Campaign</h3>
+                                <div class="flex justify-center space-x-3">
+                                    <button
+                                        class="w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg"
+                                        onclick="shareOnFacebook()" title="Share on Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </button>
+                                    <button
+                                        class="w-12 h-12 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg"
+                                        onclick="shareOnTwitter()" title="Share on Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </button>
+                                    <button
+                                        class="w-12 h-12 bg-gray-500 hover:bg-gray-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg"
+                                        onclick="copyLink()" title="Copy Link">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button
+                                        class="w-12 h-12 bg-green-500 hover:bg-green-600 text-white rounded-2xl transition-all duration-200 transform hover:scale-110 shadow-lg"
+                                        onclick="shareOnWhatsApp()" title="Share on WhatsApp">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-cn-muted">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        These recommendations are generated using advanced content analysis and become more accurate over time.
-                    </p>
+
+                    <!-- Enhanced Campaign Organizer -->
+                    <div
+                        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                        <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
+                            <i class="fas fa-user-heart mr-3 text-cn-green-600"></i>
+                            Campaign Organizer
+                        </h3>
+                        <div class="flex items-center space-x-4 p-4 bg-cn-green-50 rounded-2xl">
+                            <div class="relative">
+                                {% if case.created_by.profile_image %}
+                                <img src="{{ case.created_by.profile_image.url }}"
+                                    alt="{{ case.created_by.get_full_name }}"
+                                    class="w-16 h-16 rounded-full object-cover ring-4 ring-white shadow-lg">
+                                {% else %}
+                                <div
+                                    class="w-16 h-16 bg-gradient-to-br from-cn-green-500 to-cn-green-700 flex items-center justify-center rounded-full ring-4 ring-white shadow-lg">
+                                    <span class="text-white font-black text-xl">
+                                        {{ case.created_by.first_name|first|upper|default:case.created_by.username|first|upper}}
+                                    </span>
+                                </div>
+                                    {% endif %}
+                                    <div
+                                    class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="font-bold text-cn-dark text-lg">{{ case.created_by.get_full_name|default:case.created_by.username }}</div>
+                                <div class="text-sm text-cn-muted">Organizer • Joined {{ case.created_by.date_joined|date:"M Y" }}</div>
+                                <div class="flex items-center mt-1">
+                                    <i class="fas fa-shield-alt text-green-500 text-xs mr-1"></i>
+                                    <span class="text-xs text-green-600 font-medium">Verified Organizer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Recent Donations -->
+                    {% if case.donations.exists %}
+                    <div
+                        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                        <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
+                            <i class="fas fa-hands-helping mr-3 text-cn-green-600"></i>
+                            Recent Supporters
+                        </h3>
+                        <div class="space-y-4">
+                            {% for donation in case.donations.all|slice:":5" %}
+                            <div
+                                class="flex justify-between items-center p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors duration-200">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-gradient-to-br from-cn-green-400 to-cn-green-600 rounded-full flex items-center justify-center">
+                                        {% if donation.is_anonymous %}
+                                        <i class="fas fa-user-secret text-white text-sm"></i>
+                                        {% elif donation.donor %}
+                                        <span class="text-white font-bold text-sm">
+                                            {{ donation.donor.first_name|first|upper|default:donation.donor.username|first|upper }}
+                                        </span>
+                                        {% else %}
+                                        <i class="fas fa-user text-white text-sm"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-cn-dark">
+                                            {% if donation.is_anonymous %}
+                                            Anonymous Supporter
+                                            {% elif donation.donor %}
+                                            {{ donation.donor.get_full_name|default:donation.donor.username }}
+                                            {% else %}
+                                            Anonymous Supporter
+                                            {% endif %}
+                                        </div>
+                                        <div class="text-xs text-cn-muted">{{ donation.created_at|timesince }} ago</div>
+                                    </div>
+                                </div>
+                                <div class="text-cn-green-600 font-bold text-lg">Rs {{ donation.amount|floatformat:0 }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if case.donations.count > 5 %}
+                        <div class="text-center mt-6">
+                            <button
+                                class="bg-cn-green-100 hover:bg-cn-green-200 text-cn-green-700 px-6 py-3 rounded-2xl font-semibold transition-colors duration-200">
+                                View All {{ case.donations.count }} Donations
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Enhanced Admin Actions -->
+                    {% if user == case.created_by or user.is_staff %}
+                    <div
+                        class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 enhanced-card">
+                        <h3 class="text-xl font-black text-cn-dark mb-6 flex items-center">
+                            <i class="fas fa-cog mr-3 text-cn-green-600"></i>
+                            Manage Campaign
+                        </h3>
+                        <div class="space-y-3">
+                            <a href="{% url 'cases:update' case.pk %}"
+                                class="block w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-2xl font-semibold text-center transition-all duration-200 transform hover:scale-105">
+                                <i class="fas fa-edit mr-2"></i>
+                                Edit Campaign
+                            </a>
+                            <a href="{% url 'cases:delete' case.pk %}"
+                                class="block w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-2xl font-semibold text-center transition-all duration-200 transform hover:scale-105">
+                                <i class="fas fa-trash mr-2"></i>
+                                Delete Campaign
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </section>
-    {% endif %}
+    </div>
+</section>
+
+<!-- ML-Powered Similar Cases Recommendations -->
+{% if similar_cases %}
+<section class="py-20 bg-gradient-to-br from-slate-50 via-white to-purple-50/30 relative overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="floating-shape w-64 h-64 top-10 -right-20 bg-purple-100" style="animation-delay: -2s;"></div>
+        <div class="floating-shape w-48 h-48 bottom-20 -left-16 bg-blue-100" style="animation-delay: -4s;"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Section Header with Algorithm Details -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-cn-dark mb-6">
+                <i class="fas fa-magic text-purple-500 mr-3"></i>You Might Also Like
+            </h2>
+
+            <!-- Algorithm Explanation Card -->
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-purple-100">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="text-left">
+                            <div class="flex items-center mb-4">
+                                <div
+                                    class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                                    <i class="fas fa-brain text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-black text-cn-dark">{{ algorithm_info.name }}</h3>
+                                    <p class="text-sm text-cn-muted">Advanced ML Algorithm</p>
+                                </div>
+                            </div>
+                            <p class="text-cn-muted leading-relaxed mb-4">
+                                {{ algorithm_info.description }}
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                {% for feature in algorithm_info.features_analyzed %}
+                                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium">
+                                    {{ feature }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Performance Metrics -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-4 text-center">
+                                <div class="text-2xl font-black text-purple-600 mb-1">{{ algorithm_info.accuracy }}
+                                </div>
+                                <div class="text-xs text-purple-700">Accuracy Rate</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 text-center">
+                                <div class="text-2xl font-black text-blue-600 mb-1">{{ algorithm_info.processing_time }}
+                                </div>
+                                <div class="text-xs text-blue-700">Response Time</div>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-4 text-center col-span-2">
+                                <div class="text-lg font-black text-green-600 mb-1">{{ similar_cases|length }} Matches
+                                    Found</div>
+                                <div class="text-xs text-green-700">Based on content similarity analysis</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Similar Cases Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for similar in similar_cases %}
+            <div
+                class="bg-white/80 backdrop-blur-lg rounded-3xl overflow-hidden shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 group enhanced-card">
+                <!-- Algorithm Badge -->
+                <div class="relative">
+                    <div class="absolute -top-3 -right-3 z-20">
+                        <div
+                            class="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-4 py-2 rounded-full font-bold shadow-lg">
+                            <i class="fas fa-percentage mr-1"></i>{{ similar.match_percentage }}% Match
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Image -->
+                <div class="relative h-48 overflow-hidden">
+                    {% if similar.case.featured_image %}
+                    <img src="{{ similar.case.featured_image.url }}" alt="{{ similar.case.title }}"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    {% else %}
+                    <div
+                        class="w-full h-full bg-gradient-to-br {% if similar.case.category == 'medical' %}from-red-400 to-red-600{% elif similar.case.category == 'education' %}from-blue-400 to-blue-600{% elif similar.case.category == 'disaster' %}from-orange-400 to-orange-600{% else %}from-green-400 to-green-600{% endif %} flex items-center justify-center">
+                        {% if similar.case.category == 'medical' %}
+                        <i class="fas fa-heartbeat text-white text-4xl"></i>
+                        {% elif similar.case.category == 'education' %}
+                        <i class="fas fa-graduation-cap text-white text-4xl"></i>
+                        {% elif similar.case.category == 'disaster' %}
+                        <i class="fas fa-exclamation-triangle text-white text-4xl"></i>
+                        {% else %}
+                        <i class="fas fa-paw text-white text-4xl"></i>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Category Badge -->
+                    <div class="absolute top-4 left-4">
+                        {% if similar.case.category == 'medical' %}
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Medical</span>
+                        {% elif similar.case.category == 'education' %}
+                        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">Education</span>
+                        {% elif similar.case.category == 'disaster' %}
+                        <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">Emergency</span>
+                        {% else %}
+                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ similar.case.get_category_display }}</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Similarity Score Overlay -->
+                    <div class="absolute bottom-3 left-3 right-3">
+                        <div class="bg-black/70 backdrop-blur-sm rounded-lg p-3">
+                            <div class="flex items-center justify-between text-white text-sm mb-2">
+                                <span class="font-bold">Similarity</span>
+                                <span class="font-black">{{ similar.match_percentage }}%</span>
+                            </div>
+                            <div class="w-full bg-white/20 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full transition-all duration-1000"
+                                    style="width: {{ similar.match_percentage }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Content -->
+                <div class="p-6">
+                    <h3
+                        class="text-xl font-black text-cn-dark mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                        {{ similar.case.title }}
+                    </h3>
+
+                    <p class="text-cn-muted mb-4 leading-relaxed line-clamp-3">
+                        {{ similar.case.description|truncatewords:20 }}
+                    </p>
+
+                    <!-- Algorithm Reasoning -->
+                    <div class="bg-purple-50 rounded-xl p-4 mb-4">
+                        <div class="flex items-start space-x-3">
+                            <div
+                                class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fas fa-lightbulb text-white text-xs"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-purple-700 font-bold mb-1">Why this match:</p>
+                                <p class="text-xs text-purple-600 leading-relaxed">{{ similar.reason }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Information -->
+                    {% with progress=similar.case.collected_amount|progress_bar_width:similar.case.target_amount %}
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-cn-muted">Progress</span>
+                            <span class="font-bold text-cn-dark">{{ progress|floatformat:0 }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="{% if similar.case.category == 'medical' %}bg-gradient-to-r from-red-400 to-red-600{% elif similar.case.category == 'education' %}bg-gradient-to-r from-blue-400 to-blue-600{% elif similar.case.category == 'disaster' %}bg-gradient-to-r from-orange-400 to-orange-600{% else %}bg-gradient-to-r from-green-400 to-green-600{% endif %} h-2 rounded-full transition-all duration-700"
+                                style="width: {{ progress|default:0 }}%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-cn-muted mt-1">
+                            <span>Rs {{ similar.case.collected_amount|floatformat:0 }} raised</span>
+                            <span>Rs {{ similar.case.target_amount|floatformat:0 }} goal</span>
+                        </div>
+                    </div>
+                    {% endwith %}
+
+                    <!-- Action Button -->
+                    <a href="{% url 'cases:detail' similar.case.pk %}"
+                        class="block w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white text-center py-3 rounded-xl text-sm font-bold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-eye mr-2"></i>View Campaign
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Algorithm Performance Footer -->
+        <div class="mt-16 text-center">
+            <div class="bg-white/60 backdrop-blur-lg rounded-2xl p-6 border border-white/30 max-w-2xl mx-auto">
+                <div class="flex items-center justify-center mb-4">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-line text-white text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <h4 class="text-lg font-bold text-cn-dark">Smart Recommendations</h4>
+                        <p class="text-sm text-cn-muted">Powered by machine learning</p>
+                    </div>
+                </div>
+                <p class="text-sm text-cn-muted">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    These recommendations are generated using advanced content analysis and become more accurate over
+                    time.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}
 <!-- Enhanced JavaScript with Animations -->
 <script>
-// Enhanced Image Modal with Animation
-function openImageModal(imageSrc, imageAlt) {
-    let modal = document.getElementById('imageModal');
-    if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'imageModal';
-        modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-all duration-300';
-        modal.innerHTML = `
+    // Enhanced Image Modal with Animation
+    function openImageModal(imageSrc, imageAlt) {
+        let modal = document.getElementById('imageModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'imageModal';
+            modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-all duration-300';
+            modal.innerHTML = `
             <div class="max-w-5xl max-h-full p-6 transform scale-95 transition-transform duration-300" id="modalContent">
                 <div class="relative bg-white rounded-3xl overflow-hidden shadow-2xl">
                     <img id="modalImage" src="" alt="" class="max-w-full max-h-[80vh] object-contain w-full">
@@ -617,137 +717,141 @@ function openImageModal(imageSrc, imageAlt) {
                 </div>
             </div>
         `;
-        document.body.appendChild(modal);
+            document.body.appendChild(modal);
+        }
+
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalImageCaption');
+        const modalContent = document.getElementById('modalContent');
+
+        modalImage.src = imageSrc;
+        modalImage.alt = imageAlt;
+        modalCaption.textContent = imageAlt;
+
+        // Show modal with animation
+        modal.classList.remove('pointer-events-none');
+        requestAnimationFrame(() => {
+            modal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95');
+        });
+
+        document.body.style.overflow = 'hidden';
     }
-    
-    const modalImage = document.getElementById('modalImage');
-    const modalCaption = document.getElementById('modalImageCaption');
-    const modalContent = document.getElementById('modalContent');
-    
-    modalImage.src = imageSrc;
-    modalImage.alt = imageAlt;
-    modalCaption.textContent = imageAlt;
-    
-    // Show modal with animation
-    modal.classList.remove('pointer-events-none');
-    requestAnimationFrame(() => {
-        modal.classList.remove('opacity-0');
-        modalContent.classList.remove('scale-95');
+
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        const modalContent = document.getElementById('modalContent');
+        if (modal) {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('pointer-events-none');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Enhanced modal interaction
+    document.addEventListener('click', function (e) {
+        const modal = document.getElementById('imageModal');
+        if (modal && (e.target === modal || e.target.closest('#modalContent'))) {
+            if (e.target === modal) closeImageModal();
+        }
     });
-    
-    document.body.style.overflow = 'hidden';
-}
 
-function closeImageModal() {
-    const modal = document.getElementById('imageModal');
-    const modalContent = document.getElementById('modalContent');
-    if (modal) {
-        modal.classList.add('opacity-0');
-        modalContent.classList.add('scale-95');
-        setTimeout(() => {
-            modal.classList.add('pointer-events-none');
-        }, 300);
-        document.body.style.overflow = '';
-    }
-}
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeImageModal();
+    });
 
-// Enhanced modal interaction
-document.addEventListener('click', function(e) {
-    const modal = document.getElementById('imageModal');
-    if (modal && (e.target === modal || e.target.closest('#modalContent'))) {
-        if (e.target === modal) closeImageModal();
-    }
-});
+    // Enhanced Donation Functionality with Animations
+    document.addEventListener('DOMContentLoaded', function () {
+        const donationButtons = document.querySelectorAll('.donation-btn');
+        const customAmountInput = document.getElementById('custom-amount');
 
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeImageModal();
-});
+        // Enhanced button interactions
+        donationButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const amount = this.getAttribute('data-amount');
+                customAmountInput.value = amount;
 
-// Enhanced Donation Functionality with Animations
-document.addEventListener('DOMContentLoaded', function() {
-    const donationButtons = document.querySelectorAll('.donation-btn');
-    const customAmountInput = document.getElementById('custom-amount');
+                // Enhanced active state management
+                donationButtons.forEach(btn => {
+                    btn.classList.remove('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
+                    btn.classList.add('border-gray-200', 'bg-white', 'text-cn-dark');
+                });
 
-    // Enhanced button interactions
-    donationButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const amount = this.getAttribute('data-amount');
-            customAmountInput.value = amount;
-            
-            // Enhanced active state management
+                // Add enhanced active state
+                this.classList.remove('border-gray-200', 'bg-white', 'text-cn-dark');
+                this.classList.add('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
+
+                // Add pulse animation
+                this.style.animation = 'pulse-once 0.3s ease-out';
+                setTimeout(() => this.style.animation = '', 300);
+            });
+
+            // Enhanced hover effects
+            button.addEventListener('mouseenter', function () {
+                if (!this.classList.contains('border-cn-green-500')) {
+                    this.style.transform = 'scale(1.02)';
+                }
+            });
+
+            button.addEventListener('mouseleave', function () {
+                if (!this.classList.contains('border-cn-green-500')) {
+                    this.style.transform = 'scale(1)';
+                }
+            });
+        });
+
+        // Enhanced custom amount input
+        customAmountInput.addEventListener('input', function () {
             donationButtons.forEach(btn => {
                 btn.classList.remove('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
                 btn.classList.add('border-gray-200', 'bg-white', 'text-cn-dark');
+                btn.style.transform = 'scale(1)';
             });
-            
-            // Add enhanced active state
-            this.classList.remove('border-gray-200', 'bg-white', 'text-cn-dark');
-            this.classList.add('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
-            
-            // Add pulse animation
-            this.style.animation = 'pulse-once 0.3s ease-out';
-            setTimeout(() => this.style.animation = '', 300);
         });
 
-        // Enhanced hover effects
-        button.addEventListener('mouseenter', function() {
-            if (!this.classList.contains('border-cn-green-500')) {
-                this.style.transform = 'scale(1.02)';
-            }
-        });
-
-        button.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('border-cn-green-500')) {
-                this.style.transform = 'scale(1)';
-            }
+        // Add floating animation to cards
+        const cards = document.querySelectorAll('.enhanced-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
         });
     });
 
-    // Enhanced custom amount input
-    customAmountInput.addEventListener('input', function() {
-        donationButtons.forEach(btn => {
-            btn.classList.remove('border-cn-green-500', 'bg-cn-green-50', 'text-cn-green-700');
-            btn.classList.add('border-gray-200', 'bg-white', 'text-cn-dark');
-            btn.style.transform = 'scale(1)';
-        });
-    });
+    // Proceed to donation form with selected amount
+    function proceedToDonation() {
+        const customAmount = document.getElementById('custom-amount').value;
+        const amount = parseFloat(customAmount) || 0;
 
-    // Add floating animation to cards
-    const cards = document.querySelectorAll('.enhanced-card');
-    cards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-    });
-});
+        if (!amount || amount < 50) {
+            showNotification('Please enter a valid amount (minimum Rs. 50)', 'error');
+            return;
+        }
 
-// Enhanced donation handling
-function handleDonation() {
-    const customAmount = document.getElementById('custom-amount').value;
-    const amount = parseFloat(customAmount) || 0;
-    
-    if (!amount || amount < 50) {
-        showNotification('Please enter a valid amount (minimum Rs. 50)', 'error');
-        return;
+        // Show loading state and redirect
+        showNotification(`Proceeding with donation of Rs. ${amount.toLocaleString()}...`, 'success');
+
+        // Redirect to donation form with amount as query parameter
+        setTimeout(() => {
+            window.location.href = `{% url 'donations:create' case.pk %}?amount=${amount}`;
+        }, 500);
     }
-    
-    // Enhanced notification and redirect
-    showNotification(`Processing donation of Rs. ${amount.toLocaleString()}...`, 'success');
-    
-    // Redirect to donation page with enhanced animation
-    setTimeout(() => {
-        window.location.href = `/donations/create/?case={{ case.pk }}&amount=${amount}`;
-    }, 1500);
-}
 
-// Enhanced notification system
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-2xl shadow-2xl transform translate-x-full transition-all duration-300 backdrop-blur-lg border ${
-        type === 'success' ? 'bg-green-500/90 text-white border-green-400' :
-        type === 'error' ? 'bg-red-500/90 text-white border-red-400' :
-        'bg-blue-500/90 text-white border-blue-400'
-    }`;
-    
-    notification.innerHTML = `
+    // Enhanced donation handling (kept for backwards compatibility)
+    function handleDonation() {
+        proceedToDonation();
+    }
+
+    // Enhanced notification system
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-2xl shadow-2xl transform translate-x-full transition-all duration-300 backdrop-blur-lg border ${type === 'success' ? 'bg-green-500/90 text-white border-green-400' :
+            type === 'error' ? 'bg-red-500/90 text-white border-red-400' :
+                'bg-blue-500/90 text-white border-blue-400'
+            }`;
+
+        notification.innerHTML = `
         <div class="flex items-center space-x-3">
             <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
             <span class="font-semibold">${message}</span>
@@ -756,210 +860,237 @@ function showNotification(message, type = 'info') {
             </button>
         </div>
     `;
-    
-    document.body.appendChild(notification);
-    
-    // Show notification
-    requestAnimationFrame(() => {
-        notification.classList.remove('translate-x-full');
-    });
-    
-    // Auto remove
-    setTimeout(() => {
-        notification.classList.add('translate-x-full');
-        setTimeout(() => notification.remove(), 300);
-    }, 4000);
-}
 
-// Enhanced Social Share Functions with notifications
-function shareOnFacebook() {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent('{{ case.title }} - Help support this cause!');
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-    showNotification('Sharing on Facebook...', 'info');
-}
+        document.body.appendChild(notification);
 
-function shareOnTwitter() {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent('{{ case.title }} - Help support this cause! #CharityNepal');
-    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
-    showNotification('Sharing on Twitter...', 'info');
-}
-
-function shareOnWhatsApp() {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(`{{ case.title }} - Help support this cause! ${url}`);
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-    showNotification('Sharing on WhatsApp...', 'info');
-}
-
-function copyLink() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-        const button = event.target.closest('button');
-        const originalHTML = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-check"></i>';
-        button.classList.add('bg-green-500', 'scale-110');
-        showNotification('Link copied to clipboard!', 'success');
-        
-        setTimeout(() => {
-            button.innerHTML = originalHTML;
-            button.classList.remove('bg-green-500', 'scale-110');
-        }, 2000);
-    }).catch(() => {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = window.location.href;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        showNotification('Link copied to clipboard!', 'success');
-    });
-}
-
-// Enhanced scroll animations
-function setupScrollAnimations() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-fade-in-up');
-            }
+        // Show notification
+        requestAnimationFrame(() => {
+            notification.classList.remove('translate-x-full');
         });
-    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.enhanced-card').forEach(card => {
-        observer.observe(card);
-    });
-}
+        // Auto remove
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
 
-// Initialize scroll animations
-document.addEventListener('DOMContentLoaded', setupScrollAnimations);
+    // Enhanced Social Share Functions with notifications
+    function shareOnFacebook() {
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent('{{ case.title }} - Help support this cause!');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        showNotification('Sharing on Facebook...', 'info');
+    }
+
+    function shareOnTwitter() {
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent('{{ case.title }} - Help support this cause! #CharityNepal');
+        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        showNotification('Sharing on Twitter...', 'info');
+    }
+
+    function shareOnWhatsApp() {
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent(`{{ case.title }} - Help support this cause! ${url}`);
+        window.open(`https://wa.me/?text=${text}`, '_blank');
+        showNotification('Sharing on WhatsApp...', 'info');
+    }
+
+    function copyLink() {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            const button = event.target.closest('button');
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            button.classList.add('bg-green-500', 'scale-110');
+            showNotification('Link copied to clipboard!', 'success');
+
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('bg-green-500', 'scale-110');
+            }, 2000);
+        }).catch(() => {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = window.location.href;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showNotification('Link copied to clipboard!', 'success');
+        });
+    }
+
+    // Enhanced scroll animations
+    function setupScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.enhanced-card').forEach(card => {
+            observer.observe(card);
+        });
+    }
+
+    // Initialize scroll animations
+    document.addEventListener('DOMContentLoaded', setupScrollAnimations);
 </script>
 
 <!-- Enhanced CSS Animations -->
 <style>
-@keyframes slide-up {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+    @keyframes slide-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    @keyframes pulse-once {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
     }
-}
 
-@keyframes pulse-once {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
+    @keyframes float {
 
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    33% { transform: translateY(-10px) rotate(1deg); }
-    66% { transform: translateY(-5px) rotate(-1deg); }
-}
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
 
-@keyframes gentle-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
+        33% {
+            transform: translateY(-10px) rotate(1deg);
+        }
 
-@keyframes fade-in-up {
-    from {
+        66% {
+            transform: translateY(-5px) rotate(-1deg);
+        }
+    }
+
+    @keyframes gentle-bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slide-up 0.6s ease-out forwards;
+    }
+
+    .animate-fade-in-up {
+        animation: fade-in-up 0.8s ease-out forwards;
+    }
+
+    .floating-element {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(2) {
+        animation-delay: -2s;
+    }
+
+    .floating-element:nth-child(3) {
+        animation-delay: -4s;
+    }
+
+    .enhanced-card {
         opacity: 0;
         transform: translateY(20px);
     }
-    to {
+
+    .enhanced-card.animate-slide-up {
         opacity: 1;
         transform: translateY(0);
     }
-}
 
-.animate-slide-up {
-    animation: slide-up 0.6s ease-out forwards;
-}
-
-.animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-out forwards;
-}
-
-.floating-element {
-    animation: float 6s ease-in-out infinite;
-}
-
-.floating-element:nth-child(2) {
-    animation-delay: -2s;
-}
-
-.floating-element:nth-child(3) {
-    animation-delay: -4s;
-}
-
-.enhanced-card {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.enhanced-card.animate-slide-up {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Enhanced progress bar animation */
-.progress-bar {
-    transition: width 2s ease-out;
-}
-
-/* Enhanced hover effects for interactive elements */
-.donation-btn {
-    transition: all 0.2s ease;
-}
-
-.donation-btn:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-/* Enhanced glassmorphism effects */
-.backdrop-blur-lg {
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-}
-
-/* Enhanced shadow effects */
-.shadow-2xl {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
-/* Custom scrollbar for better aesthetics */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #10b981, #059669);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, #059669, #047857);
-}
-
-/* Enhanced mobile responsiveness */
-@media (max-width: 768px) {
-    .floating-element {
-        display: none;
+    /* Enhanced progress bar animation */
+    .progress-bar {
+        transition: width 2s ease-out;
     }
-    
-    .enhanced-card {
-        margin: 1rem 0;
+
+    /* Enhanced hover effects for interactive elements */
+    .donation-btn {
+        transition: all 0.2s ease;
     }
-}
+
+    .donation-btn:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Enhanced glassmorphism effects */
+    .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Enhanced shadow effects */
+    .shadow-2xl {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Custom scrollbar for better aesthetics */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #10b981, #059669);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, #059669, #047857);
+    }
+
+    /* Enhanced mobile responsiveness */
+    @media (max-width: 768px) {
+        .floating-element {
+            display: none;
+        }
+
+        .enhanced-card {
+            margin: 1rem 0;
+        }
+    }
 </style>
 {% endblock %}

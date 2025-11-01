@@ -1,32 +1,520 @@
 {% extends "base.html" %}
-{% block title %}About Us — CharityNepal{% endblock %}
+
+{% block title %}About Us - CharityNepal{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --cn-green-50: #f0fdf4;
+        --cn-green-100: #dcfce7;
+        --cn-green-200: #bbf7d0;
+        --cn-green-300: #86efac;
+        --cn-green-400: #4ade80;
+        --cn-green-500: #22c55e;
+        --cn-green-600: #16a34a;
+        --cn-green-700: #15803d;
+        --cn-green-800: #166534;
+        --cn-green-900: #14532d;
+        --cn-dark: #1e293b;
+        --cn-muted: #64748b;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, var(--cn-green-50) 100%);
+        min-height: 100vh;
+    }
+
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+        border-radius: 20px;
+        margin-bottom: 60px;
+    }
+
+    .hero-section h1 {
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--cn-dark);
+        margin-bottom: 16px;
+    }
+
+    .hero-section p {
+        font-size: 1.25rem;
+        color: var(--cn-muted);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+        font-size: 1.125rem;
+        color: var(--cn-muted);
+        margin-bottom: 40px;
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 60px;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid rgba(229, 231, 235, 0.8);
+        border-radius: 16px;
+        padding: 32px;
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        border-color: var(--cn-green-500);
+        transform: translateY(-4px);
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.05));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 16px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 12px;
+    }
+
+    .card-description {
+        font-size: 0.95rem;
+        color: var(--cn-muted);
+        line-height: 1.6;
+    }
+
+    .values-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .values-list li {
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+        display: flex;
+        gap: 12px;
+    }
+
+    .values-list li:last-child {
+        border-bottom: none;
+    }
+
+    .values-list i {
+        color: var(--cn-green-600);
+        font-size: 1.25rem;
+    }
+
+    .value-content {
+        flex: 1;
+    }
+
+    .value-title {
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 4px;
+    }
+
+    .value-description {
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+    }
+
+    .team-section {
+        margin: 80px 0;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 32px;
+        margin-top: 40px;
+    }
+
+    .team-card {
+        text-align: center;
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(229, 231, 235, 0.8);
+    }
+
+    .team-card:hover {
+        box-shadow: 0 20px 50px rgba(34, 197, 94, 0.15);
+        border-color: var(--cn-green-500);
+        transform: translateY(-8px);
+    }
+
+    .team-avatar {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--cn-green-500), var(--cn-green-600));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        margin: 0 auto 16px;
+        color: white;
+    }
+
+    .team-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--cn-dark);
+        margin-bottom: 8px;
+    }
+
+    .team-role {
+        font-size: 0.95rem;
+        color: var(--cn-green-600);
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .team-bio {
+        font-size: 0.875rem;
+        color: var(--cn-muted);
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+
+    .team-socials {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        background: rgba(34, 197, 94, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--cn-green-600);
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .social-link:hover {
+        background: var(--cn-green-600);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin: 60px 0;
+    }
+
+    .stat-box {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+        border: 2px solid rgba(34, 197, 94, 0.2);
+        border-radius: 16px;
+        padding: 28px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--cn-green-600);
+        margin-bottom: 8px;
+    }
+
+    .stat-label {
+        font-size: 0.95rem;
+        color: var(--cn-muted);
+        font-weight: 600;
+    }
+
+    .cta-section {
+        background: linear-gradient(135deg, var(--cn-green-600), var(--cn-green-700));
+        border-radius: 20px;
+        padding: 60px 40px;
+        text-align: center;
+        color: white;
+        margin-top: 80px;
+    }
+
+    .cta-section h2 {
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 16px;
+    }
+
+    .cta-section p {
+        font-size: 1.1rem;
+        margin-bottom: 32px;
+        opacity: 0.95;
+    }
+
+    .btn-primary {
+        background: white;
+        color: var(--cn-green-600);
+        font-weight: 700;
+        padding: 14px 32px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+        }
+
+        .team-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-section {
+            padding: 40px 20px;
+        }
+
+        .cta-section h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="bg-white py-24 sm:py-32">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl lg:mx-0">
-            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">About CharityNepal</h2>
-            <p class="mt-6 text-lg leading-8 text-gray-600">Learn about our mission, our team, and our commitment to creating a better Nepal.</p>
+<section class="py-12 md:py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Hero Section -->
+        <div class="hero-section animate-slide-up">
+            <h1>🤝 About CharityNepal</h1>
+            <p>Connecting generous hearts with communities in need across Nepal</p>
         </div>
-        <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            <div class="flex flex-col">
-                <h3 class="text-2xl font-bold tracking-tight text-gray-900">Our Mission</h3>
-                <p class="mt-4 text-base leading-7 text-gray-600">Our mission is to provide a transparent and effective platform for fundraising, connecting donors with impactful charity cases across Nepal. We aim to empower individuals and organizations to make a real difference in the lives of those in need.</p>
+
+        <!-- Mission, Vision, Values -->
+        <div class="mb-20 animate-slide-up" style="animation-delay: 0.1s;">
+            <h2 class="section-title text-center mb-12">Our Foundation</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-title">Our Mission</div>
+                    <div class="card-description">
+                        We provide a transparent and effective platform for fundraising, connecting donors with impactful charity cases across Nepal. We empower individuals and organizations to make a real difference in the lives of those in need.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🌟</div>
+                    <div class="card-title">Our Vision</div>
+                    <div class="card-description">
+                        We envision a Nepal where every person has the opportunity to thrive, supported by a strong community of givers. We strive to be the most trusted and accessible fundraising platform in the country.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💎</div>
+                    <div class="card-title">Our Impact</div>
+                    <div class="card-description">
+                        Through technology and compassion, we've created a bridge between hope and help. Every donation processed strengthens our community and brings us closer to our vision of a more generous Nepal.
+                    </div>
+                </div>
             </div>
-            <div class="flex flex-col">
-                <h3 class="text-2xl font-bold tracking-tight text-gray-900">Our Vision</h3>
-                <p class="mt-4 text-base leading-7 text-gray-600">We envision a Nepal where every person has the opportunity to thrive, supported by a strong community of givers. We strive to be the most trusted and accessible fundraising platform in the country.</p>
-            </div>
-            <div class="flex flex-col">
-                <h3 class="text-2xl font-bold tracking-tight text-gray-900">Our Values</h3>
-                <ul class="mt-4 space-y-2 text-base leading-7 text-gray-600">
-                    <li><strong>Transparency:</strong> We believe in complete openness in all our operations.</li>
-                    <li><strong>Impact:</strong> We are focused on creating measurable and sustainable change.</li>
-                    <li><strong>Community:</strong> We foster a supportive network of donors, fundraisers, and beneficiaries.</li>
-                    <li><strong>Integrity:</strong> We uphold the highest standards of honesty and accountability.</li>
+        </div>
+
+        <!-- Core Values -->
+        <div class="mb-20 animate-slide-up" style="animation-delay: 0.2s;">
+            <h2 class="section-title mb-12">Our Core Values</h2>
+            <div class="glass-effect rounded-2xl p-8 md:p-12">
+                <ul class="values-list">
+                    <li>
+                        <i class="fas fa-lock"></i>
+                        <div class="value-content">
+                            <div class="value-title">Transparency</div>
+                            <div class="value-description">Complete openness in all our operations. Every rupee is tracked, every case is verified, and donors always know where their money goes.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-fire"></i>
+                        <div class="value-content">
+                            <div class="value-title">Impact</div>
+                            <div class="value-description">We focus on creating measurable and sustainable change. Our AI-powered verification system ensures every rupee reaches those who truly need it.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-users"></i>
+                        <div class="value-content">
+                            <div class="value-title">Community</div>
+                            <div class="value-description">We foster a supportive network of donors, fundraisers, and beneficiaries. Together, we build a stronger, more compassionate Nepal.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-handshake"></i>
+                        <div class="value-content">
+                            <div class="value-title">Integrity</div>
+                            <div class="value-description">We uphold the highest standards of honesty and accountability. Your trust is our most valuable asset, and we never take it for granted.</div>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid animate-slide-up" style="animation-delay: 0.3s;">
+            <div class="stat-box">
+                <div class="stat-number">{{ stats.total_cases }}+</div>
+                <div class="stat-label">Cases Supported</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">{% widthratio stats.total_collected 1000000 1 %}M+</div>
+                <div class="stat-label">Amount Collected</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">{{ stats.total_donors }}+</div>
+                <div class="stat-label">Active Donors</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">{{ stats.transparency_rate }}%</div>
+                <div class="stat-label">Completion Rate</div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="team-section animate-slide-up" style="animation-delay: 0.4s;">
+            <h2 class="section-title text-center mb-4">Meet Our Team</h2>
+            <p class="section-subtitle text-center">Dedicated professionals working to make Nepal a better place</p>
+            <div class="team-grid">
+                <!-- Prachi Baidhya -->
+                <div class="team-card">
+                    <div class="team-avatar">👩‍💼</div>
+                    <div class="team-name">Prachi Baidhya</div>
+                    <div class="team-role">Co-Founder & CEO</div>
+                    <div class="team-bio">
+                        Visionary leader with a passion for social impact. Prachi drives the strategic direction of CharityNepal and leads the charge in making a difference across communities.
+                    </div>
+                    <div class="team-socials">
+                        <a href="https://linkedin.com" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://twitter.com" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="mailto:prachi@charitynepal.org" class="social-link" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ranju Sanjel -->
+                <div class="team-card">
+                    <div class="team-avatar">👩‍💻</div>
+                    <div class="team-name">Ranju Sanjel</div>
+                    <div class="team-role">Co-Founder & CTO</div>
+                    <div class="team-bio">
+                        Tech innovator and problem solver. Ranju builds the technical infrastructure that powers CharityNepal, ensuring security, scalability, and seamless user experience.
+                    </div>
+                    <div class="team-socials">
+                        <a href="https://linkedin.com" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com" class="social-link" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:ranju@charitynepal.org" class="social-link" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Community Impact -->
+                <div class="team-card">
+                    <div class="team-avatar">🌍</div>
+                    <div class="team-name">You</div>
+                    <div class="team-role">Our Community</div>
+                    <div class="team-bio">
+                        Every donor, fundraiser, and volunteer is part of our team. Together, we're building a compassionate network that supports Nepal's most vulnerable communities.
+                    </div>
+                    <div class="team-socials">
+                        <a href="{% url 'cases:list' %}" class="social-link" title="Donate Now">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                        <a href="{% url 'cases:create' %}" class="social-link" title="Create Campaign">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                        <a href="{% url 'contact' %}" class="social-link" title="Contact Us">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section animate-slide-up" style="animation-delay: 0.5s;">
+            <h2>Ready to Make a Difference?</h2>
+            <p>Join thousands of compassionate individuals making a real impact in Nepal</p>
+            <a href="{% url 'cases:list' %}" class="btn-primary">
+                <i class="fas fa-heart"></i>
+                <span>Start Donating Now</span>
+            </a>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}

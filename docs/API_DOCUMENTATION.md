@@ -664,7 +664,7 @@ Authorization: Bearer <access_token>
       },
       "amount": "5000.00",
       "is_anonymous": false,
-      "payment_method": "esewa",
+      "payment_method": " ",
       "status": "completed",
       "message": "Hope this helps!",
       "created_at": "2025-08-29T15:30:00Z",
@@ -686,7 +686,7 @@ Content-Type: application/json
     "case_id": 1,
     "amount": "5000.00",
     "is_anonymous": false,
-    "payment_method": "esewa",
+    "payment_method": " ",
     "message": "Hope this helps with the treatment!",
     "donor_name": "John Doe",  // Required if anonymous
     "donor_email": "john@example.com"  // Required if anonymous
@@ -709,15 +709,15 @@ Content-Type: application/json
   },
   "amount": "5000.00",
   "is_anonymous": false,
-  "payment_method": "esewa",
+  "payment_method": " ",
   "status": "pending",
   "message": "Hope this helps with the treatment!",
   "created_at": "2025-08-29T15:30:00Z",
   "payment_intent": {
     "id": 1,
     "amount": "5000.00",
-    "gateway": "esewa",
-    "payment_url": "https://esewa.com.np/payment?pid=1&amt=5000"
+    "gateway": " ",
+    "payment_url": "https:// .com.np/payment?pid=1&amt=5000"
   }
 }
 ```
@@ -746,7 +746,7 @@ Authorization: Bearer <access_token>
   },
   "amount": "5000.00",
   "is_anonymous": false,
-  "payment_method": "esewa",
+  "payment_method": " ",
   "status": "completed",
   "message": "Hope this helps with the treatment!",
   "created_at": "2025-08-29T15:30:00Z",
@@ -899,7 +899,7 @@ Content-Type: application/json
 
 {
     "donation_id": 1,
-    "gateway": "esewa",  // Options: "esewa", "khalti"
+    "gateway": " ",  // Options: " ", "khalti"
     "return_url": "https://yourapp.com/payment/success",
     "cancel_url": "https://yourapp.com/payment/cancel"
 }
@@ -915,11 +915,11 @@ Content-Type: application/json
     "amount": "5000.00",
     "case_title": "Help Save Lives: Cancer Treatment Fund"
   },
-  "gateway": "esewa",
+  "gateway": " ",
   "amount": "5000.00",
   "currency": "NPR",
   "status": "pending",
-  "payment_url": "https://esewa.com.np/payment?pid=1&amt=5000&scd=CHARITY&su=https://yourapp.com/success&fu=https://yourapp.com/failure",
+  "payment_url": "https:// .com.np/payment?pid=1&amt=5000&scd=CHARITY&su=https://yourapp.com/success&fu=https://yourapp.com/failure",
   "qr_code_url": "http://127.0.0.1:8000/api/payments/qr-code/1/",
   "created_at": "2025-08-29T15:30:00Z",
   "expires_at": "2025-08-29T16:30:00Z"
@@ -943,11 +943,11 @@ Authorization: Bearer <access_token>
     "amount": "5000.00",
     "case_title": "Help Save Lives: Cancer Treatment Fund"
   },
-  "gateway": "esewa",
+  "gateway": " ",
   "amount": "5000.00",
   "currency": "NPR",
   "status": "completed",
-  "payment_url": "https://esewa.com.np/payment?pid=1&amt=5000",
+  "payment_url": "https:// .com.np/payment?pid=1&amt=5000",
   "transaction_id": "TXN123456789",
   "created_at": "2025-08-29T15:30:00Z",
   "completed_at": "2025-08-29T15:35:00Z",
@@ -955,17 +955,17 @@ Authorization: Bearer <access_token>
 }
 ```
 
-### **3. Verify eSewa Payment**
+### **3. Verify   Payment**
 
 ```http
-POST /api/payments/esewa/verify/
+POST /api/payments/ /verify/
 Content-Type: application/json
 
 {
     "payment_intent_id": 1,
     "oid": "payment_order_id",
     "amt": "5000.00",
-    "refId": "esewa_reference_id"
+    "refId": " _reference_id"
 }
 ```
 
@@ -1034,7 +1034,7 @@ GET /api/payments/transactions/
 Authorization: Bearer <access_token>
 
 # Query Parameters:
-# ?gateway=esewa
+# ?gateway= 
 # ?status=completed
 # ?start_date=2025-08-01
 # ?end_date=2025-08-31
@@ -1055,7 +1055,7 @@ Authorization: Bearer <access_token>
         "case_title": "Help Save Lives: Cancer Treatment Fund",
         "amount": "5000.00"
       },
-      "gateway": "esewa",
+      "gateway": " ",
       "amount": "5000.00",
       "status": "completed",
       "transaction_id": "TXN123456789",
@@ -1084,7 +1084,7 @@ Authorization: Bearer <access_token>
   "pending_transactions": 10,
   "success_rate": 90.0,
   "gateway_breakdown": {
-    "esewa": {
+    " ": {
       "count": 300,
       "amount": "3000000.00",
       "success_rate": 92.0
@@ -1579,7 +1579,7 @@ X-RateLimit-Reset: 1693310400
   "donor": "User object (optional for anonymous)",
   "amount": "decimal",
   "is_anonymous": "boolean",
-  "payment_method": "string (esewa|khalti|bank_transfer)",
+  "payment_method": "string ( |khalti|bank_transfer)",
   "status": "string (pending|completed|failed|cancelled)",
   "message": "text (optional)",
   "donor_name": "string (for anonymous donations)",
@@ -1596,7 +1596,7 @@ X-RateLimit-Reset: 1693310400
 {
   "id": "integer",
   "donation": "Donation object",
-  "gateway": "string (esewa|khalti)",
+  "gateway": "string ( |khalti)",
   "amount": "decimal",
   "currency": "string (NPR)",
   "status": "string (pending|completed|failed|expired)",
@@ -1613,15 +1613,15 @@ X-RateLimit-Reset: 1693310400
 
 ## 🔄 **WEBHOOKS**
 
-### **eSewa Callback**
+### **  Callback**
 
 ```http
-POST /api/payments/esewa/callback/
+POST /api/payments/ /callback/
 Content-Type: application/x-www-form-urlencoded
 
 oid=payment_order_id&
 amt=5000.00&
-refId=esewa_reference_id&
+refId= _reference_id&
 pid=charity_product_id
 ```
 
@@ -1689,7 +1689,7 @@ const donationResponse = await fetch("/api/donations/create/", {
   body: JSON.stringify({
     case_id: 1,
     amount: "5000.00",
-    payment_method: "esewa",
+    payment_method: " ",
     message: "Hope this helps!",
   }),
 });
@@ -1706,7 +1706,7 @@ const paymentResponse = await fetch("/api/payments/create-intent/", {
   },
   body: JSON.stringify({
     donation_id: donationId,
-    gateway: "esewa",
+    gateway: " ",
     return_url: "https://yourapp.com/payment/success",
     cancel_url: "https://yourapp.com/payment/cancel",
   }),

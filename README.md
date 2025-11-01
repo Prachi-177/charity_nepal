@@ -24,7 +24,7 @@ charity_backend/
 ├── users/          # User management and authentication
 ├── cases/          # Charity cases management
 ├── donations/      # Donation processing
-├── payments/       # Payment integration (eSewa/Khalti)
+├── payments/       # Payment integration ( /Khalti)
 ├── recommendations/ # ML-powered recommendation system
 └── charity_backend/ # Main project configuration
 ```
@@ -141,7 +141,7 @@ Authorization: Bearer <access_token>
 
 - `POST /create-intent/` - Create payment intent
 - `GET /intent/{id}/` - Get payment status
-- `POST /esewa/verify/` - Verify eSewa payment
+- `POST / /verify/` - Verify   payment
 - `POST /khalti/verify/` - Verify Khalti payment
 
 #### Recommendations (`/api/recommendations/`)
@@ -212,7 +212,7 @@ POST /api/recommendations/track/
 
 ### Supported Payment Gateways
 
-1. **eSewa**
+1. ** **
 
    - Merchant authentication
    - Transaction verification
@@ -231,7 +231,7 @@ POST /api/recommendations/track/
 POST /api/payments/create-intent/
 {
     "donation_id": 123,
-    "payment_method": "esewa"
+    "payment_method": " "
 }
 ```
 
@@ -243,7 +243,7 @@ POST /api/payments/create-intent/
 3. **Verify Payment:**
 
 ```python
-POST /api/payments/esewa/verify/
+POST /api/payments/ /verify/
 {
     "payment_intent_id": 456,
     "transaction_code": "abc123"
@@ -390,8 +390,8 @@ EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password
 
 # Payment Gateways
-ESEWA_MERCHANT_ID=your-esewa-merchant-id
-ESEWA_SECRET_KEY=your-esewa-secret-key
+ _MERCHANT_ID=your- -merchant-id
+ _SECRET_KEY=your- -secret-key
 KHALTI_SECRET_KEY=your-khalti-secret-key
 
 # Machine Learning
@@ -582,7 +582,7 @@ LOGGING = {
 - [x] User authentication and authorization
 - [x] Charity case management (CRUD)
 - [x] Donation processing system
-- [x] Payment gateway integration (eSewa/Khalti)
+- [x] Payment gateway integration ( /Khalti)
 - [x] ML-powered recommendation system
 - [x] Background task processing (Celery)
 - [x] Admin interface with analytics
