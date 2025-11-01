@@ -16789,3 +16789,5 @@ Watching for file changes with StatReloader
 /Users/bibektimilsina/projects/lati/charity_nepal/recommendations/admin.py changed, reloading.
 Watching for file changes with StatReloader
 "GET /admin/ HTTP/1.1" 200 13182
+/Users/bibektimilsina/projects/lati/charity_nepal/cases/views.py changed, reloading.
+Watching for file changes with StatReloader

@@ -1376,10 +1376,8 @@ class AboutView(TemplateView):
         from donations.models import Donation
 
         # Total approved cases
-        total_cases = CharityCase.objects.filter(
-            verification_status="approved"
-        ).count()
-        
+        total_cases = CharityCase.objects.filter(verification_status="approved").count()
+
         # Total amount collected
         total_collected = (
             Donation.objects.filter(status="completed").aggregate(total=Sum("amount"))[
@@ -1387,7 +1385,7 @@ class AboutView(TemplateView):
             ]
             or 0
         )
-        
+
         # Total unique donors
         total_donors = (
             Donation.objects.filter(status="completed")
@@ -1395,7 +1393,7 @@ class AboutView(TemplateView):
             .distinct()
             .count()
         )
-        
+
         # Calculate transparency/completion rate
         total_approved_cases = CharityCase.objects.filter(
             verification_status="approved"
@@ -1404,7 +1402,7 @@ class AboutView(TemplateView):
             verification_status="approved",
             collected_amount__gte=F("target_amount"),
         ).count()
-        
+
         transparency_rate = 100
         if total_approved_cases > 0:
             transparency_rate = round((completed_cases / total_approved_cases) * 100)

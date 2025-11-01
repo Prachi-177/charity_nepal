@@ -117,4 +117,3 @@ class UserProfileAdmin(admin.ModelAdmin):
         )
 
     donation_frequency_badge.short_description = "Frequency"
-
