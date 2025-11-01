@@ -4,19 +4,30 @@
 {% block extra_head %}
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- Vue.js 3 CDN -->
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-    [v-cloak] {
+    .hidden {
         display: none;
+    }
+    .fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div id="contactApp" v-cloak class="bg-gradient-to-br from-green-50 via-white to-blue-50 min-h-screen py-24 sm:py-32">
+<div class="bg-gradient-to-br from-green-50 via-white to-blue-50 min-h-screen py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <!-- Header Section -->
         <div class="mx-auto max-w-2xl text-center mb-16">
@@ -31,39 +42,30 @@
         </div>
 
         <!-- Success Message -->
-        <transition
-            enter-active-class="transition ease-out duration-300"
-            enter-from-class="opacity-0 transform scale-95"
-            enter-to-class="opacity-100 transform scale-100"
-            leave-active-class="transition ease-in duration-200"
-            leave-from-class="opacity-100 transform scale-100"
-            leave-to-class="opacity-0 transform scale-95"
-        >
-            <div v-if="showSuccess" class="mx-auto max-w-xl mb-8">
-                <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-6 shadow-lg">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-check-circle text-green-500 text-3xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-lg font-bold text-green-800 mb-2">
-                                ✅ Message Sent Successfully!
-                            </h3>
-                            <p class="text-green-700">
-                                Thank you for reaching out! We've received your message and will get back to you soon.
-                            </p>
-                        </div>
-                        <button @click="showSuccess = false" class="ml-auto flex-shrink-0 text-green-500 hover:text-green-700">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
+        <div id="successMessage" class="mx-auto max-w-xl mb-8 hidden">
+            <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-6 shadow-lg fade-in">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check-circle text-green-500 text-3xl"></i>
                     </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-bold text-green-800 mb-2">
+                            ✅ Message Sent Successfully!
+                        </h3>
+                        <p class="text-green-700">
+                            Thank you for reaching out! We've received your message and will get back to you soon.
+                        </p>
+                    </div>
+                    <button onclick="hideSuccess()" class="ml-auto flex-shrink-0 text-green-500 hover:text-green-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
                 </div>
             </div>
-        </transition>
+        </div>
 
         <!-- Contact Form -->
         <div class="mx-auto mt-16 max-w-xl sm:mt-20">
-            <form @submit.prevent="submitForm" class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8">
+            <form id="contactForm" onsubmit="submitForm(event)" class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8">
                 <!-- Name Field -->
                 <div class="mb-6">
                     <label for="name" class="block text-sm font-bold leading-6 text-gray-900 mb-2">
@@ -72,16 +74,15 @@
                     </label>
                     <input 
                         type="text" 
-                        v-model="formData.name" 
                         id="name" 
+                        name="name"
                         required
-                        :class="{'ring-red-500': errors.name}"
                         class="block w-full rounded-xl border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm transition-all duration-200"
                         placeholder="Enter your full name"
                     >
-                    <p v-if="errors.name" class="mt-2 text-sm text-red-600">
+                    <p id="nameError" class="mt-2 text-sm text-red-600 hidden">
                         <i class="fas fa-exclamation-circle mr-1"></i>
-                        [[ errors.name ]]
+                        <span id="nameErrorText"></span>
                     </p>
                 </div>
 
@@ -93,16 +94,15 @@
                     </label>
                     <input 
                         type="email" 
-                        v-model="formData.email" 
                         id="email" 
+                        name="email"
                         required
-                        :class="{'ring-red-500': errors.email}"
                         class="block w-full rounded-xl border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm transition-all duration-200"
                         placeholder="your.email@example.com"
                     >
-                    <p v-if="errors.email" class="mt-2 text-sm text-red-600">
+                    <p id="emailError" class="mt-2 text-sm text-red-600 hidden">
                         <i class="fas fa-exclamation-circle mr-1"></i>
-                        [[ errors.email ]]
+                        <span id="emailErrorText"></span>
                     </p>
                 </div>
 
@@ -113,20 +113,21 @@
                         Message
                     </label>
                     <textarea 
-                        v-model="formData.message" 
                         id="message" 
+                        name="message"
                         rows="5" 
                         required
-                        :class="{'ring-red-500': errors.message}"
+                        oninput="updateCharCount()"
+                        maxlength="500"
                         class="block w-full rounded-xl border-0 px-4 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm transition-all duration-200 resize-none"
                         placeholder="Tell us how we can help you..."
                     ></textarea>
-                    <p v-if="errors.message" class="mt-2 text-sm text-red-600">
+                    <p id="messageError" class="mt-2 text-sm text-red-600 hidden">
                         <i class="fas fa-exclamation-circle mr-1"></i>
-                        [[ errors.message ]]
+                        <span id="messageErrorText"></span>
                     </p>
-                    <p class="mt-2 text-sm text-gray-500">
-                        [[ formData.message.length ]] / 500 characters
+                    <p id="charCount" class="mt-2 text-sm text-gray-500">
+                        0 / 500 characters
                     </p>
                 </div>
 
@@ -134,17 +135,11 @@
                 <div class="mt-8">
                     <button 
                         type="submit" 
-                        :disabled="isSubmitting"
+                        id="submitBtn"
                         class="block w-full rounded-xl bg-gradient-to-r from-green-600 to-green-500 px-6 py-4 text-center text-base font-bold text-white shadow-lg hover:from-green-700 hover:to-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
                     >
-                        <span v-if="!isSubmitting">
-                            <i class="fas fa-paper-plane mr-2"></i>
-                            Submit
-                        </span>
-                        <span v-else>
-                            <i class="fas fa-spinner fa-spin mr-2"></i>
-                            Sending...
-                        </span>
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Submit
                     </button>
                 </div>
             </form>
@@ -174,102 +169,131 @@
 </div>
 
 <script>
-    const { createApp } = Vue;
+    // Update character count
+    function updateCharCount() {
+        const message = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+        charCount.textContent = `${message.value.length} / 500 characters`;
+    }
 
-    createApp({
-        delimiters: ['[[', ']]'],
-        data() {
-            return {
-                formData: {
-                    name: '',
-                    email: '',
-                    message: ''
-                },
-                errors: {
-                    name: '',
-                    email: '',
-                    message: ''
-                },
-                showSuccess: false,
-                isSubmitting: false
-            };
-        },
-        methods: {
-            validateForm() {
-                this.errors = {
-                    name: '',
-                    email: '',
-                    message: ''
-                };
+    // Hide success message
+    function hideSuccess() {
+        document.getElementById('successMessage').classList.add('hidden');
+    }
 
-                let isValid = true;
+    // Show error
+    function showError(fieldId, message) {
+        const errorElement = document.getElementById(`${fieldId}Error`);
+        const errorTextElement = document.getElementById(`${fieldId}ErrorText`);
+        const inputElement = document.getElementById(fieldId);
+        
+        errorTextElement.textContent = message;
+        errorElement.classList.remove('hidden');
+        inputElement.classList.add('ring-red-500');
+    }
 
-                // Validate name
-                if (!this.formData.name.trim()) {
-                    this.errors.name = 'Name is required';
-                    isValid = false;
-                } else if (this.formData.name.trim().length < 2) {
-                    this.errors.name = 'Name must be at least 2 characters';
-                    isValid = false;
-                }
+    // Hide error
+    function hideError(fieldId) {
+        const errorElement = document.getElementById(`${fieldId}Error`);
+        const inputElement = document.getElementById(fieldId);
+        
+        errorElement.classList.add('hidden');
+        inputElement.classList.remove('ring-red-500');
+    }
 
-                // Validate email
-                if (!this.formData.email.trim()) {
-                    this.errors.email = 'Email is required';
-                    isValid = false;
-                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.formData.email)) {
-                    this.errors.email = 'Please enter a valid email address';
-                    isValid = false;
-                }
+    // Validate form
+    function validateForm() {
+        let isValid = true;
 
-                // Validate message
-                if (!this.formData.message.trim()) {
-                    this.errors.message = 'Message is required';
-                    isValid = false;
-                } else if (this.formData.message.trim().length < 10) {
-                    this.errors.message = 'Message must be at least 10 characters';
-                    isValid = false;
-                } else if (this.formData.message.length > 500) {
-                    this.errors.message = 'Message must not exceed 500 characters';
-                    isValid = false;
-                }
+        // Clear all errors
+        hideError('name');
+        hideError('email');
+        hideError('message');
 
-                return isValid;
-            },
-            async submitForm() {
-                if (!this.validateForm()) {
-                    return;
-                }
+        // Get form values
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
 
-                this.isSubmitting = true;
-
-                // Simulate API call (replace with actual backend endpoint if needed)
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                // Log the form data (in production, send to backend)
-                console.log('Form submitted:', this.formData);
-
-                // Show success message
-                this.showSuccess = true;
-
-                // Reset form
-                this.formData = {
-                    name: '',
-                    email: '',
-                    message: ''
-                };
-
-                this.isSubmitting = false;
-
-                // Auto-hide success message after 5 seconds
-                setTimeout(() => {
-                    this.showSuccess = false;
-                }, 5000);
-
-                // Scroll to top to show success message
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+        // Validate name
+        if (!name) {
+            showError('name', 'Name is required');
+            isValid = false;
+        } else if (name.length < 2) {
+            showError('name', 'Name must be at least 2 characters');
+            isValid = false;
         }
-    }).mount('#contactApp');
+
+        // Validate email
+        if (!email) {
+            showError('email', 'Email is required');
+            isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showError('email', 'Please enter a valid email address');
+            isValid = false;
+        }
+
+        // Validate message
+        if (!message) {
+            showError('message', 'Message is required');
+            isValid = false;
+        } else if (message.length < 10) {
+            showError('message', 'Message must be at least 10 characters');
+            isValid = false;
+        } else if (message.length > 500) {
+            showError('message', 'Message must not exceed 500 characters');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Submit form
+    async function submitForm(event) {
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        const submitBtn = document.getElementById('submitBtn');
+        const form = document.getElementById('contactForm');
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+        // Get form data
+        const formData = {
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            message: document.getElementById('message').value.trim()
+        };
+
+        // Simulate API call (replace with actual backend endpoint if needed)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Log the form data (in production, send to backend)
+        console.log('Form submitted:', formData);
+
+        // Show success message
+        document.getElementById('successMessage').classList.remove('hidden');
+
+        // Reset form
+        form.reset();
+        updateCharCount();
+
+        // Reset button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Submit';
+
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => {
+            hideSuccess();
+        }, 5000);
+
+        // Scroll to top to show success message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 </script>
 {% endblock %}
