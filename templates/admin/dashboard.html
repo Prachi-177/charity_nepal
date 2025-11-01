@@ -661,16 +661,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Payment Methods -->
-        <div class="col-md-6 mb-4">
-            <div class="dashboard-card">
-                <h4>💳 Payment Method Distribution</h4>
-                <div class="chart-container">
-                    <canvas id="paymentChart"></canvas>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Urgency and Top Performers -->
@@ -919,44 +909,6 @@ new Chart(successCtx, {
             x: {
                 grid: {
                     display: false
-                }
-            }
-        }
-    }
-});
-
-// Payment Methods Chart
-const paymentData = [
-    {% for payment in payment_stats %}
-    {
-        method: '{{ payment.payment_method|title }}',
-        count: {{ payment.count }},
-        total: {{ payment.total }}
-    }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-];
-
-const paymentCtx = document.getElementById('paymentChart').getContext('2d');
-new Chart(paymentCtx, {
-    type: 'pie',
-    data: {
-        labels: paymentData.map(d => d.method),
-        datasets: [{
-            data: paymentData.map(d => d.total),
-            backgroundColor: [colors.primary, colors.success, colors.warning, colors.info],
-            borderWidth: 3,
-            borderColor: '#ffffff'
-        }]
-    },
-    options: {
-        ...chartDefaults,
-        plugins: {
-            ...chartDefaults.plugins,
-            legend: {
-                position: 'bottom',
-                labels: {
-                    ...chartDefaults.plugins.legend.labels,
-                    padding: 15
                 }
             }
         }

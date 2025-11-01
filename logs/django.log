@@ -17298,3 +17298,145 @@ Watching for file changes with StatReloader
 "GET /contact/ HTTP/1.1" 200 39637
 "GET /admin/dashboard/ HTTP/1.1" 200 46140
 "GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+Watching for file changes with StatReloader
+"GET /admin/dashboard/ HTTP/1.1" 200 46140
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+"GET /contact/ HTTP/1.1" 200 39656
+"GET /contact/ HTTP/1.1" 200 39656
+"GET /about/ HTTP/1.1" 200 44547
+"GET /cases/ HTTP/1.1" 200 97450
+"GET /media/cases/images/travel.png HTTP/1.1" 304 0
+"GET / HTTP/1.1" 200 64599
+"GET /admin/dashboard/ HTTP/1.1" 200 46140
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+"GET /admin/dashboard/ HTTP/1.1" 200 46140
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+"GET /admin/dashboard/ HTTP/1.1" 200 46140
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+"GET /contact/ HTTP/1.1" 200 39656
+"GET /contact/ HTTP/1.1" 200 38364
+"GET /contact/ HTTP/1.1" 200 38364
+"GET /contact/ HTTP/1.1" 200 38364
+"GET /admin/dashboard/ HTTP/1.1" 200 46140
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+"GET /admin/dashboard/ HTTP/1.1" 200 44751
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+"GET /admin/dashboard/ HTTP/1.1" 200 44751
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+"GET /admin/dashboard/ HTTP/1.1" 200 44751
+"GET /admin/dashboard/api/ HTTP/1.1" 200 2805
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 13181
+Internal Server Error: /admin/donations/donation/
+Traceback (most recent call last):
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/db/models/options.py", line 683, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'donor_info'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 290, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 330, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/db/models/options.py", line 685, in get_field
+    raise FieldDoesNotExist(
+        "%s has no field named '%s'" % (self.object_name, field_name)
+    )
+django.core.exceptions.FieldDoesNotExist: Donation has no field named 'donor_info'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/base.py", line 45, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/template/library.py", line 359, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 354, in result_list
+    "results": list(results(cl)),
+               ~~~~^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 330, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 321, in __init__
+    super().__init__(*items)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 219, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/prachi/Desktop/charity_nepal/.venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 299, in lookup_field
+    value = attr(obj)
+  File "/Users/prachi/Desktop/charity_nepal/donations/admin.py", line 129, in donor_info
+    full_name = f"{obj.donor.first_name} {obj.donor.last_name}".strip()
+                   ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'first_name'
+"GET /admin/donations/donation/ HTTP/1.1" 500 361389
+"GET /admin/ HTTP/1.1" 200 13181
